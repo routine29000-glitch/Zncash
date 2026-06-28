@@ -4,800 +4,571 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ZN Cash</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
-:root{
---gold:#FFD700;--gold2:#FFA500;--green:#39FF14;--green2:#00C851;
---dark:#04040a;--dark2:#080812;--card:#0e0e1e;--card2:#131326;
---text:#eeeeff;--text2:#8888aa;--red:#FF3B3B;--purple:#9B59F5;
---border:rgba(255,215,0,0.12);
-}
+:root{--g:#FFD700;--g2:#FFA500;--gr:#39FF14;--gr2:#00C851;--d:#04040a;--c:#0e0e1e;--c2:#131326;--t:#eeeeff;--t2:#8888aa;--r:#FF3B3B;--p:#9B59F5}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow-x:hidden}
-body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
-
-/* PARTICLES */
-#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-
-/* PAGES */
-.pg{display:none;position:relative;z-index:1;min-height:100vh}
-.pg.on{display:flex;flex-direction:column}
-.pg.center{align-items:center;justify-content:center;padding:24px 20px;text-align:center}
+body{font-family:'Tajawal',sans-serif;background:var(--d);color:var(--t);min-height:100vh;overflow-x:hidden}
+.pg{display:none;min-height:100vh;flex-direction:column}
+.pg.on{display:flex}
+.center{align-items:center;justify-content:center;text-align:center;padding:24px 20px}
 
 /* LOADER */
-#pg-load{background:var(--dark);z-index:9999;position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
-.load-logo{width:110px;height:110px;border-radius:22px;animation:logoPulse 1.4s ease-in-out infinite;object-fit:cover}
-@keyframes logoPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 24px var(--gold))}50%{transform:scale(1.08);filter:drop-shadow(0 0 60px var(--gold)) drop-shadow(0 0 100px var(--green))}}
-.load-bar-bg{width:220px;height:5px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
-.load-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--green));animation:loadFill 2.8s cubic-bezier(.4,0,.2,1) forwards}
-@keyframes loadFill{from{width:0}to{width:100%}}
-.load-txt{font-family:'Orbitron';font-size:11px;color:var(--green);letter-spacing:5px;animation:blink .9s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+#ld{position:fixed;inset:0;background:var(--d);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.ll{width:100px;height:100px;border-radius:20px;animation:lp 1.2s ease-in-out infinite;object-fit:cover}
+@keyframes lp{0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px var(--g))}50%{transform:scale(1.08);filter:drop-shadow(0 0 50px var(--g)) drop-shadow(0 0 80px var(--gr))}}
+.lb{width:200px;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.lbf{height:100%;background:linear-gradient(90deg,var(--g),var(--gr));animation:lf 2.5s ease forwards}
+@keyframes lf{from{width:0}to{width:100%}}
+.lt{font-family:'Orbitron';font-size:10px;color:var(--gr);letter-spacing:4px;animation:bl .8s step-end infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
 
-/* LOGO & BRAND */
-.logo-img{width:100px;height:100px;border-radius:20px;object-fit:cover;filter:drop-shadow(0 0 30px rgba(255,215,0,.6));animation:logoFloat 3s ease-in-out infinite}
-.logo-sm{width:38px;height:38px;border-radius:10px;filter:drop-shadow(0 0 8px rgba(255,215,0,.5))}
-@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.brand{font-family:'Orbitron';font-weight:900;background:linear-gradient(135deg,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
-.brand-lg{font-size:32px}
-.brand-sm{font-size:16px}
-.sub-txt{color:var(--text2);font-size:13px;margin-top:6px}
+/* BRAND */
+.logo{width:90px;height:90px;border-radius:18px;object-fit:cover;filter:drop-shadow(0 0 24px rgba(255,215,0,.6));animation:fl 3s ease-in-out infinite}
+.logo-sm{width:34px;height:34px;border-radius:8px}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.brand{font-family:'Orbitron';font-weight:900;background:linear-gradient(135deg,var(--g),var(--gr));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.brand-lg{font-size:28px;margin-top:12px}
+.brand-sm{font-size:15px}
+.sub{color:var(--t2);font-size:12px;margin-top:5px}
 
-/* LANG PAGE */
-.lang-grid{display:flex;flex-direction:column;gap:13px;width:100%;max-width:340px;margin-top:28px}
-.lang-btn{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--card);border:1.5px solid var(--border);border-radius:18px;color:var(--text);font-family:'Tajawal';font-size:16px;font-weight:700;cursor:pointer;transition:all .3s;width:100%}
-.lang-btn:hover,.lang-btn:active{border-color:var(--gold);background:rgba(255,215,0,.07);transform:scale(.98)}
-.lang-flag{font-size:30px}
-.lang-sub2{font-size:11px;color:var(--text2);font-weight:400;margin-top:2px}
+/* LANG */
+.lang-grid{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px;margin-top:24px}
+.lang-btn{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c);border:1.5px solid rgba(255,215,0,.1);border-radius:16px;color:var(--t);font-family:'Tajawal';font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;width:100%}
+.lang-btn:active{border-color:var(--g);background:rgba(255,215,0,.07);transform:scale(.97)}
+.lf{font-size:26px}
+.ls{font-size:10px;color:var(--t2);font-weight:400;margin-top:1px}
 
 /* COUNTRY */
-.country-card{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:28px 22px;width:100%;max-width:340px;margin-top:28px}
-.country-card h3{font-size:18px;font-weight:800;color:var(--gold);margin-bottom:8px}
-.country-card p{color:var(--text2);font-size:13px;margin-bottom:22px}
-.country-row{display:flex;gap:12px}
-.c-btn{flex:1;padding:16px 8px;border:none;border-radius:16px;font-family:'Tajawal';font-size:14px;font-weight:800;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.c-btn.dz{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}
-.c-btn.intl{background:linear-gradient(135deg,#00C851,#39FF14);color:#000}
-.c-btn:active{transform:scale(.95)}
+.cbox{background:var(--c);border:1.5px solid rgba(255,215,0,.12);border-radius:20px;padding:24px 20px;width:100%;max-width:320px;margin-top:24px}
+.cbox h3{font-size:17px;font-weight:800;color:var(--g);margin-bottom:7px}
+.cbox p{color:var(--t2);font-size:12px;margin-bottom:20px}
+.crow{display:flex;gap:10px}
+.cbtn{flex:1;padding:15px 6px;border:none;border-radius:14px;font-family:'Tajawal';font-size:13px;font-weight:800;cursor:pointer;transition:all .22s}
+.cbtn.dz{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}
+.cbtn.intl{background:linear-gradient(135deg,#00C851,#39FF14);color:#000}
+.cbtn:active{transform:scale(.95)}
 
 /* AUTH */
-.auth-wrap{width:100%;max-width:400px;margin:0 auto;padding:20px 20px 40px}
-.auth-head{text-align:center;padding:30px 0 24px}
-.auth-logo{width:70px;height:70px;border-radius:16px;filter:drop-shadow(0 0 16px rgba(255,215,0,.5));animation:logoFloat 3s ease-in-out infinite}
-.auth-title{font-family:'Orbitron';font-size:20px;color:var(--gold);margin-top:12px;font-weight:900}
-.auth-sub{color:var(--text2);font-size:13px;margin-top:5px}
-
-/* FORM */
-.fgroup{margin-bottom:14px}
-.flabel{display:block;font-size:11px;color:var(--text2);margin-bottom:5px;letter-spacing:.5px;font-weight:600}
-.finput{width:100%;padding:15px 16px 15px 44px;background:var(--card);border:1.5px solid rgba(255,255,255,.07);border-radius:14px;color:var(--text);font-family:'Tajawal';font-size:15px;outline:none;transition:all .3s}
-.finput:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,215,0,.08),0 0 20px rgba(255,215,0,.04)}
-.finput::placeholder{color:rgba(255,255,255,.18)}
-.ficon{position:absolute;left:14px;bottom:14px;font-size:18px;pointer-events:none}
-.fgroup{position:relative}
-.finput.ok{border-color:var(--green);box-shadow:0 0 0 2px rgba(57,255,20,.08)}
-
-/* BUTTONS */
-.btn{width:100%;padding:17px;border:none;border-radius:16px;font-family:'Tajawal';font-size:16px;font-weight:800;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;margin-top:6px}
-.btn-gold{background:linear-gradient(135deg,#FFD700 0%,#FFA500 50%,#00C851 100%);color:#000}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(255,215,0,.35)}
-.btn-gold:active{transform:scale(.97)}
-.btn-out{background:transparent;border:1.5px solid rgba(255,215,0,.25);color:var(--gold);margin-top:10px}
-.btn-out:hover{background:rgba(255,215,0,.07)}
-.btn-out:active{transform:scale(.97)}
-.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.25);border-radius:50%;transform:translate(-50%,-50%);transition:width .4s,height .4s,opacity .4s}
-.btn:active::after{width:200px;height:200px;opacity:0}
-.divider{text-align:center;color:var(--text2);font-size:12px;margin:13px 0;position:relative}
-.divider::before,.divider::after{content:'';position:absolute;top:50%;width:36%;height:1px;background:rgba(255,255,255,.07)}
-.divider::before{left:0}.divider::after{right:0}
-.ref-box{background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:14px}
+.aw{width:100%;max-width:380px;margin:0 auto;padding:16px 18px 40px}
+.ah{text-align:center;padding:24px 0 20px}
+.al{width:65px;height:65px;border-radius:14px;filter:drop-shadow(0 0 14px rgba(255,215,0,.4));animation:fl 3s ease-in-out infinite}
+.at{font-family:'Orbitron';font-size:18px;color:var(--g);margin-top:10px;font-weight:900}
+.as{color:var(--t2);font-size:12px;margin-top:4px}
+.fg{margin-bottom:12px;position:relative}
+.fl2{display:block;font-size:10px;color:var(--t2);margin-bottom:4px;letter-spacing:.5px;font-weight:600}
+.fi{width:100%;padding:14px 14px 14px 40px;background:var(--c);border:1.5px solid rgba(255,255,255,.07);border-radius:13px;color:var(--t);font-family:'Tajawal';font-size:14px;outline:none;transition:all .25s}
+.fi:focus{border-color:var(--g);box-shadow:0 0 0 2px rgba(255,215,0,.07)}
+.fi::placeholder{color:rgba(255,255,255,.18)}
+.fic{position:absolute;left:12px;bottom:13px;font-size:16px;pointer-events:none}
+.fi.ok{border-color:var(--gr)}
+.rbox{background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.18);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:9px;font-size:12px;margin-bottom:12px}
+.btn{width:100%;padding:15px;border:none;border-radius:14px;font-family:'Tajawal';font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;margin-top:5px;position:relative;overflow:hidden}
+.btn-g{background:linear-gradient(135deg,#FFD700,#FFA500,#00C851);color:#000}
+.btn-g:active{transform:scale(.97)}
+.btn-o{background:transparent;border:1.5px solid rgba(255,215,0,.22);color:var(--g);margin-top:8px}
+.btn-o:active{transform:scale(.97);background:rgba(255,215,0,.06)}
+.div{text-align:center;color:var(--t2);font-size:11px;margin:11px 0;position:relative}
+.div::before,.div::after{content:'';position:absolute;top:50%;width:36%;height:1px;background:rgba(255,255,255,.07)}
+.div::before{left:0}.div::after{right:0}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(4,4,10,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.tb-left{display:flex;align-items:center;gap:10px}
-.tb-right{text-align:left}
-.tb-bal-l{font-size:9px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase}
-.tb-bal-v{font-family:'Orbitron';font-size:15px;font-weight:700;color:var(--gold)}
+.tb{position:sticky;top:0;z-index:100;background:rgba(4,4,10,.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,215,0,.08);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-l{display:flex;align-items:center;gap:9px}
+.tb-bv{font-family:'Orbitron';font-size:14px;font-weight:700;color:var(--g)}
+.tb-bl{font-size:9px;color:var(--t2);letter-spacing:1px}
 
-/* BALANCE CARD */
-.bal-card{margin:14px 14px 0;background:linear-gradient(135deg,#0d0d25,#101030,#0a1840);border:1px solid rgba(255,215,0,.18);border-radius:24px;padding:22px 20px;position:relative;overflow:hidden}
-.bal-card::before{content:'';position:absolute;top:-80px;right:-80px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,215,0,.14),transparent 70%);border-radius:50%;pointer-events:none}
-.bal-card::after{content:'';position:absolute;bottom:-70px;left:-70px;width:180px;height:180px;background:radial-gradient(circle,rgba(57,255,20,.09),transparent 70%);border-radius:50%;pointer-events:none}
-.bal-lbl{font-size:10px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;position:relative}
-.bal-num{font-family:'Orbitron';font-size:40px;font-weight:900;color:var(--gold);position:relative;animation:goldGlow 2.5s ease-in-out infinite}
-@keyframes goldGlow{0%,100%{text-shadow:0 0 20px rgba(255,215,0,.4)}50%{text-shadow:0 0 60px rgba(255,215,0,.8),0 0 100px rgba(255,215,0,.3)}}
-.bal-conv{font-size:12px;color:var(--text2);margin-top:4px;position:relative}
-.bal-actions{display:flex;gap:10px;margin-top:20px;position:relative}
-.ba-btn{flex:1;padding:13px;border:none;border-radius:13px;font-family:'Tajawal';font-size:13px;font-weight:700;cursor:pointer;transition:all .25s}
-.ba-withdraw{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
-.ba-refer{background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.3)!important;color:var(--green)}
-.ba-btn:active{transform:scale(.95)}
+/* BAL CARD */
+.bc{margin:12px 12px 0;background:linear-gradient(135deg,#0d0d25,#0a1840);border:1px solid rgba(255,215,0,.16);border-radius:22px;padding:20px 18px;position:relative;overflow:hidden}
+.bc::before{content:'';position:absolute;top:-70px;right:-70px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,215,0,.13),transparent 70%);border-radius:50%;pointer-events:none}
+.bl{font-size:9px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.bn{font-family:'Orbitron';font-size:36px;font-weight:900;color:var(--g);animation:gg 2.5s ease-in-out infinite}
+@keyframes gg{0%,100%{text-shadow:0 0 18px rgba(255,215,0,.4)}50%{text-shadow:0 0 50px rgba(255,215,0,.8),0 0 90px rgba(255,215,0,.3)}}
+.bconv{font-size:11px;color:var(--t2);margin-top:3px}
+.bacts{display:flex;gap:9px;margin-top:16px}
+.ba{flex:1;padding:12px;border:none;border-radius:12px;font-family:'Tajawal';font-size:12px;font-weight:700;cursor:pointer;transition:all .22s}
+.ba-w{background:linear-gradient(135deg,var(--g),var(--g2));color:#000}
+.ba-r{background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.25)!important;color:var(--gr)}
+.ba:active{transform:scale(.95)}
 
 /* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:10px 14px 0}
-.stat-c{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:13px 8px;text-align:center;position:relative;overflow:hidden}
-.stat-c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--green))}
-.stat-ico{font-size:22px;margin-bottom:5px}
-.stat-v{font-family:'Orbitron';font-size:14px;font-weight:700;color:var(--gold)}
-.stat-l{font-size:9px;color:var(--text2);margin-top:2px}
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:9px 12px 0}
+.sc{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:13px;padding:11px 6px;text-align:center;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),var(--gr))}
+.si{font-size:20px;margin-bottom:4px}
+.sv{font-family:'Orbitron';font-size:13px;font-weight:700;color:var(--g)}
+.sl{font-size:9px;color:var(--t2);margin-top:1px}
 
 /* SECTION */
-.sec{margin:14px 14px 0}
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.sec-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
-.pulse-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold);animation:pDot 1.6s ease-in-out infinite}
-@keyframes pDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.7}}
+.sec{margin:12px 12px 0}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.st{font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px}
+.pd{width:6px;height:6px;background:var(--g);border-radius:50%;box-shadow:0 0 8px var(--g);animation:pp 1.6s ease-in-out infinite}
+@keyframes pp{0%,100%{transform:scale(1)}50%{transform:scale(1.6)}}
 
-/* EARN GRID */
-.earn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.earn-c{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:18px;padding:18px 14px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.earn-c::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,215,0,.03));opacity:0;transition:opacity .3s}
-.earn-c:hover::before{opacity:1}
-.earn-c:hover{border-color:rgba(255,215,0,.25);transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,0,0,.3)}
-.earn-c:active{transform:scale(.96)}
-.earn-c.featured{grid-column:span 2;background:linear-gradient(135deg,rgba(255,215,0,.07),rgba(57,255,20,.04));border-color:rgba(255,215,0,.18)}
-.earn-badge{position:absolute;top:9px;left:9px;background:var(--gold);color:#000;font-size:9px;font-weight:900;padding:3px 8px;border-radius:99px}
-.earn-ico{font-size:34px;margin-bottom:10px;display:block}
-.earn-name{font-size:14px;font-weight:700;margin-bottom:4px}
-.earn-rwd{font-size:11px;color:var(--green);font-weight:600}
+/* EARN */
+.eg{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.ec{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:15px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.ec:active{transform:scale(.96);border-color:rgba(255,215,0,.25)}
+.ec.ft{grid-column:span 2;background:linear-gradient(135deg,rgba(255,215,0,.07),rgba(57,255,20,.04));border-color:rgba(255,215,0,.16)}
+.eb{position:absolute;top:8px;left:8px;background:var(--g);color:#000;font-size:8px;font-weight:900;padding:2px 7px;border-radius:99px}
+.ei{font-size:30px;margin-bottom:8px;display:block}
+.en{font-size:13px;font-weight:700;margin-bottom:3px}
+.er{font-size:11px;color:var(--gr);font-weight:600}
 
 /* DAILY */
-.daily-c{background:linear-gradient(135deg,#160a2e,#280a4a,#1a0a38);border:1px solid rgba(155,89,245,.35);border-radius:20px;padding:20px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;position:relative;overflow:hidden}
-.daily-c::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(155,89,245,.05),transparent);pointer-events:none}
-.daily-ico{font-size:44px;animation:dailySpin 4s ease-in-out infinite;position:relative;z-index:1}
-@keyframes dailySpin{0%,100%{transform:rotateY(0deg) scale(1)}45%{transform:rotateY(180deg) scale(1.1)}50%{transform:rotateY(180deg) scale(1.1)}95%{transform:rotateY(0deg) scale(1)}}
-.daily-info{position:relative;z-index:1}
-.daily-title{font-size:16px;font-weight:700}
-.daily-amt{font-family:'Orbitron';font-size:24px;font-weight:900;color:var(--purple);text-shadow:0 0 25px rgba(155,89,245,.7)}
-.daily-sub{font-size:11px;color:var(--text2);margin-top:3px}
+.dc{background:linear-gradient(135deg,#160a2e,#280a4a);border:1px solid rgba(155,89,245,.3);border-radius:18px;padding:17px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.dc:active{transform:scale(.98)}
+.di{font-size:38px;animation:ds 4s ease-in-out infinite}
+@keyframes ds{0%,100%{transform:rotateY(0)}50%{transform:rotateY(180deg)}}
+.dn{font-family:'Orbitron';font-size:22px;font-weight:900;color:var(--p);text-shadow:0 0 20px rgba(155,89,245,.7)}
+.dsub{font-size:10px;color:var(--t2);margin-top:2px}
 
-/* WHEEL PREVIEW */
-.wheel-prev{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center;cursor:pointer}
-.wheel-spin-ico{font-size:60px;display:inline-block;animation:wSpin 10s linear infinite}
-@keyframes wSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.wt-row{display:flex;justify-content:center;gap:6px;margin-top:10px}
-.wt-d{width:9px;height:9px;border-radius:50%}
-.wt-on{background:var(--gold);box-shadow:0 0 7px var(--gold)}
-.wt-off{background:rgba(255,255,255,.1)}
+/* WHEEL PREV */
+.wp{background:var(--c);border:1px solid rgba(255,215,0,.1);border-radius:18px;padding:18px;text-align:center;cursor:pointer;margin-bottom:20px}
+.wi{font-size:54px;display:inline-block;animation:ws 10s linear infinite}
+@keyframes ws{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.wtr{display:flex;justify-content:center;gap:5px;margin-top:8px}
+.wtd{width:8px;height:8px;border-radius:50%}
+.wton{background:var(--g);box-shadow:0 0 6px var(--g)}
+.wtoff{background:rgba(255,255,255,.1)}
 
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(4,4,12,.96);backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;padding:7px 0 20px;z-index:200}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 0;cursor:pointer;transition:all .3s;position:relative}
-.bnav-i.on .ni,.bnav-i.on .nl{color:var(--gold)}
-.bnav-i.on::before{content:'';position:absolute;top:0;width:30px;height:2.5px;background:var(--gold);border-radius:0 0 3px 3px;box-shadow:0 0 12px var(--gold)}
-.ni{font-size:22px;color:var(--text2);transition:color .3s}
-.nl{font-size:10px;color:var(--text2);font-weight:600;transition:color .3s}
-.nbadge{position:absolute;top:5px;right:12px;width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 7px var(--red);animation:pDot 1s ease-in-out infinite}
+/* BNAV */
+.bn2{position:fixed;bottom:0;left:0;right:0;background:rgba(4,4,12,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,215,0,.08);display:flex;padding:6px 0 18px;z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer;transition:all .25s;position:relative}
+.ni.on .nii,.ni.on .nil{color:var(--g)}
+.ni.on::before{content:'';position:absolute;top:0;width:26px;height:2px;background:var(--g);border-radius:0 0 3px 3px;box-shadow:0 0 10px var(--g)}
+.nii{font-size:20px;color:var(--t2);transition:color .25s}
+.nil{font-size:9px;color:var(--t2);font-weight:600;transition:color .25s}
+.nbg{position:absolute;top:4px;right:10px;width:6px;height:6px;background:var(--r);border-radius:50%;box-shadow:0 0 6px var(--r)}
 
-/* TASKS */
-.task-tabs{display:flex;gap:8px;padding:12px 14px 4px;overflow-x:auto}
-.task-tabs::-webkit-scrollbar{display:none}
-.ttab{padding:9px 18px;border-radius:99px;border:1.5px solid rgba(255,255,255,.09);background:var(--card);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .25s;font-family:'Tajawal'}
-.ttab.on{background:var(--gold);color:#000;border-color:var(--gold)}
+/* TASK TABS */
+.tt{display:flex;gap:7px;padding:10px 12px 4px;overflow-x:auto}
+.tt::-webkit-scrollbar{display:none}
+.tab{padding:8px 16px;border-radius:99px;border:1.5px solid rgba(255,255,255,.08);background:var(--c);color:var(--t2);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .22s;font-family:'Tajawal'}
+.tab.on{background:var(--g);color:#000;border-color:var(--g)}
 
-/* WITHDRAW */
-.wd-bal{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid rgba(255,215,0,.18);border-radius:22px;padding:24px;text-align:center;margin:14px 14px 12px}
-.wd-bl{font-size:11px;color:var(--text2);letter-spacing:1px}
-.wd-bv{font-family:'Orbitron';font-size:38px;color:var(--gold);font-weight:900;text-shadow:0 0 30px rgba(255,215,0,.4);margin:8px 0}
-.min-note{background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.14);border-radius:13px;padding:11px;font-size:11px;color:var(--text2);text-align:center;margin:0 14px 14px}
-.meth-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0 14px 14px}
-.meth-c{background:var(--card);border:2px solid rgba(255,255,255,.06);border-radius:15px;padding:15px 10px;cursor:pointer;transition:all .28s;text-align:center;position:relative}
-.meth-c.sel{border-color:var(--gold);background:rgba(255,215,0,.06);box-shadow:0 0 22px rgba(255,215,0,.12)}
-.meth-c.soon{opacity:.4;cursor:not-allowed}
-.meth-c.soon::after{content:'قريباً';position:absolute;top:6px;left:6px;background:rgba(255,165,0,.85);color:#000;font-size:8px;font-weight:800;padding:2px 6px;border-radius:8px}
-.meth-ico{font-size:28px;margin-bottom:6px}
-.meth-name{font-size:11px;font-weight:600}
+/* CPA BOX */
+.cpab{margin:12px;background:linear-gradient(135deg,rgba(255,215,0,.06),rgba(57,255,20,.03));border:1px solid rgba(255,215,0,.13);border-radius:18px;padding:22px;text-align:center}
+.cpab .bi{font-size:58px;display:block;animation:fl 3s ease-in-out infinite;margin-bottom:12px}
+.cpab h3{font-size:17px;font-weight:800;margin-bottom:7px;color:var(--g)}
+.cpab p{font-size:12px;color:var(--t2);margin-bottom:18px;line-height:1.7}
+.how{background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.09);border-radius:12px;padding:11px;margin-top:14px;font-size:11px;color:var(--t2);line-height:2;text-align:right}
 
-/* REFERRAL */
-.ref-hero{background:linear-gradient(135deg,rgba(57,255,20,.07),rgba(0,200,81,.04));border:1px solid rgba(57,255,20,.18);border-radius:22px;padding:24px;text-align:center;margin:14px 14px 12px}
-.ref-pct{font-family:'Orbitron';font-size:52px;font-weight:900;color:var(--green);text-shadow:0 0 30px rgba(57,255,20,.5)}
-.ref-link-row{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin:0 14px 12px}
-.ref-link-v{flex:1;font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
-.copy-btn{padding:10px 15px;background:var(--gold);color:#000;border:none;border-radius:11px;font-family:'Tajawal';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-.copy-btn:active{transform:scale(.95)}
-
-/* PROFILE */
-.prof-card{background:linear-gradient(135deg,#0d0d25,#101035);border:1px solid var(--border);border-radius:24px;padding:28px 20px;text-align:center;margin:14px 14px 12px;position:relative;overflow:hidden}
-.prof-av{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--green));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 14px;box-shadow:0 0 30px rgba(255,215,0,.4);animation:goldGlow 2.5s ease-in-out infinite}
-.prof-name{font-size:20px;font-weight:800;margin-bottom:4px}
-.prof-email{color:var(--text2);font-size:13px}
-.prof-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-size:11px;font-weight:800;padding:5px 14px;border-radius:99px;margin-top:12px}
-.menu-list{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:20px;overflow:hidden;margin:0 14px}
-.menu-i{display:flex;align-items:center;gap:14px;padding:17px 16px;cursor:pointer;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.04)}
-.menu-i:last-child{border-bottom:none}
-.menu-i:active{background:rgba(255,215,0,.05)}
-.mi-ico{font-size:20px;width:28px;text-align:center}
-.mi-txt{flex:1;font-size:14px;font-weight:500}
-.mi-arr{color:var(--text2);font-size:16px}
-
-/* ADMIN */
-.adm-head{background:linear-gradient(135deg,#200808,#140000);border:1px solid rgba(255,59,59,.25);border-radius:20px;padding:20px;text-align:center;margin:14px 14px 12px}
-.adm-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0 14px 14px}
-.adm-s{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:16px;text-align:center}
-.adm-sv{font-family:'Orbitron';font-size:22px;color:var(--gold);font-weight:700}
-.adm-sl{font-size:11px;color:var(--text2);margin-top:4px}
-.wr-c{background:var(--card);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:15px;margin:0 14px 10px}
-.wr-top{display:flex;justify-content:space-between;margin-bottom:9px}
-.wr-u{font-weight:700;font-size:14px}
-.wr-a{color:var(--gold);font-family:'Orbitron';font-size:13px}
-.wr-det{font-size:11px;color:var(--text2);line-height:2;margin-bottom:11px}
-.wr-acts{display:flex;gap:8px}
-.wpaid{flex:1;padding:11px;background:linear-gradient(135deg,#00C851,#39FF14);border:none;border-radius:11px;color:#000;font-family:'Tajawal';font-size:13px;font-weight:700;cursor:pointer}
-.wreject{padding:11px 15px;background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.28);border-radius:11px;color:var(--red);font-family:'Tajawal';font-size:13px;cursor:pointer}
-
-/* WHEEL MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(14px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-bg.on{display:flex}
-.modal{background:var(--card2);border:1px solid rgba(255,215,0,.18);border-radius:24px;padding:28px 20px;width:100%;max-width:380px;text-align:center;position:relative;animation:mPop .45s cubic-bezier(.34,1.56,.64,1)}
-@keyframes mPop{from{transform:scale(.75) translateY(50px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.m-close{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.09);border:none;border-radius:50%;width:32px;height:32px;color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.wheel-wrap{position:relative;width:280px;height:280px;margin:0 auto 18px}
-#wCanvas{border-radius:50%;box-shadow:0 0 45px rgba(255,215,0,.28),0 0 90px rgba(255,215,0,.1)}
-.w-ptr{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:36px;z-index:10;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))}
-.spin-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:16px;padding:15px 42px;color:#000;font-family:'Tajawal';font-size:17px;font-weight:800;cursor:pointer;transition:all .3s}
-.spin-btn:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(255,215,0,.5)}
-.spin-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-
-/* TOAST */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-130px);background:var(--card2);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:13px 24px;font-size:13px;font-weight:600;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;display:flex;align-items:center;gap:9px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
-.toast.on{transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:rgba(57,255,20,.4)}
-.toast.err{border-color:rgba(255,59,59,.4)}
-.toast.info{border-color:rgba(255,215,0,.4)}
-
-/* COINS */
-.coin{position:fixed;pointer-events:none;z-index:9998;animation:coinFall 1.6s ease-in forwards}
-@keyframes coinFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(220px) rotate(720deg) scale(.5);opacity:0}}
+/* SOCIAL TASKS */
+.stask{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:15px;padding:14px;margin-bottom:9px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .22s}
+.stask:active{transform:scale(.97);border-color:rgba(255,215,0,.2)}
+.stask.done{opacity:.5;pointer-events:none}
+.sti{font-size:30px}
+.stn{font-weight:700;font-size:13px;margin-bottom:3px}
+.str{font-size:11px;color:var(--gr);font-weight:600}
+.sta{color:var(--t2);font-size:18px;margin-right:auto}
 
 /* LINKS */
-.link-c{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .28s;display:flex;justify-content:space-between;align-items:center}
-.link-c:hover{border-color:rgba(255,215,0,.2);transform:translateX(-3px)}
-.link-c:active{transform:scale(.97)}
-.link-info .ln{font-weight:700;font-size:14px}
-.link-info .ls{font-size:12px;color:var(--text2);margin-top:3px}
-.link-rwd{color:var(--green);font-weight:800;font-size:15px}
+.lnkc{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:14px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .22s}
+.lnkc:active{transform:scale(.97)}
+.lnkc.done{opacity:.5;pointer-events:none}
+.lname{font-weight:700;font-size:13px}
+.lsub{font-size:11px;color:var(--t2);margin-top:2px}
+.lrwd{color:var(--gr);font-weight:800;font-size:14px}
 
-/* CPA SECTION */
-.cpa-box{margin:14px;background:linear-gradient(135deg,rgba(255,215,0,.06),rgba(57,255,20,.03));border:1px solid rgba(255,215,0,.14);border-radius:20px;padding:24px;text-align:center}
-.cpa-box .big-ico{font-size:64px;margin-bottom:14px;display:block;animation:logoFloat 3s ease-in-out infinite}
-.cpa-box h3{font-size:18px;font-weight:800;margin-bottom:8px;color:var(--gold)}
-.cpa-box p{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7}
+/* YT */
+.ytbox{background:var(--c);border:1px solid rgba(255,59,59,.15);border-radius:16px;padding:16px;margin-bottom:12px}
+.ytv{width:100%;border-radius:12px;border:none;aspect-ratio:16/9}
+.yt-timer{font-family:'Orbitron';font-size:20px;color:var(--g);text-align:center;margin:10px 0;font-weight:700}
+.yt-prog{height:4px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.yt-prog-bar{height:100%;background:linear-gradient(90deg,var(--g),var(--gr));transition:width .5s;width:0}
+.yt-rwd{display:flex;gap:8px;margin-top:10px}
+.yt-rwd-btn{flex:1;padding:10px;border:none;border-radius:11px;font-family:'Tajawal';font-size:12px;font-weight:700;cursor:pointer;opacity:.4}
+.yt-rwd-btn.active{opacity:1;background:linear-gradient(135deg,var(--g),var(--g2));color:#000}
 
-/* SPROUT SECTION */
-.sprout-tasks{padding:14px}
-.stask-c{background:var(--card);border:1px solid rgba(57,255,20,.1);border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .28s}
-.stask-c:active{transform:scale(.97)}
-.stask-ico{font-size:32px}
-.stask-info{flex:1}
-.stask-name{font-weight:700;font-size:14px;margin-bottom:3px}
-.stask-rwd{font-size:12px;color:var(--green);font-weight:600}
-.stask-arr{color:var(--text2);font-size:20px}
+/* WITHDRAW */
+.wdb{background:linear-gradient(135deg,var(--c),var(--c2));border:1px solid rgba(255,215,0,.15);border-radius:20px;padding:20px;text-align:center;margin:12px 12px 10px}
+.wdbl{font-size:10px;color:var(--t2);letter-spacing:1px}
+.wdbv{font-family:'Orbitron';font-size:34px;color:var(--g);font-weight:900;text-shadow:0 0 25px rgba(255,215,0,.4);margin:6px 0}
+.mnn{background:rgba(255,165,0,.05);border:1px solid rgba(255,165,0,.13);border-radius:11px;padding:10px;font-size:11px;color:var(--t2);text-align:center;margin:0 12px 12px}
+.mg{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:0 12px 12px}
+.mc{background:var(--c);border:2px solid rgba(255,255,255,.05);border-radius:13px;padding:13px 8px;cursor:pointer;transition:all .25s;text-align:center;position:relative}
+.mc.sel{border-color:var(--g);background:rgba(255,215,0,.05);box-shadow:0 0 18px rgba(255,215,0,.1)}
+.mc.soon{opacity:.4;cursor:not-allowed}
+.mc.soon::after{content:'قريباً';position:absolute;top:5px;left:5px;background:rgba(255,165,0,.85);color:#000;font-size:8px;font-weight:800;padding:2px 5px;border-radius:6px}
+.mci{font-size:24px;margin-bottom:5px}
+.mcn{font-size:10px;font-weight:600}
 
-/* ADMIN LINK */
-#admin-trigger{position:fixed;bottom:100px;left:-80px;width:80px;height:40px;z-index:500;opacity:0;cursor:pointer}
+/* REF */
+.rh{background:linear-gradient(135deg,rgba(57,255,20,.07),rgba(0,200,81,.04));border:1px solid rgba(57,255,20,.16);border-radius:20px;padding:20px;text-align:center;margin:12px 12px 10px}
+.rp{font-family:'Orbitron';font-size:48px;font-weight:900;color:var(--gr);text-shadow:0 0 25px rgba(57,255,20,.5)}
+.rlr{background:var(--c);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:12px 14px;display:flex;align-items:center;gap:9px;margin:0 12px 10px}
+.rlt{flex:1;font-size:10px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
+.cpb{padding:9px 13px;background:var(--g);color:#000;border:none;border-radius:10px;font-family:'Tajawal';font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.cpb:active{transform:scale(.95)}
 
-/* SCROLLBAR */
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:rgba(255,215,0,.25);border-radius:2px}
+/* PROFILE */
+.pcard{background:linear-gradient(135deg,#0d0d25,#101035);border:1px solid rgba(255,215,0,.12);border-radius:22px;padding:24px 18px;text-align:center;margin:12px 12px 10px}
+.pav{width:72px;height:72px;background:linear-gradient(135deg,var(--g),var(--gr));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 12px;box-shadow:0 0 25px rgba(255,215,0,.4)}
+.pbdg{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-size:10px;font-weight:800;padding:4px 12px;border-radius:99px;margin-top:10px}
+.ml{background:var(--c);border:1px solid rgba(255,255,255,.04);border-radius:18px;overflow:hidden;margin:0 12px}
+.mi2{display:flex;align-items:center;gap:12px;padding:15px 14px;cursor:pointer;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.04)}
+.mi2:last-child{border-bottom:none}
+.mi2:active{background:rgba(255,215,0,.04)}
+.mico{font-size:18px;width:26px;text-align:center}
+.mtxt{flex:1;font-size:13px;font-weight:500}
 
-/* PAGE SPECIFIC PADDING */
-.app-content{padding-bottom:90px}
-select.finput{appearance:none;-webkit-appearance:none}
+/* WHEEL MODAL */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(12px);z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
+.mbg.on{display:flex}
+.modal{background:var(--c2);border:1px solid rgba(255,215,0,.16);border-radius:22px;padding:24px 18px;width:100%;max-width:360px;text-align:center;position:relative;animation:mp .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mp{from{transform:scale(.75) translateY(40px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.mcl{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:30px;height:30px;color:var(--t);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ww{position:relative;width:260px;height:260px;margin:0 auto 16px}
+#wc{border-radius:50%;box-shadow:0 0 40px rgba(255,215,0,.25)}
+.wptr{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:32px;z-index:10}
+.sbtn{background:linear-gradient(135deg,var(--g),var(--g2));border:none;border-radius:14px;padding:13px 38px;color:#000;font-family:'Tajawal';font-size:16px;font-weight:800;cursor:pointer;transition:all .25s}
+.sbtn:hover{transform:scale(1.04);box-shadow:0 8px 25px rgba(255,215,0,.4)}
+.sbtn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ADSGRAM */
+#adsgram-container{margin:10px 12px;min-height:50px}
+
+/* TOAST */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--c2);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 20px;font-size:13px;font-weight:600;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:rgba(57,255,20,.35)}
+.toast.err{border-color:rgba(255,59,59,.35)}
+.toast.info{border-color:rgba(255,215,0,.35)}
+
+/* COIN */
+.coin{position:fixed;pointer-events:none;z-index:9998;animation:cf 1.5s ease-in forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0) scale(1);opacity:1}100%{transform:translateY(200px) rotate(720deg) scale(.5);opacity:0}}
+
+pb{padding-bottom:90px;display:block}
 </style>
 </head>
 <body>
 
-<!-- PARTICLES CANVAS -->
-<canvas id="bg-canvas"></canvas>
-
 <!-- LOADER -->
-<div id="pg-load">
-  <img src="logo.png" class="load-logo" onerror="this.style.fontSize='70px';this.outerHTML='<div style=\'font-size:80px;animation:logoPulse 1.4s ease-in-out infinite\'>💰</div>'">
-  <div class="load-bar-bg"><div class="load-bar"></div></div>
-  <div class="load-txt">INITIALIZING ZN CASH...</div>
+<div id="ld">
+  <img src="Logo.png" class="ll" onerror="this.outerHTML='<div style=\'font-size:72px;animation:lp 1.2s ease-in-out infinite\'>💰</div>'">
+  <div class="lb"><div class="lbf"></div></div>
+  <div class="lt">LOADING ZN CASH...</div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ADMIN SECRET TRIGGER -->
-<div id="admin-trigger" onclick="adminTrigger()"></div>
-
-<!-- ===== PAGE: LANG ===== -->
+<!-- LANG -->
 <div id="pg-lang" class="pg center">
-  <img src="logo.png" class="logo-img" onerror="this.outerHTML='<div style=\'font-size:90px;margin-bottom:10px;animation:logoFloat 3s ease-in-out infinite\'>💰</div>'">
-  <div class="brand brand-lg" style="margin-top:14px">ZN CASH</div>
-  <div class="sub-txt">Complete Tasks · Earn Rewards · Get Paid</div>
+  <img src="Logo.png" class="logo" onerror="this.outerHTML='<div style=\'font-size:80px;animation:fl 3s ease-in-out infinite\'>💰</div>'">
+  <div class="brand brand-lg">ZN CASH</div>
+  <div class="sub">Complete Tasks · Earn · Get Paid</div>
   <div class="lang-grid">
-    <button class="lang-btn" onclick="setLang('ar')">
-      <span class="lang-flag">🇩🇿</span>
-      <div><div>العربية</div><div class="lang-sub2">Arabic</div></div>
-    </button>
-    <button class="lang-btn" onclick="setLang('fr')">
-      <span class="lang-flag">🇫🇷</span>
-      <div><div>Français</div><div class="lang-sub2">French</div></div>
-    </button>
-    <button class="lang-btn" onclick="setLang('en')">
-      <span class="lang-flag">🇬🇧</span>
-      <div><div>English</div><div class="lang-sub2">English</div></div>
-    </button>
+    <button class="lang-btn" onclick="sL('ar')"><span class="lf">🇩🇿</span><div><div>العربية</div><div class="ls">Arabic</div></div></button>
+    <button class="lang-btn" onclick="sL('fr')"><span class="lf">🇫🇷</span><div><div>Français</div><div class="ls">French</div></div></button>
+    <button class="lang-btn" onclick="sL('en')"><span class="lf">🇬🇧</span><div><div>English</div><div class="ls">English</div></div></button>
   </div>
 </div>
 
-<!-- ===== PAGE: COUNTRY ===== -->
+<!-- COUNTRY -->
 <div id="pg-country" class="pg center">
-  <img src="logo.png" class="logo-img" onerror="this.outerHTML='<div style=\'font-size:90px;animation:logoFloat 3s ease-in-out infinite\'>💰</div>'">
-  <div class="brand brand-lg" style="margin-top:14px">ZN CASH</div>
-  <div class="sub-txt" id="t-splash-sub">أربح المال من هاتفك الآن</div>
-  <div class="country-card">
+  <img src="Logo.png" class="logo" onerror="this.outerHTML='<div style=\'font-size:80px\'>💰</div>'">
+  <div class="brand brand-lg">ZN CASH</div>
+  <div class="sub" id="t-ss">أربح المال من هاتفك الآن</div>
+  <div class="cbox">
     <h3 id="t-cq">🌍 أين تتواجد؟</h3>
-    <p id="t-cs">اختر بلدك لعرض العملة والطرق المناسبة لك</p>
-    <div class="country-row">
-      <button class="c-btn dz" onclick="setCountry(true)"><span id="t-dz">🇩🇿 من الجزائر</span></button>
-      <button class="c-btn intl" onclick="setCountry(false)"><span id="t-intl">🌍 خارج الجزائر</span></button>
+    <p id="t-cs">اختر بلدك لعرض العملة المناسبة</p>
+    <div class="crow">
+      <button class="cbtn dz" onclick="sC(true)"><span id="t-dz">🇩🇿 الجزائر</span></button>
+      <button class="cbtn intl" onclick="sC(false)"><span id="t-intl">🌍 خارج الجزائر</span></button>
     </div>
   </div>
 </div>
 
-<!-- ===== PAGE: REGISTER ===== -->
+<!-- REGISTER -->
 <div id="pg-reg" class="pg">
-  <div class="auth-wrap">
-    <div class="auth-head">
-      <img src="logo.png" class="auth-logo" onerror="this.outerHTML='<div style=\'font-size:50px\'>💰</div>'">
-      <div class="auth-title" id="t-reg-title">إنشاء حساب</div>
-      <div class="auth-sub" id="t-reg-sub">انضم وابدأ الربح الآن 🚀</div>
+  <div class="aw">
+    <div class="ah">
+      <img src="Logo.png" class="al" onerror="this.outerHTML='<div style=\'font-size:44px\'>💰</div>'">
+      <div class="at" id="t-rt">إنشاء حساب</div>
+      <div class="as" id="t-rs">انضم وابدأ الربح الآن 🚀</div>
     </div>
-    <div id="ref-notice" class="ref-box" style="display:none">🎁 <span>لديك دعوة! ستحصل على مكافأة ترحيبية</span></div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-u">👤 اسم المستخدم</label>
-      <input type="text" class="finput" id="r-user" placeholder="اختر اسماً مميزاً" oninput="typed(this)">
-      <span class="ficon">👤</span>
-    </div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-e">📧 البريد الإلكتروني</label>
-      <input type="email" class="finput" id="r-email" placeholder="example@email.com" oninput="typed(this)">
-      <span class="ficon">📧</span>
-    </div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-p">🔒 كلمة المرور</label>
-      <input type="password" class="finput" id="r-pass" placeholder="8 أحرف على الأقل" oninput="typed(this)">
-      <span class="ficon">🔒</span>
-    </div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-p2">🔒 تأكيد كلمة المرور</label>
-      <input type="password" class="finput" id="r-pass2" placeholder="أعد كتابة كلمة المرور" oninput="typed(this)">
-      <span class="ficon">🔒</span>
-    </div>
-    <button class="btn btn-gold" id="t-btn-reg" onclick="doReg()">🚀 إنشاء الحساب</button>
-    <div class="divider" id="t-have-acc">لديك حساب بالفعل؟</div>
-    <button class="btn btn-out" onclick="go('pg-login')">🔑 تسجيل الدخول</button>
+    <div id="ref-notice" class="rbox" style="display:none">🎁 <span>لديك دعوة! ستحصل على مكافأة ترحيبية</span></div>
+    <div class="fg"><label class="fl2" id="t-lu">👤 اسم المستخدم</label><input type="text" class="fi" id="r-u" placeholder="اختر اسماً مميزاً" oninput="typed(this)"><span class="fic">👤</span></div>
+    <div class="fg"><label class="fl2" id="t-le">📧 البريد الإلكتروني</label><input type="email" class="fi" id="r-e" placeholder="example@email.com" oninput="typed(this)"><span class="fic">📧</span></div>
+    <div class="fg"><label class="fl2" id="t-lp">🔒 كلمة المرور</label><input type="password" class="fi" id="r-p" placeholder="6 أحرف على الأقل" oninput="typed(this)"><span class="fic">🔒</span></div>
+    <div class="fg"><label class="fl2" id="t-lp2">🔒 تأكيد كلمة المرور</label><input type="password" class="fi" id="r-p2" placeholder="أعد كتابة كلمة المرور" oninput="typed(this)"><span class="fic">🔒</span></div>
+    <button class="btn btn-g" onclick="doReg()">🚀 إنشاء الحساب</button>
+    <div class="div" id="t-ha">لديك حساب بالفعل؟</div>
+    <button class="btn btn-o" onclick="go('pg-login')">🔑 تسجيل الدخول</button>
   </div>
 </div>
 
-<!-- ===== PAGE: LOGIN ===== -->
+<!-- LOGIN -->
 <div id="pg-login" class="pg">
-  <div class="auth-wrap">
-    <div class="auth-head">
-      <img src="logo.png" class="auth-logo" onerror="this.outerHTML='<div style=\'font-size:50px\'>💰</div>'">
-      <div class="auth-title" id="t-login-title">تسجيل الدخول</div>
-      <div class="auth-sub" id="t-login-sub">مرحباً بعودتك 👋</div>
+  <div class="aw">
+    <div class="ah">
+      <img src="Logo.png" class="al" onerror="this.outerHTML='<div style=\'font-size:44px\'>💰</div>'">
+      <div class="at" id="t-lt">تسجيل الدخول</div>
+      <div class="as" id="t-ls">مرحباً بعودتك 👋</div>
     </div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-le">📧 البريد الإلكتروني</label>
-      <input type="email" class="finput" id="l-email" placeholder="example@email.com" oninput="typed(this)">
-      <span class="ficon">📧</span>
-    </div>
-    <div class="fgroup">
-      <label class="flabel" id="t-lbl-lp">🔒 كلمة المرور</label>
-      <input type="password" class="finput" id="l-pass" placeholder="كلمة المرور" oninput="typed(this)">
-      <span class="ficon">🔒</span>
-    </div>
-    <button class="btn btn-gold" id="t-btn-login" onclick="doLogin()">🔑 دخول</button>
-    <div class="divider" id="t-no-acc">مستخدم جديد؟</div>
-    <button class="btn btn-out" onclick="go('pg-reg')">✨ إنشاء حساب مجاني</button>
+    <div class="fg"><label class="fl2" id="t-lle">📧 البريد الإلكتروني</label><input type="email" class="fi" id="l-e" placeholder="example@email.com" oninput="typed(this)"><span class="fic">📧</span></div>
+    <div class="fg"><label class="fl2" id="t-llp">🔒 كلمة المرور</label><input type="password" class="fi" id="l-p" placeholder="كلمة المرور" oninput="typed(this)"><span class="fic">🔒</span></div>
+    <button class="btn btn-g" onclick="doLogin()">🔑 دخول</button>
+    <div class="div" id="t-na">مستخدم جديد؟</div>
+    <button class="btn btn-o" onclick="go('pg-reg')">✨ إنشاء حساب مجاني</button>
   </div>
 </div>
 
-<!-- ===== PAGE: APP HOME ===== -->
+<!-- APP HOME -->
 <div id="pg-app" class="pg">
-  <!-- Adsterra Social Bar -->
-  <script async src="https://pl29835584.effectivecpmnetwork.com/03/b6/ec/03b6ec4b800e3403ae1dc0d2da7ddd75.js"></script>
-  <div class="topbar">
-    <div class="tb-left">
-      <img src="logo.png" class="logo-sm" onerror="this.outerHTML='<span style=\'font-size:28px\'>💰</span>'">
+  <div class="tb">
+    <div class="tb-l">
+      <img src="Logo.png" class="logo-sm" onerror="this.outerHTML='<span style=\'font-size:24px\'>💰</span>'">
       <span class="brand brand-sm">ZN CASH</span>
     </div>
-    <div class="tb-right">
-      <div class="tb-bal-l">رصيدك</div>
-      <div class="tb-bal-v" id="tb-bal">0</div>
+    <div style="text-align:left"><div class="tb-bl">رصيدك</div><div class="tb-bv" id="tb-b">0</div></div>
+  </div>
+  <pb>
+  <!-- Adsgram container -->
+  <div id="adsgram-container"></div>
+  <!-- BAL -->
+  <div class="bc">
+    <div class="bl">💰 رصيدك الحالي</div>
+    <div class="bn"><span id="b-c">دج</span> <span id="b-n">0</span></div>
+    <div class="bconv" id="b-cv">≈ $0.00</div>
+    <div class="bacts">
+      <button class="ba ba-w" onclick="go('pg-wd')">💸 سحب الأرباح</button>
+      <button class="ba ba-r" onclick="go('pg-ref')">👥 دعوة الأصدقاء</button>
     </div>
   </div>
-  <div class="app-content">
-    <!-- BALANCE -->
-    <div class="bal-card">
-      <div class="bal-lbl">💰 رصيدك الحالي</div>
-      <div class="bal-num"><span id="bal-curr">دج</span> <span id="bal-num">0</span></div>
-      <div class="bal-conv" id="bal-conv">≈ $0.00</div>
-      <div class="bal-actions">
-        <button class="ba-btn ba-withdraw" onclick="go('pg-wd')">💸 سحب الأرباح</button>
-        <button class="ba-btn ba-refer" onclick="go('pg-ref')">👥 دعوة الأصدقاء</button>
+  <!-- STATS -->
+  <div class="sr">
+    <div class="sc"><div class="si">✅</div><div class="sv" id="s-t">0</div><div class="sl">مهام</div></div>
+    <div class="sc"><div class="si">👥</div><div class="sv" id="s-r">0</div><div class="sl">إحالات</div></div>
+    <div class="sc"><div class="si">🔗</div><div class="sv" id="s-l">0</div><div class="sl">روابط</div></div>
+  </div>
+  <!-- DAILY -->
+  <div class="sec">
+    <div class="sh"><div class="st"><span class="pd"></span> مكافأة اليوم</div></div>
+    <div class="dc" onclick="claimDaily()">
+      <div class="di">🎁</div>
+      <div>
+        <div style="font-size:15px;font-weight:700">المكافأة اليومية</div>
+        <div class="dn" id="d-amt">10 دج</div>
+        <div class="dsub" id="d-sub">اضغط للمطالبة بمكافأتك</div>
       </div>
-    </div>
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-c"><div class="stat-ico">✅</div><div class="stat-v" id="s-tasks">0</div><div class="stat-l">مهام</div></div>
-      <div class="stat-c"><div class="stat-ico">👥</div><div class="stat-v" id="s-refs">0</div><div class="stat-l">إحالات</div></div>
-      <div class="stat-c"><div class="stat-ico">🔗</div><div class="stat-v" id="s-links">0</div><div class="stat-l">روابط</div></div>
-    </div>
-    <!-- DAILY -->
-    <div class="sec">
-      <div class="sec-hdr"><div class="sec-title"><span class="pulse-dot"></span> مكافأة اليوم</div></div>
-      <div class="daily-c" onclick="claimDaily()">
-        <div class="daily-ico">🎁</div>
-        <div class="daily-info">
-          <div class="daily-title">المكافأة اليومية</div>
-          <div class="daily-amt" id="daily-amt">10 دج</div>
-          <div class="daily-sub" id="daily-sub">اضغط للمطالبة بمكافأتك</div>
-        </div>
-        <div style="font-size:24px;color:var(--text2);margin-right:4px">›</div>
-      </div>
-    </div>
-    <!-- EARN -->
-    <div class="sec">
-      <div class="sec-hdr"><div class="sec-title"><span class="pulse-dot"></span> طرق الكسب</div></div>
-      <div class="earn-grid">
-        <div class="earn-c featured" onclick="go('pg-tasks');setTab('cpa')">
-          <span class="earn-badge">🔥 الأعلى ربحاً</span>
-          <span class="earn-ico" style="margin-top:12px">📋</span>
-          <div class="earn-name">مهام مدفوعة</div>
-          <div class="earn-rwd">تصل إلى 70% من كل مهمة</div>
-        </div>
-        <div class="earn-c" onclick="go('pg-tasks');setTab('extra')">
-          <span class="earn-ico">🌟</span>
-          <div class="earn-name">مهام إضافية</div>
-          <div class="earn-rwd">مهام متنوعة</div>
-        </div>
-        <div class="earn-c" onclick="go('pg-tasks');setTab('links')">
-          <span class="earn-ico">🔗</span>
-          <div class="earn-name">روابط مدفوعة</div>
-          <div class="earn-rwd">لكل ضغطة مدفوعة</div>
-        </div>
-        <div class="earn-c" onclick="openWheel()">
-          <span class="earn-ico">🎰</span>
-          <div class="earn-name">عجلة الحظ</div>
-          <div class="earn-rwd">10 محاولات يومياً</div>
-        </div>
-        <div class="earn-c" onclick="go('pg-ref')">
-          <span class="earn-ico">👥</span>
-          <div class="earn-name">الإحالات</div>
-          <div class="earn-rwd">10% من أرباح المدعو</div>
-        </div>
-        <div class="earn-c" onclick="showSocialMsg()">
-          <span class="earn-ico">📱</span>
-          <div class="earn-name">مهام اجتماعية</div>
-          <div class="earn-rwd">قريباً</div>
-        </div>
-      </div>
-    </div>
-    <!-- WHEEL PREVIEW -->
-    <div class="sec" style="margin-bottom:20px">
-      <div class="wheel-prev" onclick="openWheel()">
-        <div class="wheel-spin-ico">🎡</div>
-        <div style="font-family:'Orbitron';font-size:16px;color:var(--gold);margin-top:8px">عجلة الحظ</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:5px">10 محاولات مجانية يومياً - الجائزة الكبرى 🏆</div>
-        <div class="wt-row" id="wt-home"></div>
-      </div>
+      <div style="font-size:20px;color:var(--t2);margin-right:auto">›</div>
     </div>
   </div>
-  <!-- BOTTOM NAV -->
-  <div class="bnav">
-    <div class="bnav-i on" id="nav-home" onclick="navClick('home',this);go('pg-app')"><div class="ni">🏠</div><div class="nl">الرئيسية</div></div>
-    <div class="bnav-i" id="nav-tasks" onclick="navClick('tasks',this);go('pg-tasks')"><div class="ni">📋</div><div class="nl">المهام</div><div class="nbadge"></div></div>
-    <div class="bnav-i" id="nav-wd" onclick="navClick('wd',this);go('pg-wd')"><div class="ni">💸</div><div class="nl">سحب</div></div>
-    <div class="bnav-i" id="nav-ref" onclick="navClick('ref',this);go('pg-ref')"><div class="ni">👥</div><div class="nl">إحالة</div></div>
-    <div class="bnav-i" id="nav-prof" onclick="navClick('prof',this);go('pg-prof')"><div class="ni">👤</div><div class="nl">حسابي</div></div>
+  <!-- EARN -->
+  <div class="sec">
+    <div class="sh"><div class="st"><span class="pd"></span> طرق الكسب</div></div>
+    <div class="eg">
+      <div class="ec ft" onclick="go('pg-tasks');sTab('cpa')"><span class="eb">🔥 الأعلى ربحاً</span><span class="ei" style="margin-top:10px">📋</span><div class="en">مهام مدفوعة</div><div class="er">حتى 70% من كل مهمة</div></div>
+      <div class="ec" onclick="go('pg-tasks');sTab('social')"><span class="ei">📱</span><div class="en">مهام اجتماعية</div><div class="er">تابع واكسب</div></div>
+      <div class="ec" onclick="go('pg-tasks');sTab('yt')"><span class="ei">🎬</span><div class="en">شاهد واكسب</div><div class="er">فيديو مدفوع</div></div>
+      <div class="ec" onclick="go('pg-tasks');sTab('links')"><span class="ei">🔗</span><div class="en">روابط مدفوعة</div><div class="er">لكل ضغطة</div></div>
+      <div class="ec" onclick="openWheel()"><span class="ei">🎰</span><div class="en">عجلة الحظ</div><div class="er">جوائز ضخمة!</div></div>
+      <div class="ec" onclick="go('pg-ref')"><span class="ei">👥</span><div class="en">الإحالات</div><div class="er">10% من أرباح المدعو</div></div>
+    </div>
+  </div>
+  <!-- WHEEL PREV -->
+  <div class="sec">
+    <div class="wp" onclick="openWheel()">
+      <div class="wi">🎡</div>
+      <div style="font-family:'Orbitron';font-size:15px;color:var(--g);margin-top:6px">عجلة الحظ</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:4px">10 محاولات يومياً - جوائز تصل لـ 🏆</div>
+      <div class="wtr" id="wt-h"></div>
+    </div>
+  </div>
+  </pb>
+  <div class="bn2">
+    <div class="ni on" onclick="nv('home',this);go('pg-app')"><div class="nii">🏠</div><div class="nil">الرئيسية</div></div>
+    <div class="ni" onclick="nv('tasks',this);go('pg-tasks')"><div class="nii">📋</div><div class="nil">المهام</div><div class="nbg"></div></div>
+    <div class="ni" onclick="nv('wd',this);go('pg-wd')"><div class="nii">💸</div><div class="nil">سحب</div></div>
+    <div class="ni" onclick="nv('ref',this);go('pg-ref')"><div class="nii">👥</div><div class="nil">إحالة</div></div>
+    <div class="ni" onclick="nv('prof',this);go('pg-prof')"><div class="nii">👤</div><div class="nil">حسابي</div></div>
   </div>
 </div>
 
-<!-- ===== PAGE: TASKS ===== -->
+<!-- TASKS -->
 <div id="pg-tasks" class="pg">
-  <div class="topbar">
-    <button style="background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:0 8px" onclick="go('pg-app')">‹</button>
+  <div class="tb">
+    <button style="background:none;border:none;color:var(--t);font-size:24px;cursor:pointer;padding:0 6px" onclick="go('pg-app')">‹</button>
     <div class="brand brand-sm">المهام</div>
-    <div style="width:44px"></div>
+    <div style="width:36px"></div>
   </div>
-  <div class="task-tabs">
-    <button class="ttab on" id="tab-cpa" onclick="setTab('cpa')">📋 مهام مدفوعة</button>
-    <button class="ttab" id="tab-extra" onclick="setTab('extra')">🌟 مهام إضافية</button>
-    <button class="ttab" id="tab-links" onclick="setTab('links')">🔗 روابط مدفوعة</button>
+  <div class="tt">
+    <button class="tab on" id="tab-cpa" onclick="sTab('cpa')">📋 مهام مدفوعة</button>
+    <button class="tab" id="tab-social" onclick="sTab('social')">📱 اجتماعية</button>
+    <button class="tab" id="tab-yt" onclick="sTab('yt')">🎬 فيديو</button>
+    <button class="tab" id="tab-links" onclick="sTab('links')">🔗 روابط</button>
   </div>
-
-  <!-- CPA TASKS -->
-  <div id="tab-cpa-content" class="app-content">
-    <div class="cpa-box">
-      <span class="big-ico">📋</span>
+  <!-- CPA -->
+  <div id="tc-cpa" style="flex:1;overflow-y:auto;padding-bottom:90px">
+    <div class="cpab">
+      <span class="bi">📋</span>
       <h3>المهام المدفوعة</h3>
-      <p>أكمل المهام واكسب حتى <strong style="color:var(--gold)">70%</strong> من قيمة كل مهمة مباشرة في رصيدك</p>
-      <button class="btn btn-gold" style="margin-top:0" onclick="openCPA()">🚀 ابدأ المهام الآن</button>
-      <div style="margin-top:14px;padding:12px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.1);border-radius:14px">
-        <div style="font-size:12px;color:var(--text2);line-height:1.9">
-          ✅ أكمل المهمة<br>
-          ⏱️ انتظر تأكيد المكافأة (1-5 دقائق)<br>
-          💰 يُضاف الرصيد تلقائياً لحسابك
-        </div>
+      <p>أكمل المهام واكسب حتى <strong style="color:var(--g)">70%</strong> من قيمة كل مهمة مباشرة في رصيدك</p>
+      <button class="btn btn-g" style="margin-top:0" onclick="openCPA()">🚀 ابدأ المهام الآن</button>
+      <div class="how">✅ أكمل المهمة<br>⏱️ انتظر التأكيد (1-5 دقائق)<br>💰 يُضاف رصيدك تلقائياً</div>
+    </div>
+    <!-- Adsterra native -->
+    <div id="ad-native" style="margin:0 12px 12px"></div>
+  </div>
+  <!-- SOCIAL -->
+  <div id="tc-social" style="display:none;flex:1;overflow-y:auto;padding:12px 12px 90px">
+    <div style="background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.1);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);text-align:center">أكمل المهمة واضغط تأكيد لتحصل على مكافأتك</div>
+    <div id="social-list"></div>
+  </div>
+  <!-- YT -->
+  <div id="tc-yt" style="display:none;flex:1;overflow-y:auto;padding:12px 12px 90px">
+    <div class="ytbox">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--g)">🎬 شاهد الفيديو واكسب</div>
+      <iframe id="yt-frame" class="ytv" src="https://www.youtube.com/embed/Gamt4gfIFbs?enablejsapi=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      <div class="yt-timer" id="yt-timer">00:00</div>
+      <div class="yt-prog"><div class="yt-prog-bar" id="yt-bar"></div></div>
+      <div style="font-size:11px;color:var(--t2);text-align:center;margin-bottom:8px" id="yt-status">ابدأ المشاهدة لتحصل على مكافأتك</div>
+      <div class="yt-rwd">
+        <button class="yt-rwd-btn" id="yt-btn1" onclick="claimYT(1)" disabled>✅ دقيقتان<br><span style="font-family:'Orbitron';font-size:11px">50 دج</span></button>
+        <button class="yt-rwd-btn" id="yt-btn2" onclick="claimYT(2)" disabled>⭐ مشاهدة كاملة<br><span style="font-family:'Orbitron';font-size:11px">200 دج</span></button>
+      </div>
+      <div style="margin-top:12px;background:rgba(255,59,59,.06);border:1px solid rgba(255,59,59,.12);border-radius:11px;padding:10px;font-size:11px;color:var(--t2);text-align:center">
+        ⚠️ لن تُحتسب المكافأة حتى تشترك في القناة وتفعّل الجرس
+        <button class="btn btn-g" style="margin-top:8px;padding:10px;font-size:12px" onclick="openYTChannel()">📺 اشترك في القناة الآن</button>
       </div>
     </div>
-    <!-- Adsterra Native Banner -->
-    <div style="margin:0 14px 14px" id="adsterra-native"></div>
   </div>
-
-  <!-- EXTRA TASKS (SproutGigs hidden) -->
-  <div id="tab-extra-content" style="display:none" class="app-content">
-    <div class="sprout-tasks">
-      <div style="background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.12);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);text-align:center">
-        أكمل المهام الإضافية واكسب رصيداً إضافياً لحسابك
-      </div>
-      <div id="extra-tasks-list"></div>
-    </div>
+  <!-- LINKS -->
+  <div id="tc-links" style="display:none;flex:1;overflow-y:auto;padding:12px 12px 90px">
+    <div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.1);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);text-align:center">اضغط على الرابط وانتظر ثوانٍ لتحصل على مكافأتك</div>
+    <div id="links-list"></div>
   </div>
-
-  <!-- LINKS (ShrinkMe hidden) -->
-  <div id="tab-links-content" style="display:none" class="app-content">
-    <div style="padding:14px">
-      <div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.12);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);text-align:center">
-        اضغط على الرابط وانتظر ثوانٍ لتحصل على مكافأتك تلقائياً
-      </div>
-      <div id="links-list"></div>
-    </div>
-  </div>
-
-  <div class="bnav">
-    <div class="bnav-i" onclick="go('pg-app')"><div class="ni">🏠</div><div class="nl">الرئيسية</div></div>
-    <div class="bnav-i on"><div class="ni">📋</div><div class="nl">المهام</div></div>
-    <div class="bnav-i" onclick="go('pg-wd')"><div class="ni">💸</div><div class="nl">سحب</div></div>
-    <div class="bnav-i" onclick="go('pg-ref')"><div class="ni">👥</div><div class="nl">إحالة</div></div>
-    <div class="bnav-i" onclick="go('pg-prof')"><div class="ni">👤</div><div class="nl">حسابي</div></div>
+  <div class="bn2">
+    <div class="ni" onclick="go('pg-app')"><div class="nii">🏠</div><div class="nil">الرئيسية</div></div>
+    <div class="ni on"><div class="nii">📋</div><div class="nil">المهام</div></div>
+    <div class="ni" onclick="go('pg-wd')"><div class="nii">💸</div><div class="nil">سحب</div></div>
+    <div class="ni" onclick="go('pg-ref')"><div class="nii">👥</div><div class="nil">إحالة</div></div>
+    <div class="ni" onclick="go('pg-prof')"><div class="nii">👤</div><div class="nil">حسابي</div></div>
   </div>
 </div>
 
-<!-- ===== PAGE: WITHDRAW ===== -->
+<!-- WITHDRAW -->
 <div id="pg-wd" class="pg">
-  <div class="topbar">
-    <button style="background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:0 8px" onclick="go('pg-app')">‹</button>
-    <div class="brand brand-sm">سحب الأرباح</div>
-    <div style="width:44px"></div>
-  </div>
-  <div class="app-content">
-    <div class="wd-bal">
-      <div class="wd-bl">رصيدك المتاح للسحب</div>
-      <div class="wd-bv" id="wd-bal-v">0 دج</div>
-    </div>
-    <div class="min-note">⚠️ الحد الأدنى للسحب: <strong id="wd-min">2000 دج</strong></div>
-    <div class="sec-title" style="margin:0 14px 12px;display:flex;align-items:center;gap:8px"><span class="pulse-dot"></span> اختر طريقة السحب</div>
-
-    <div id="wd-dz" style="display:none">
-      <div class="meth-grid">
-        <div class="meth-c" onclick="pickM('usdt','USDT TRC20',this)"><div class="meth-ico">₮</div><div class="meth-name">USDT TRC20</div></div>
-        <div class="meth-c" onclick="pickM('ccp','CCP بريدي',this)"><div class="meth-ico">🏦</div><div class="meth-name">CCP بريدي</div></div>
-        <div class="meth-c soon"><div class="meth-ico">📱</div><div class="meth-name">بريدي موب</div></div>
-        <div class="meth-c soon"><div class="meth-ico">💳</div><div class="meth-name">PayPal</div></div>
-        <div class="meth-c soon"><div class="meth-ico">🔴</div><div class="meth-name">Redotpay</div></div>
-        <div class="meth-c" onclick="pickM('btc','Bitcoin',this)"><div class="meth-ico">₿</div><div class="meth-name">Bitcoin</div></div>
-      </div>
-    </div>
-    <div id="wd-intl" style="display:none">
-      <div class="meth-grid">
-        <div class="meth-c" onclick="pickM('usdt','USDT TRC20',this)"><div class="meth-ico">₮</div><div class="meth-name">USDT TRC20</div></div>
-        <div class="meth-c" onclick="pickM('btc','Bitcoin',this)"><div class="meth-ico">₿</div><div class="meth-name">Bitcoin</div></div>
-        <div class="meth-c" onclick="pickM('eth','Ethereum',this)"><div class="meth-ico">Ξ</div><div class="meth-name">Ethereum</div></div>
-        <div class="meth-c" onclick="pickM('bnb','BNB',this)"><div class="meth-ico">🟡</div><div class="meth-name">BNB</div></div>
-        <div class="meth-c" onclick="pickM('ltc','Litecoin',this)"><div class="meth-ico">Ł</div><div class="meth-name">Litecoin</div></div>
-        <div class="meth-c" onclick="pickM('doge','Dogecoin',this)"><div class="meth-ico">🐕</div><div class="meth-name">Dogecoin</div></div>
-      </div>
-    </div>
-
-    <div id="wd-form" style="display:none;padding:0 14px">
-      <div class="fgroup">
-        <label class="flabel" id="wd-addr-lbl">📍 عنوان المحفظة</label>
-        <input type="text" class="finput" id="wd-addr" placeholder="أدخل العنوان" oninput="typed(this)">
-        <span class="ficon">📍</span>
-      </div>
-      <div class="fgroup">
-        <label class="flabel">💰 مبلغ السحب</label>
-        <input type="number" class="finput" id="wd-amt" placeholder="0" oninput="typed(this)">
-        <span class="ficon">💰</span>
-      </div>
-      <button class="btn btn-gold" onclick="doWD()">📤 إرسال طلب السحب</button>
+  <div class="tb"><button style="background:none;border:none;color:var(--t);font-size:24px;cursor:pointer;padding:0 6px" onclick="go('pg-app')">‹</button><div class="brand brand-sm">سحب الأرباح</div><div style="width:36px"></div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:90px">
+    <div class="wdb"><div class="wdbl">رصيدك المتاح</div><div class="wdbv" id="wd-bv">0 دج</div></div>
+    <div class="mnn">⚠️ الحد الأدنى: <strong id="wd-mn">2000 دج</strong></div>
+    <div class="st" style="margin:0 12px 10px;display:flex;align-items:center;gap:7px"><span class="pd"></span> اختر طريقة السحب</div>
+    <div id="wd-dz" style="display:none"><div class="mg">
+      <div class="mc" onclick="pM('usdt','USDT TRC20',this)"><div class="mci">₮</div><div class="mcn">USDT TRC20</div></div>
+      <div class="mc" onclick="pM('ccp','CCP بريدي',this)"><div class="mci">🏦</div><div class="mcn">CCP بريدي</div></div>
+      <div class="mc soon"><div class="mci">📱</div><div class="mcn">بريدي موب</div></div>
+      <div class="mc soon"><div class="mci">💳</div><div class="mcn">PayPal</div></div>
+      <div class="mc soon"><div class="mci">🔴</div><div class="mcn">Redotpay</div></div>
+      <div class="mc" onclick="pM('btc','Bitcoin',this)"><div class="mci">₿</div><div class="mcn">Bitcoin</div></div>
+    </div></div>
+    <div id="wd-intl" style="display:none"><div class="mg">
+      <div class="mc" onclick="pM('usdt','USDT TRC20',this)"><div class="mci">₮</div><div class="mcn">USDT TRC20</div></div>
+      <div class="mc" onclick="pM('btc','Bitcoin',this)"><div class="mci">₿</div><div class="mcn">Bitcoin</div></div>
+      <div class="mc" onclick="pM('eth','Ethereum',this)"><div class="mci">Ξ</div><div class="mcn">Ethereum</div></div>
+      <div class="mc" onclick="pM('bnb','BNB',this)"><div class="mci">🟡</div><div class="mcn">BNB</div></div>
+      <div class="mc" onclick="pM('ltc','Litecoin',this)"><div class="mci">Ł</div><div class="mcn">Litecoin</div></div>
+      <div class="mc" onclick="pM('doge','Dogecoin',this)"><div class="mci">🐕</div><div class="mcn">Dogecoin</div></div>
+    </div></div>
+    <div id="wd-form" style="display:none;padding:0 12px">
+      <div class="fg"><label class="fl2" id="wd-al">📍 عنوان المحفظة</label><input type="text" class="fi" id="wd-addr" placeholder="أدخل العنوان" oninput="typed(this)"><span class="fic">📍</span></div>
+      <div class="fg"><label class="fl2">💰 مبلغ السحب</label><input type="number" class="fi" id="wd-amt" placeholder="0" oninput="typed(this)"><span class="fic">💰</span></div>
+      <button class="btn btn-g" onclick="doWD()">📤 إرسال طلب السحب</button>
       <div style="height:20px"></div>
     </div>
   </div>
-  <div class="bnav">
-    <div class="bnav-i" onclick="go('pg-app')"><div class="ni">🏠</div><div class="nl">الرئيسية</div></div>
-    <div class="bnav-i" onclick="go('pg-tasks')"><div class="ni">📋</div><div class="nl">المهام</div></div>
-    <div class="bnav-i on"><div class="ni">💸</div><div class="nl">سحب</div></div>
-    <div class="bnav-i" onclick="go('pg-ref')"><div class="ni">👥</div><div class="nl">إحالة</div></div>
-    <div class="bnav-i" onclick="go('pg-prof')"><div class="ni">👤</div><div class="nl">حسابي</div></div>
+  <div class="bn2">
+    <div class="ni" onclick="go('pg-app')"><div class="nii">🏠</div><div class="nil">الرئيسية</div></div>
+    <div class="ni" onclick="go('pg-tasks')"><div class="nii">📋</div><div class="nil">المهام</div></div>
+    <div class="ni on"><div class="nii">💸</div><div class="nil">سحب</div></div>
+    <div class="ni" onclick="go('pg-ref')"><div class="nii">👥</div><div class="nil">إحالة</div></div>
+    <div class="ni" onclick="go('pg-prof')"><div class="nii">👤</div><div class="nil">حسابي</div></div>
   </div>
 </div>
 
-<!-- ===== PAGE: REFERRAL ===== -->
+<!-- REFERRAL -->
 <div id="pg-ref" class="pg">
-  <div class="topbar">
-    <button style="background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:0 8px" onclick="go('pg-app')">‹</button>
-    <div class="brand brand-sm">نظام الإحالة</div>
-    <div style="width:44px"></div>
-  </div>
-  <div class="app-content">
-    <div class="ref-hero">
-      <div style="font-family:'Orbitron';font-size:15px;color:var(--green);margin-bottom:8px">💎 اربح من إحالاتك</div>
-      <div class="ref-pct">10%</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:8px">من أرباح كل شخص تدعوه مدى الحياة</div>
-      <div style="margin-top:14px;background:rgba(57,255,20,.08);border-radius:12px;padding:10px;font-size:12px;color:var(--text2)">
-        🎁 المدعو يحصل على <strong style="color:var(--gold)">50 دج</strong> مكافأة ترحيبية
-      </div>
+  <div class="tb"><button style="background:none;border:none;color:var(--t);font-size:24px;cursor:pointer;padding:0 6px" onclick="go('pg-app')">‹</button><div class="brand brand-sm">نظام الإحالة</div><div style="width:36px"></div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:90px">
+    <div class="rh">
+      <div style="font-family:'Orbitron';font-size:14px;color:var(--gr);margin-bottom:6px">💎 اربح من إحالاتك</div>
+      <div class="rp">10%</div>
+      <div style="font-size:12px;color:var(--t2);margin-top:6px">من أرباح كل شخص تدعوه مدى الحياة</div>
+      <div style="margin-top:12px;background:rgba(57,255,20,.07);border-radius:11px;padding:10px;font-size:11px;color:var(--t2)">🎁 المدعو يحصل على <strong style="color:var(--g)">50 دج</strong> مكافأة ترحيبية</div>
     </div>
-    <div class="sec-title" style="margin:0 14px 10px;display:flex;align-items:center;gap:8px"><span class="pulse-dot"></span> رابط إحالتك</div>
-    <div class="ref-link-row">
-      <div class="ref-link-v" id="ref-link-v">جاري التحميل...</div>
-      <button class="copy-btn" onclick="copyRef()">📋 نسخ</button>
-    </div>
-    <div style="padding:0 14px;margin-bottom:14px">
-      <button class="btn btn-gold" onclick="shareRef()" style="margin-top:0">📤 مشاركة الرابط</button>
-    </div>
-    <div style="background:var(--card);border-radius:18px;padding:16px;margin:0 14px">
-      <div style="font-size:13px;font-weight:700;margin-bottom:12px">👥 إحالاتك</div>
-      <div id="refs-list" style="color:var(--text2);font-size:13px;text-align:center;padding:18px 0">لا توجد إحالات بعد</div>
+    <div class="st" style="margin:0 12px 9px;display:flex;align-items:center;gap:7px"><span class="pd"></span> رابط إحالتك</div>
+    <div class="rlr"><div class="rlt" id="ref-lnk">جاري التحميل...</div><button class="cpb" onclick="copyRef()">📋 نسخ</button></div>
+    <div style="padding:0 12px;margin-bottom:12px"><button class="btn btn-g" onclick="shareRef()" style="margin-top:0">📤 مشاركة الرابط</button></div>
+    <div style="background:var(--c);border-radius:16px;padding:14px;margin:0 12px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">👥 إحالاتك</div>
+      <div id="refs-list" style="color:var(--t2);font-size:12px;text-align:center;padding:16px 0">لا توجد إحالات بعد</div>
     </div>
   </div>
-  <div class="bnav">
-    <div class="bnav-i" onclick="go('pg-app')"><div class="ni">🏠</div><div class="nl">الرئيسية</div></div>
-    <div class="bnav-i" onclick="go('pg-tasks')"><div class="ni">📋</div><div class="nl">المهام</div></div>
-    <div class="bnav-i" onclick="go('pg-wd')"><div class="ni">💸</div><div class="nl">سحب</div></div>
-    <div class="bnav-i on"><div class="ni">👥</div><div class="nl">إحالة</div></div>
-    <div class="bnav-i" onclick="go('pg-prof')"><div class="ni">👤</div><div class="nl">حسابي</div></div>
+  <div class="bn2">
+    <div class="ni" onclick="go('pg-app')"><div class="nii">🏠</div><div class="nil">الرئيسية</div></div>
+    <div class="ni" onclick="go('pg-tasks')"><div class="nii">📋</div><div class="nil">المهام</div></div>
+    <div class="ni" onclick="go('pg-wd')"><div class="nii">💸</div><div class="nil">سحب</div></div>
+    <div class="ni on"><div class="nii">👥</div><div class="nil">إحالة</div></div>
+    <div class="ni" onclick="go('pg-prof')"><div class="nii">👤</div><div class="nil">حسابي</div></div>
   </div>
 </div>
 
-<!-- ===== PAGE: PROFILE ===== -->
+<!-- PROFILE -->
 <div id="pg-prof" class="pg">
-  <div class="topbar">
-    <button style="background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:0 8px" onclick="go('pg-app')">‹</button>
-    <div class="brand brand-sm">حسابي</div>
-    <div style="width:44px"></div>
-  </div>
-  <div class="app-content">
-    <div class="prof-card">
-      <div class="prof-av" id="prof-av">👤</div>
-      <div class="prof-name" id="prof-name">---</div>
-      <div class="prof-email" id="prof-email">---</div>
-      <div class="prof-badge">⭐ Starter Member</div>
+  <div class="tb"><button style="background:none;border:none;color:var(--t);font-size:24px;cursor:pointer;padding:0 6px" onclick="go('pg-app')">‹</button><div class="brand brand-sm">حسابي</div><div style="width:36px"></div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:90px">
+    <div class="pcard">
+      <div class="pav" id="p-av">👤</div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:3px" id="p-nm">---</div>
+      <div style="color:var(--t2);font-size:12px" id="p-em">---</div>
+      <div class="pbdg">⭐ Starter Member</div>
     </div>
-    <div class="menu-list">
-      <div class="menu-i" onclick="go('pg-wd')"><div class="mi-ico">💸</div><div class="mi-txt">سجل السحوبات</div><div class="mi-arr">›</div></div>
-      <div class="menu-i" onclick="go('pg-ref')"><div class="mi-ico">👥</div><div class="mi-txt">برنامج الإحالة</div><div class="mi-arr">›</div></div>
-      <div class="menu-i" onclick="openWheel()"><div class="mi-ico">🎰</div><div class="mi-txt">عجلة الحظ</div><div class="mi-arr">›</div></div>
-      <div class="menu-i" onclick="window.open('https://t.me/zn_dev_213','_blank')"><div class="mi-ico">📢</div><div class="mi-txt">قناة تيليغرام الرسمية</div><div class="mi-arr">›</div></div>
-      <div class="menu-i" onclick="window.open('https://t.me/zn_cash_bot','_blank')"><div class="mi-ico">🤖</div><div class="mi-txt">بوت تيليغرام</div><div class="mi-arr">›</div></div>
-      <div class="menu-i" onclick="doLogout()" style="color:var(--red)"><div class="mi-ico">🚪</div><div class="mi-txt" style="color:var(--red)">تسجيل الخروج</div><div class="mi-arr">›</div></div>
+    <div class="ml">
+      <div class="mi2" onclick="go('pg-wd')"><div class="mico">💸</div><div class="mtxt">سجل السحوبات</div><div style="color:var(--t2)">›</div></div>
+      <div class="mi2" onclick="go('pg-ref')"><div class="mico">👥</div><div class="mtxt">برنامج الإحالة</div><div style="color:var(--t2)">›</div></div>
+      <div class="mi2" onclick="openWheel()"><div class="mico">🎰</div><div class="mtxt">عجلة الحظ</div><div style="color:var(--t2)">›</div></div>
+      <div class="mi2" onclick="window.open('https://t.me/zn_dev_213','_blank')"><div class="mico">📢</div><div class="mtxt">قناة تيليغرام</div><div style="color:var(--t2)">›</div></div>
+      <div class="mi2" onclick="doLogout()" style="color:var(--r)"><div class="mico">🚪</div><div class="mtxt" style="color:var(--r)">تسجيل الخروج</div><div style="color:var(--t2)">›</div></div>
     </div>
   </div>
-  <div class="bnav">
-    <div class="bnav-i" onclick="go('pg-app')"><div class="ni">🏠</div><div class="nl">الرئيسية</div></div>
-    <div class="bnav-i" onclick="go('pg-tasks')"><div class="ni">📋</div><div class="nl">المهام</div></div>
-    <div class="bnav-i" onclick="go('pg-wd')"><div class="ni">💸</div><div class="nl">سحب</div></div>
-    <div class="bnav-i" onclick="go('pg-ref')"><div class="ni">👥</div><div class="nl">إحالة</div></div>
-    <div class="bnav-i on"><div class="ni">👤</div><div class="nl">حسابي</div></div>
+  <div class="bn2">
+    <div class="ni" onclick="go('pg-app')"><div class="nii">🏠</div><div class="nil">الرئيسية</div></div>
+    <div class="ni" onclick="go('pg-tasks')"><div class="nii">📋</div><div class="nil">المهام</div></div>
+    <div class="ni" onclick="go('pg-wd')"><div class="nii">💸</div><div class="nil">سحب</div></div>
+    <div class="ni" onclick="go('pg-ref')"><div class="nii">👥</div><div class="nil">إحالة</div></div>
+    <div class="ni on"><div class="nii">👤</div><div class="nil">حسابي</div></div>
   </div>
 </div>
 
-<!-- ===== PAGE: ADMIN ===== -->
-<div id="pg-admin" class="pg">
-  <div class="topbar">
-    <button style="background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;padding:0 8px" onclick="doLogout()">‹</button>
-    <div class="brand brand-sm" style="color:var(--red)">⚡ ADMIN</div>
-    <div style="width:44px"></div>
-  </div>
-  <div style="padding-bottom:30px">
-    <div class="adm-head">
-      <div style="font-family:'Orbitron';font-size:16px;color:var(--red);margin-bottom:4px">🔐 ZN CASH ADMIN</div>
-      <div style="font-size:12px;color:var(--text2)">Zn Cash ADMIN Panel</div>
-    </div>
-    <div class="adm-stats">
-      <div class="adm-s"><div class="adm-sv" id="a-users">0</div><div class="adm-sl">المستخدمون</div></div>
-      <div class="adm-s"><div class="adm-sv" id="a-pend">0</div><div class="adm-sl">طلبات معلقة</div></div>
-      <div class="adm-s"><div class="adm-sv" id="a-paid">0 دج</div><div class="adm-sl">إجمالي المدفوع</div></div>
-      <div class="adm-s"><div class="adm-sv" id="a-today">0</div><div class="adm-sl">مستخدمو اليوم</div></div>
-    </div>
-    <div class="sec-title" style="margin:0 14px 12px;display:flex;align-items:center;gap:8px"><span class="pulse-dot"></span> طلبات السحب المعلقة</div>
-    <div id="adm-list"><div style="text-align:center;color:var(--text2);padding:40px 14px">جاري التحميل...</div></div>
-    <!-- BROADCAST -->
-    <div style="padding:14px">
-      <div class="sec-title" style="margin-bottom:10px;display:flex;align-items:center;gap:8px"><span class="pulse-dot"></span> إرسال إشعار جماعي</div>
-      <textarea id="bcast-msg" style="width:100%;background:var(--card);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;color:var(--text);padding:14px;font-family:'Tajawal';font-size:14px;outline:none;resize:none;min-height:90px" placeholder="اكتب رسالتك هنا..."></textarea>
-      <button class="btn btn-gold" onclick="sendBcast()" style="margin-top:8px">📢 إرسال للجميع</button>
-    </div>
-    <!-- ADD CODE -->
-    <div style="padding:0 14px 14px">
-      <div class="sec-title" style="margin-bottom:10px;display:flex;align-items:center;gap:8px"><span class="pulse-dot"></span> إنشاء كود يومي</div>
-      <div style="display:flex;gap:8px">
-        <input type="text" class="finput" id="code-inp" placeholder="الكود (مثل: ZN100)" style="flex:1" oninput="typed(this)">
-        <input type="number" class="finput" id="code-rwd" placeholder="المكافأة دج" style="width:130px" oninput="typed(this)">
-      </div>
-      <button class="btn btn-gold" onclick="createCode()" style="margin-top:8px">🎁 إنشاء الكود</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ADMIN LOGIN MODAL ===== -->
-<div class="modal-bg" id="adm-modal">
+<!-- WHEEL MODAL -->
+<div class="mbg" id="wm">
   <div class="modal">
-    <button class="m-close" onclick="closeAdmModal()">✕</button>
-    <div style="font-family:'Orbitron';font-size:15px;color:var(--red);margin-bottom:18px">🔐 دخول الإدارة</div>
-    <div class="fgroup">
-      <input type="password" class="finput" id="adm-pass" placeholder="كلمة مرور المشرف" oninput="typed(this)">
-      <span class="ficon">🔐</span>
-    </div>
-    <button class="btn" style="background:linear-gradient(135deg,#ff3b3b,#cc0000);color:#fff;margin-top:0" onclick="doAdmLogin()">دخول</button>
-  </div>
-</div>
-
-<!-- ===== WHEEL MODAL ===== -->
-<div class="modal-bg" id="wheel-modal">
-  <div class="modal">
-    <button class="m-close" onclick="closeWheel()">✕</button>
-    <div style="font-family:'Orbitron';font-size:16px;color:var(--gold);margin-bottom:16px">🎰 عجلة الحظ</div>
-    <div class="wheel-wrap">
-      <div class="w-ptr">👆</div>
-      <canvas id="wCanvas" width="280" height="280"></canvas>
-    </div>
-    <div style="display:flex;gap:5px;justify-content:center;margin:12px 0" id="wt-modal"></div>
-    <div id="w-result" style="font-size:18px;font-weight:700;color:var(--green);min-height:28px;margin-bottom:14px"></div>
-    <div id="w-daily-info" style="font-size:11px;color:var(--gold);margin-bottom:12px"></div>
-    <button class="spin-btn" id="spin-btn" onclick="doSpin()">🎯 لف العجلة</button>
-    <div style="font-size:11px;color:var(--text2);margin-top:10px" id="wt-left-txt"></div>
+    <button class="mcl" onclick="closeWheel()">✕</button>
+    <div style="font-family:'Orbitron';font-size:15px;color:var(--g);margin-bottom:14px">🎰 عجلة الحظ</div>
+    <div class="ww"><div class="wptr">👆</div><canvas id="wc" width="260" height="260"></canvas></div>
+    <div style="display:flex;gap:5px;justify-content:center;margin:10px 0" id="wt-m"></div>
+    <div id="w-res" style="font-size:17px;font-weight:700;color:var(--gr);min-height:26px;margin-bottom:12px"></div>
+    <div id="w-info" style="font-size:11px;color:var(--g);margin-bottom:10px"></div>
+    <button class="sbtn" id="sbtn" onclick="doSpin()">🎯 لف العجلة</button>
+    <div style="font-size:10px;color:var(--t2);margin-top:8px" id="wt-txt"></div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// ZN CASH - COMPLETE APP ENGINE
-// ============================================================
+// ===== TELEGRAM WEBAPP =====
+var TG=window.Telegram&&window.Telegram.WebApp;
+var isTG=!!(TG&&TG.initData);
+if(isTG){TG.ready();TG.expand();}
 
-// ===== PARTICLES ENGINE =====
-(function(){
-  var cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
-  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize);
-  var pts=[];
-  for(var i=0;i<60;i++){pts.push({
-    x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
-    vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
-    r:Math.random()*1.8+.5,
-    c:['rgba(255,215,0,','rgba(57,255,20,','rgba(155,89,245,'][Math.floor(Math.random()*3)]
-  })}
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    pts.forEach(function(p){
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>cv.width)p.vx*=-1;
-      if(p.y<0||p.y>cv.height)p.vy*=-1;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.c+'.7)';ctx.fill();
-      ctx.shadowBlur=10;ctx.shadowColor=p.c+'1)';
-    });
-    // connections
-    pts.forEach(function(a,i){pts.forEach(function(b,j){
-      if(j<=i)return;
-      var d=Math.hypot(a.x-b.x,a.y-b.y);
-      if(d<100){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-        ctx.strokeStyle='rgba(255,215,0,'+(1-d/100)*.08+')';ctx.lineWidth=.5;ctx.stroke();}
-    })});
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
+// ===== DETECT PLATFORM =====
+var isAPK=!isTG&&!navigator.userAgent.includes('Mobile Safari');
 
-// ===== AUDIO ENGINE =====
+// ===== AUDIO =====
 var AC=null;
 function ac(){if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}return AC}
 function snd(t){
@@ -806,436 +577,508 @@ function snd(t){
     if(t==='click'){
       [0,.02,.05].forEach(function(d,i){
         var o=c.createOscillator(),g=c.createGain();
-        o.connect(g);g.connect(c.destination);
-        o.type='square';o.frequency.setValueAtTime(900+i*220,n+d);
-        o.frequency.exponentialRampToValueAtTime(1400+i*300,n+d+.08);
-        g.gain.setValueAtTime(.1,n+d);g.gain.exponentialRampToValueAtTime(.001,n+d+.14);
-        o.start(n+d);o.stop(n+d+.14);
+        o.connect(g);g.connect(c.destination);o.type='square';
+        o.frequency.setValueAtTime(900+i*220,n+d);o.frequency.exponentialRampToValueAtTime(1400+i*300,n+d+.08);
+        g.gain.setValueAtTime(.09,n+d);g.gain.exponentialRampToValueAtTime(.001,n+d+.13);
+        o.start(n+d);o.stop(n+d+.13);
       });
-      var sw=c.createOscillator(),sg=c.createGain();
-      sw.connect(sg);sg.connect(c.destination);sw.type='sawtooth';
-      sw.frequency.setValueAtTime(150,n);sw.frequency.exponentialRampToValueAtTime(900,n+.1);
-      sg.gain.setValueAtTime(.08,n);sg.gain.exponentialRampToValueAtTime(.001,n+.12);
-      sw.start(n);sw.stop(n+.12);
     }else if(t==='type'){
       var o=c.createOscillator(),g=c.createGain();
       o.connect(g);g.connect(c.destination);o.type='square';
       o.frequency.setValueAtTime(Math.random()*500+700,n);
-      g.gain.setValueAtTime(.04,n);g.gain.exponentialRampToValueAtTime(.001,n+.04);
+      g.gain.setValueAtTime(.03,n);g.gain.exponentialRampToValueAtTime(.001,n+.04);
       o.start(n);o.stop(n+.04);
-    }else if(t==='success'){
-      [523,659,784,1047,1319].forEach(function(f,i){
+    }else if(t==='ok'){
+      [523,659,784,1047].forEach(function(f,i){
         var o=c.createOscillator(),g=c.createGain();
         o.connect(g);g.connect(c.destination);o.type='sine';
         o.frequency.setValueAtTime(f,n+i*.09);
-        g.gain.setValueAtTime(.16,n+i*.09);g.gain.exponentialRampToValueAtTime(.001,n+i*.09+.22);
-        o.start(n+i*.09);o.stop(n+i*.09+.22);
+        g.gain.setValueAtTime(.14,n+i*.09);g.gain.exponentialRampToValueAtTime(.001,n+i*.09+.2);
+        o.start(n+i*.09);o.stop(n+i*.09+.2);
       });
     }else if(t==='coin'){
-      for(var i=0;i<6;i++){(function(ii){
+      for(var i=0;i<5;i++){(function(ii){
         var o=c.createOscillator(),g=c.createGain();
         o.connect(g);g.connect(c.destination);o.type='triangle';
-        o.frequency.setValueAtTime(900+Math.random()*500,n+ii*.055);
-        g.gain.setValueAtTime(.12,n+ii*.055);g.gain.exponentialRampToValueAtTime(.001,n+ii*.055+.1);
+        o.frequency.setValueAtTime(900+Math.random()*400,n+ii*.055);
+        g.gain.setValueAtTime(.1,n+ii*.055);g.gain.exponentialRampToValueAtTime(.001,n+ii*.055+.1);
         o.start(n+ii*.055);o.stop(n+ii*.055+.11);
       })(i);}
     }else if(t==='err'){
       var o=c.createOscillator(),g=c.createGain();
       o.connect(g);g.connect(c.destination);o.type='square';
-      o.frequency.setValueAtTime(320,n);o.frequency.setValueAtTime(200,n+.12);
-      g.gain.setValueAtTime(.16,n);g.gain.exponentialRampToValueAtTime(.001,n+.3);
-      o.start(n);o.stop(n+.3);
+      o.frequency.setValueAtTime(300,n);o.frequency.setValueAtTime(180,n+.12);
+      g.gain.setValueAtTime(.14,n);g.gain.exponentialRampToValueAtTime(.001,n+.28);
+      o.start(n);o.stop(n+.28);
     }else if(t==='wheel'){
       var o=c.createOscillator(),g=c.createGain();
       o.connect(g);g.connect(c.destination);o.type='sawtooth';
       o.frequency.setValueAtTime(80,n);o.frequency.exponentialRampToValueAtTime(2000,n+.6);
-      o.frequency.exponentialRampToValueAtTime(280,n+2.2);
-      g.gain.setValueAtTime(.16,n);g.gain.exponentialRampToValueAtTime(.001,n+2.8);
-      o.start(n);o.stop(n+2.8);
+      o.frequency.exponentialRampToValueAtTime(260,n+2.2);
+      g.gain.setValueAtTime(.14,n);g.gain.exponentialRampToValueAtTime(.001,n+2.7);
+      o.start(n);o.stop(n+2.7);
     }else if(t==='daily'){
-      [392,523,659,784,1047,1319,1568].forEach(function(f,i){
+      [392,523,659,784,1047,1319].forEach(function(f,i){
         var o=c.createOscillator(),g=c.createGain();
         o.connect(g);g.connect(c.destination);
         o.type=i%2===0?'sine':'triangle';
         o.frequency.setValueAtTime(f,n+i*.07);
-        g.gain.setValueAtTime(.15,n+i*.07);g.gain.exponentialRampToValueAtTime(.001,n+i*.07+.2);
-        o.start(n+i*.07);o.stop(n+i*.07+.21);
+        g.gain.setValueAtTime(.13,n+i*.07);g.gain.exponentialRampToValueAtTime(.001,n+i*.07+.18);
+        o.start(n+i*.07);o.stop(n+i*.07+.19);
       });
     }
   }catch(e){}
 }
 document.addEventListener('touchstart',function(){try{ac()}catch(e){}},{once:true});
-document.addEventListener('mousedown',function(){try{ac()}catch(e){}},{once:true});
 
 // ===== RIPPLE =====
 document.addEventListener('click',function(e){
-  var b=e.target.closest('button,.earn-c,.meth-c,.daily-c,.menu-i,.link-c,.stask-c,.lang-btn,.c-btn');
+  var b=e.target.closest('button,.ec,.mc,.dc,.mi2,.stask,.lnkc,.lang-btn,.cbtn');
   if(!b)return;
   var r=b.getBoundingClientRect(),rip=document.createElement('span');
-  rip.style.cssText='position:absolute;border-radius:50%;background:rgba(255,255,255,.28);transform:scale(0);animation:ripA .55s linear;pointer-events:none;left:'+(e.clientX-r.left-25)+'px;top:'+(e.clientY-r.top-25)+'px;width:50px;height:50px;z-index:999';
-  if(!document.getElementById('ripStyle')){
-    var s=document.createElement('style');s.id='ripStyle';
-    s.textContent='@keyframes ripA{to{transform:scale(5);opacity:0}}';
-    document.head.appendChild(s);
-  }
-  b.style.position='relative';b.style.overflow='hidden';
-  b.appendChild(rip);setTimeout(function(){rip.remove()},560);
+  rip.style.cssText='position:absolute;border-radius:50%;background:rgba(255,255,255,.25);transform:scale(0);animation:rA .5s linear;pointer-events:none;left:'+(e.clientX-r.left-24)+'px;top:'+(e.clientY-r.top-24)+'px;width:48px;height:48px;z-index:99';
+  if(!document.getElementById('rSt')){var s=document.createElement('style');s.id='rSt';s.textContent='@keyframes rA{to{transform:scale(5);opacity:0}}';document.head.appendChild(s);}
+  b.style.position='relative';b.style.overflow='hidden';b.appendChild(rip);setTimeout(function(){rip.remove()},520);
 });
 
 // ===== SUPABASE =====
 var SB='https://qnzujfhizbhselihvwtu.supabase.co';
 var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFuenVqZmhpemJoc2VsaWh2d3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjE2OTEsImV4cCI6MjA5NzYzNzY5MX0.7spQ-SEXopj8jy2Czq8JeD8zJBi0eFdb12u0rYoc8xk';
 var SH={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'};
-function sb(m,t,d,f){
-  var u=SB+'/rest/v1/'+t+(f?'?'+f:'');
-  return fetch(u,{method:m,headers:SH,body:d?JSON.stringify(d):undefined}).then(function(r){return r.json()});
-}
+function sb(m,t,d,f){return fetch(SB+'/rest/v1/'+t+(f?'?'+f:''),{method:m,headers:SH,body:d?JSON.stringify(d):undefined}).then(function(r){return r.json()})}
 
-// ===== TELEGRAM =====
-var TG_ADM='8828688102:AAFHm9EXln_b-jgyBHZPg3RNQvWkbwoIruo';
-var TG_USR='8966569522:AAEOf9wEGGy-gea8xWuvW5aau7NEkQN4sOI';
-var TG_CHAT='6006772750';
-function tgAdmin(msg){fetch('https://api.telegram.org/bot'+TG_ADM+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT,text:msg,parse_mode:'HTML'})}).catch(function(){});}
-function tgUser(tid,msg){if(!tid)return;fetch('https://api.telegram.org/bot'+TG_USR+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:tid,text:msg,parse_mode:'HTML'})}).catch(function(){});}
-
-// ===== APP STATE =====
-var ST={user:null,bal:0,isDZ:true,lang:'ar',meth:null,methName:null};
-var EX=200; // 200 DZ = $1
+// ===== STATE =====
+var ST={user:null,bal:0,isDZ:true,lang:'ar',meth:null,mName:null};
+var EX=200;
+var APP_URL='https://routine29000-glitch.github.io/Zncash';
 
 // ===== TOAST =====
 function toast(msg,type){
   var t=document.getElementById('toast');
-  t.innerHTML=msg;t.className='toast '+(type||'ok')+' on';
-  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3200);
+  t.textContent=msg;t.className='toast '+(type||'ok')+' on';
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3000);
 }
 
 // ===== COINS =====
 function coins(n){
-  var emojis=['💰','🪙','💵','🤑','⭐','✨'];
-  for(var i=0;i<(n||5);i++){(function(ii){setTimeout(function(){
-    var c=document.createElement('div');c.className='coin';
-    c.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    c.style.cssText='position:fixed;left:'+Math.random()*90+'vw;top:'+(Math.random()*40+10)+'vh;font-size:'+(Math.random()*22+16)+'px;pointer-events:none;z-index:9998;animation:coinFall 1.6s ease-in forwards';
-    document.body.appendChild(c);setTimeout(function(){c.remove()},1600);
-  },ii*100)})(i);}
+  ['💰','🪙','💵','🤑','⭐'].forEach(function(e,i){
+    if(i>=(n||5))return;
+    setTimeout(function(){
+      var c=document.createElement('div');c.className='coin';
+      c.textContent=e;c.style.cssText='position:fixed;left:'+Math.random()*90+'vw;top:'+(Math.random()*40+10)+'vh;font-size:'+(Math.random()*20+14)+'px;pointer-events:none;z-index:9998;animation:cf 1.5s ease-in forwards';
+      document.body.appendChild(c);setTimeout(function(){c.remove()},1600);
+    },i*100);
+  });
 }
 
-// ===== TYPED EFFECT =====
+// ===== TYPE =====
 function typed(inp){
-  snd('type');
-  inp.classList.add('ok');
-  // spark
-  try{
-    var r=inp.getBoundingClientRect();
-    for(var i=0;i<4;i++){(function(ii){setTimeout(function(){
-      var s=document.createElement('div');
-      s.style.cssText='position:fixed;left:'+(r.right-10+Math.random()*14-7)+'px;top:'+(r.top+r.height/2+Math.random()*10-5)+'px;width:4px;height:4px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;box-shadow:0 0 8px var(--gold);animation:coinFall .5s ease forwards';
-      document.body.appendChild(s);setTimeout(function(){s.remove()},500);
-    },ii*35)})(i);}
-  }catch(e){}
+  snd('type');inp.classList.add('ok');
 }
 
-// ===== NAVIGATION =====
-function go(pgId){
+// ===== NAV =====
+function go(id){
   snd('click');
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
-  var pg=document.getElementById(pgId);
-  if(pg){pg.classList.add('on');window.scrollTo(0,0);}
-  // side effects
-  if(pgId==='pg-wd'){setupWD();}
-  if(pgId==='pg-ref'){setupRef();}
-  if(pgId==='pg-prof'){setupProf();}
-  if(pgId==='pg-admin'){loadAdmin();}
-  if(pgId==='pg-app'){updateUI();}
+  var p=document.getElementById(id);if(p)p.classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='pg-wd')setupWD();
+  if(id==='pg-ref')setupRef();
+  if(id==='pg-prof')setupProf();
+  if(id==='pg-app')updateUI();
 }
 
-function navClick(id,el){
-  document.querySelectorAll('.bnav-i').forEach(function(n){n.classList.remove('on')});
+function nv(id,el){
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});
   if(el)el.classList.add('on');
 }
 
-// ===== LANGUAGES =====
+// ===== LANG =====
 var TX={
-  ar:{dir:'rtl',ss:'أربح المال من هاتفك الآن',cq:'🌍 أين تتواجد؟',cs:'اختر بلدك لعرض العملة والطرق المناسبة',dz:'🇩🇿 من الجزائر',intl:'🌍 خارج الجزائر',rt:'إنشاء حساب',rs:'انضم وابدأ الربح الآن 🚀',lt:'تسجيل الدخول',ls:'مرحباً بعودتك 👋',lu:'👤 اسم المستخدم',le:'📧 البريد الإلكتروني',lp:'🔒 كلمة المرور',lp2:'🔒 تأكيد كلمة المرور',ha:'لديك حساب بالفعل؟',na:'مستخدم جديد؟'},
-  fr:{dir:'ltr',ss:'Gagnez de l\'argent avec votre téléphone',cq:'🌍 Où êtes-vous ?',cs:'Choisissez votre pays pour afficher la devise appropriée',dz:'🇩🇿 Je suis en Algérie',intl:'🌍 Hors Algérie',rt:'Créer un compte',rs:'Rejoignez-nous et commencez à gagner 🚀',lt:'Connexion',ls:'Bon retour 👋',lu:'👤 Nom d\'utilisateur',le:'📧 Email',lp:'🔒 Mot de passe',lp2:'🔒 Confirmer le mot de passe',ha:'Vous avez déjà un compte ?',na:'Nouvel utilisateur ?'},
-  en:{dir:'ltr',ss:'Earn money from your phone now',cq:'🌍 Where are you from?',cs:'Choose your country to display the right currency',dz:'🇩🇿 I\'m from Algeria',intl:'🌍 Outside Algeria',rt:'Create Account',rs:'Join and start earning now 🚀',lt:'Login',ls:'Welcome back 👋',lu:'👤 Username',le:'📧 Email',lp:'🔒 Password',lp2:'🔒 Confirm Password',ha:'Already have an account?',na:'New user?'}
+  ar:{dir:'rtl',ss:'أربح المال من هاتفك الآن',cq:'🌍 أين تتواجد؟',cs:'اختر بلدك لعرض العملة المناسبة',dz:'🇩🇿 الجزائر',intl:'🌍 خارج الجزائر',rt:'إنشاء حساب',rs:'انضم وابدأ الربح الآن 🚀',lt:'تسجيل الدخول',ls:'مرحباً بعودتك 👋',lu:'👤 اسم المستخدم',le:'📧 البريد الإلكتروني',lp:'🔒 كلمة المرور',lp2:'🔒 تأكيد كلمة المرور',ha:'لديك حساب بالفعل؟',na:'مستخدم جديد؟'},
+  fr:{dir:'ltr',ss:'Gagnez avec votre téléphone',cq:'🌍 Où êtes-vous ?',cs:'Choisissez votre pays',dz:'🇩🇿 Algérie',intl:'🌍 Hors Algérie',rt:'Créer un compte',rs:'Rejoignez-nous 🚀',lt:'Connexion',ls:'Bon retour 👋',lu:'👤 Nom d\'utilisateur',le:'📧 Email',lp:'🔒 Mot de passe',lp2:'🔒 Confirmer',ha:'Déjà un compte ?',na:'Nouvel utilisateur ?'},
+  en:{dir:'ltr',ss:'Earn money from your phone',cq:'🌍 Where are you from?',cs:'Choose your country',dz:'🇩🇿 Algeria',intl:'🌍 Outside Algeria',rt:'Create Account',rs:'Join and start earning 🚀',lt:'Login',ls:'Welcome back 👋',lu:'👤 Username',le:'📧 Email',lp:'🔒 Password',lp2:'🔒 Confirm Password',ha:'Already have account?',na:'New user?'}
 };
 
-function setLang(l){
-  snd('success');ST.lang=l;
-  localStorage.setItem('znLang',l);
+function sL(l){
+  snd('ok');ST.lang=l;localStorage.setItem('znL',l);
   var T=TX[l];
   document.documentElement.lang=l;document.documentElement.dir=T.dir;
-  document.getElementById('t-splash-sub').textContent=T.ss;
+  document.getElementById('t-ss').textContent=T.ss;
   document.getElementById('t-cq').textContent=T.cq;
   document.getElementById('t-cs').textContent=T.cs;
   document.getElementById('t-dz').textContent=T.dz;
   document.getElementById('t-intl').textContent=T.intl;
-  document.getElementById('t-reg-title').textContent=T.rt;
-  document.getElementById('t-reg-sub').textContent=T.rs;
-  document.getElementById('t-login-title').textContent=T.lt;
-  document.getElementById('t-login-sub').textContent=T.ls;
-  document.getElementById('t-lbl-u').textContent=T.lu;
-  document.getElementById('t-lbl-e').textContent=T.le;
-  document.getElementById('t-lbl-p').textContent=T.lp;
-  document.getElementById('t-lbl-p2').textContent=T.lp2;
-  document.getElementById('t-have-acc').textContent=T.ha;
-  document.getElementById('t-no-acc').textContent=T.na;
-  document.getElementById('t-lbl-le').textContent=T.le;
-  document.getElementById('t-lbl-lp').textContent=T.lp;
+  document.getElementById('t-rt').textContent=T.rt;
+  document.getElementById('t-rs').textContent=T.rs;
+  document.getElementById('t-lt').textContent=T.lt;
+  document.getElementById('t-ls').textContent=T.ls;
+  document.getElementById('t-lu').textContent=T.lu;
+  document.getElementById('t-le').textContent=T.le;
+  document.getElementById('t-lp').textContent=T.lp;
+  document.getElementById('t-lp2').textContent=T.lp2;
+  document.getElementById('t-ha').textContent=T.ha;
+  document.getElementById('t-na').textContent=T.na;
+  document.getElementById('t-lle').textContent=T.le;
+  document.getElementById('t-llp').textContent=T.lp;
   go('pg-country');
 }
 
-function setCountry(dz){
-  snd('success');ST.isDZ=dz;
-  localStorage.setItem('znCountry',dz?'dz':'intl');
-  go('pg-reg');
+function sC(dz){
+  snd('ok');ST.isDZ=dz;localStorage.setItem('znC',dz?'dz':'intl');go('pg-reg');
 }
 
 // ===== AUTH =====
 function doReg(){
   snd('click');
-  var u=document.getElementById('r-user').value.trim();
-  var e=document.getElementById('r-email').value.trim();
-  var p=document.getElementById('r-pass').value;
-  var p2=document.getElementById('r-pass2').value;
+  var u=document.getElementById('r-u').value.trim();
+  var e=document.getElementById('r-e').value.trim();
+  var p=document.getElementById('r-p').value;
+  var p2=document.getElementById('r-p2').value;
   if(!u||!e||!p){snd('err');return toast('❌ أكمل جميع الحقول','err')}
   if(p!==p2){snd('err');return toast('❌ كلمتا المرور لا تتطابقان','err')}
-  if(p.length<6){snd('err');return toast('❌ كلمة المرور قصيرة (6 أحرف على الأقل)','err')}
+  if(p.length<6){snd('err');return toast('❌ كلمة المرور قصيرة','err')}
+  toast('⏳ جاري الإنشاء...','info');
   var ref=localStorage.getItem('znRef');
-  var bonus=ref?(ST.isDZ?50:50/EX):0;
-  toast('⏳ جاري إنشاء الحساب...','info');
   sb('GET','users',null,'email=eq.'+encodeURIComponent(e)+'&select=id').then(function(ex){
-    if(ex&&ex.length>0){snd('err');return toast('❌ هذا البريد مستخدم بالفعل','err')}
-    return sb('POST','users',{
-      username:u,email:e,password:btoa(unescape(encodeURIComponent(p))),
-      balance:bonus,is_algeria:ST.isDZ,referred_by:ref||null,
-      tasks_completed:0,referrals_count:0,links_clicked:0,
-      last_daily:null,created_at:new Date().toISOString()
-    });
-  }).then(function(res){
-    if(!res||!res[0])return;
-    ST.user=res[0];ST.bal=res[0].balance||0;
-    localStorage.setItem('znUser',JSON.stringify(res[0]));
-    localStorage.removeItem('znRef');
-    if(ref){sb('PATCH','users',{referrals_count:1},'id=eq.'+ref).catch(function(){})}
-    snd('success');coins(10);toast('🎉 تم إنشاء الحساب بنجاح!','ok');
-    tgAdmin('👤 <b>مستخدم جديد!</b>\n🆔 '+res[0].id+'\n👤 '+u+'\n📧 '+e+'\n🌍 '+(ST.isDZ?'🇩🇿 الجزائر':'🌍 دولي'));
-    setTimeout(function(){showApp()},800);
-  }).catch(function(err){console.error(err);snd('err');toast('❌ خطأ في الاتصال، تحقق من الإنترنت','err')});
+    if(ex&&ex.length>0){snd('err');return toast('❌ البريد مستخدم','err')}
+    return sb('POST','users',{username:u,email:e,password:btoa(p),balance:ref?50:0,is_algeria:ST.isDZ,referred_by:ref||null,tasks_completed:0,referrals_count:0,links_clicked:0,last_daily:null,yt_claimed:null,created_at:new Date().toISOString()});
+  }).then(function(r){
+    if(!r||!r[0])return;
+    ST.user=r[0];ST.bal=r[0].balance||0;
+    localStorage.setItem('znU',JSON.stringify(r[0]));localStorage.removeItem('znRef');
+    if(ref)sb('PATCH','users',{referrals_count:1},'id=eq.'+ref).catch(function(){});
+    snd('ok');coins(8);toast('🎉 تم إنشاء الحساب!','ok');
+    setTimeout(function(){showApp()},700);
+  }).catch(function(){snd('err');toast('❌ خطأ في الاتصال','err')});
 }
 
 function doLogin(){
   snd('click');
-  var e=document.getElementById('l-email').value.trim();
-  var p=document.getElementById('l-pass').value;
-  if(!e||!p){snd('err');return toast('❌ أدخل البيانات كاملة','err')}
-  toast('⏳ جاري تسجيل الدخول...','info');
-  sb('GET','users',null,'email=eq.'+encodeURIComponent(e)+'&select=*').then(function(res){
-    if(!res||res.length===0){snd('err');return toast('❌ البريد غير موجود','err')}
-    var usr=res[0];
-    if(usr.password!==btoa(unescape(encodeURIComponent(p)))){snd('err');return toast('❌ كلمة المرور خاطئة','err')}
-    ST.user=usr;ST.bal=usr.balance||0;ST.isDZ=usr.is_algeria!==false;
-    localStorage.setItem('znUser',JSON.stringify(usr));
-    localStorage.setItem('znCountry',ST.isDZ?'dz':'intl');
-    snd('success');toast('🎉 مرحباً '+usr.username+'!','ok');
+  var e=document.getElementById('l-e').value.trim();
+  var p=document.getElementById('l-p').value;
+  if(!e||!p){snd('err');return toast('❌ أدخل البيانات','err')}
+  toast('⏳ جاري الدخول...','info');
+  sb('GET','users',null,'email=eq.'+encodeURIComponent(e)+'&select=*').then(function(r){
+    if(!r||r.length===0){snd('err');return toast('❌ البريد غير موجود','err')}
+    var u=r[0];
+    if(u.password!==btoa(p)){snd('err');return toast('❌ كلمة المرور خاطئة','err')}
+    ST.user=u;ST.bal=u.balance||0;ST.isDZ=u.is_algeria!==false;
+    localStorage.setItem('znU',JSON.stringify(u));localStorage.setItem('znC',ST.isDZ?'dz':'intl');
+    snd('ok');toast('🎉 مرحباً '+u.username+'!','ok');
     setTimeout(function(){showApp()},600);
   }).catch(function(){snd('err');toast('❌ خطأ في الاتصال','err')});
 }
 
 function doLogout(){
-  snd('click');
-  ST.user=null;ST.bal=0;
-  localStorage.removeItem('znUser');
-  go('pg-lang');
+  snd('click');ST.user=null;ST.bal=0;
+  localStorage.removeItem('znU');go('pg-lang');
 }
 
 // ===== SHOW APP =====
 function showApp(){
-  go('pg-app');updateUI();renderWheelTries();
-  loadExtraTasks();loadLinks();
-  // inject ad after 3 seconds
-  setTimeout(injectAd,3000);
+  go('pg-app');updateUI();renderWT();
+  loadSocial();loadLinks();
+  setTimeout(function(){initAds()},2000);
 }
 
+// ===== UPDATE UI =====
 function updateUI(){
   if(!ST.user)return;
   var b=ST.bal,c=ST.isDZ?'دج':'$',d=ST.isDZ?Math.floor(b).toString():(b/EX).toFixed(2);
-  document.getElementById('bal-curr').textContent=c;
-  document.getElementById('bal-num').textContent=d;
-  document.getElementById('tb-bal').textContent=d+' '+c;
-  document.getElementById('bal-conv').textContent=ST.isDZ?'≈ $'+(b/EX).toFixed(2):'≈ '+Math.floor(b)+' دج';
-  document.getElementById('daily-amt').textContent=ST.isDZ?'10 دج':'$0.05';
-  document.getElementById('s-tasks').textContent=ST.user.tasks_completed||0;
-  document.getElementById('s-refs').textContent=ST.user.referrals_count||0;
-  document.getElementById('s-links').textContent=ST.user.links_clicked||0;
+  document.getElementById('b-c').textContent=c;
+  document.getElementById('b-n').textContent=d;
+  document.getElementById('tb-b').textContent=d+' '+c;
+  document.getElementById('b-cv').textContent=ST.isDZ?'≈ $'+(b/EX).toFixed(2):'≈ '+Math.floor(b)+' دج';
+  document.getElementById('d-amt').textContent=ST.isDZ?'10 دج':'$0.05';
+  document.getElementById('s-t').textContent=ST.user.tasks_completed||0;
+  document.getElementById('s-r').textContent=ST.user.referrals_count||0;
+  document.getElementById('s-l').textContent=ST.user.links_clicked||0;
+  if(ST.user)document.getElementById('ref-lnk').textContent=APP_URL+'?ref='+ST.user.id;
 }
 
-// ===== INJECT ADS =====
-function injectAd(){
-  try{
-    // Native banner in CPA tab
-    var d=document.getElementById('adsterra-native');
-    if(d&&!d.dataset.loaded){
-      d.dataset.loaded='1';
-      var s=document.createElement('script');
-      s.setAttribute('data-cfasync','false');
-      s.async=true;
-      s.src='//pl29835584.effectivecpmnetwork.com/03/b6/ec/03b6ec4b800e3403ae1dc0d2da7ddd75.js';
-      d.appendChild(s);
-    }
-  }catch(e){}
+// ===== ADS =====
+function initAds(){
+  // Adsterra Social Bar (always)
+  if(!document.getElementById('ad-sb')){
+    var s=document.createElement('script');s.id='ad-sb';
+    s.src='https://pl30103097.effectivecpmnetwork.com/b7/99/dd/b799ddfda1321ebefb91c674a2e841fe.js';
+    document.head.appendChild(s);
+  }
+  // Adsgram (Telegram only) or Adsterra (browser/APK)
+  if(isTG){initAdsgram();}
+  else{initAdsterra();}
+}
+
+function initAdsterra(){
+  var d=document.getElementById('ad-native');
+  if(d&&!d.dataset.l){
+    d.dataset.l='1';
+    var s=document.createElement('script');
+    s.src='https://pl30103096.effectivecpmnetwork.com/89/6f/7c/896f7c4736bcb3869bca3cfb4c0c9b3e.js';
+    document.body.appendChild(s);
+  }
 }
 
 function showPop(){
+  if(isTG)return;// No popunder in Telegram
   try{
     var s=document.createElement('script');
-    s.src='https://pl29835586.effectivecpmnetwork.com/e4/ce/86/e4ce863bd23d33c1e4ef934c66702dec.js';
+    s.src='https://pl30103096.effectivecpmnetwork.com/89/6f/7c/896f7c4736bcb3869bca3cfb4c0c9b3e.js';
     document.body.appendChild(s);
     setTimeout(function(){try{document.body.removeChild(s)}catch(e){}},4000);
   }catch(e){}
 }
 
-// ===== DAILY BONUS =====
+// ===== ADSGRAM =====
+var AdsgramLoaded=false;
+function initAdsgram(){
+  if(AdsgramLoaded)return;
+  AdsgramLoaded=true;
+  var s=document.createElement('script');
+  s.src='https://sad.adsgram.ai/js/sad.min.js';
+  s.onload=function(){showAdsgramReward()};
+  document.head.appendChild(s);
+}
+
+function showAdsgramReward(){
+  try{
+    var controller=window.Adsgram.init({blockId:'36492',debug:false});
+    var container=document.getElementById('adsgram-container');
+    if(container){
+      var btn=document.createElement('button');
+      btn.className='btn btn-g';btn.style.margin='0 12px';btn.style.marginTop='10px';
+      btn.textContent='🎁 شاهد إعلاناً واكسب رصيداً';
+      btn.onclick=function(){
+        controller.show().then(function(r){
+          if(r.done){
+            var rwd=ST.isDZ?20:20/EX;
+            ST.bal+=rwd;
+            sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
+            localStorage.setItem('znU',JSON.stringify(ST.user));
+            snd('coin');coins(5);toast('🎉 ربحت 20 دج من الإعلان!','ok');updateUI();
+          }
+        }).catch(function(){});
+      };
+      container.appendChild(btn);
+    }
+  }catch(e){}
+}
+
+function showAdsgramInter(){
+  if(!isTG)return showPop();
+  try{
+    window.Adsgram.init({blockId:'int-36493',debug:false}).show().catch(function(){});
+  }catch(e){showPop();}
+}
+
+// ===== DAILY =====
 function claimDaily(){
   if(!ST.user){snd('err');return toast('❌ سجل دخول أولاً','err')}
   snd('click');
   var today=new Date().toDateString();
   if(ST.user.last_daily===today){snd('err');return toast('⏰ حصلت على مكافأة اليوم! عد غداً','err')}
-  var bonus=ST.isDZ?10:10/EX;
-  sb('PATCH','users',{balance:ST.bal+bonus,last_daily:today},'id=eq.'+ST.user.id).then(function(){
-    ST.bal+=bonus;ST.user.last_daily=today;
-    localStorage.setItem('znUser',JSON.stringify(ST.user));
-    snd('daily');coins(8);
-    toast('🎁 حصلت على '+(ST.isDZ?'10 دج':'$0.05')+'!','ok');
-    document.getElementById('daily-sub').textContent='✅ تم اليوم - عد غداً';
-    updateUI();
+  var b=ST.isDZ?10:10/EX;
+  sb('PATCH','users',{balance:ST.bal+b,last_daily:today},'id=eq.'+ST.user.id).then(function(){
+    ST.bal+=b;ST.user.last_daily=today;
+    localStorage.setItem('znU',JSON.stringify(ST.user));
+    snd('daily');coins(7);toast('🎁 حصلت على '+(ST.isDZ?'10 دج':'$0.05')+'!','ok');
+    document.getElementById('d-sub').textContent='✅ تم اليوم - عد غداً';updateUI();
   }).catch(function(){snd('err');toast('❌ خطأ','err')});
 }
 
-// ===== CPA TASKS =====
+// ===== CPA =====
 function openCPA(){
-  snd('click');showPop();
-  if(!ST.user){return toast('❌ سجل دخول أولاً','err')}
-  var url='https://quartzfiles.com/wall/?user_id='+ST.user.id+'&id=1901881';
-  window.open(url,'_blank');
-  toast('📋 تم فتح المهام - أكملها وسيُضاف رصيدك تلقائياً!','info');
+  snd('click');showAdsgramInter();
+  if(!ST.user)return toast('❌ سجل دخول أولاً','err');
+  window.open('https://quartzfiles.com/wall/?user_id='+ST.user.id+'&id=1901881','_blank');
+  toast('📋 أكمل المهمة وسيُضاف رصيدك تلقائياً!','info');
 }
 
-// ===== EXTRA TASKS (SproutGigs - hidden) =====
-var EXTRA_TASKS=[
-  {name:'متابعة حساب على منصة تواصل',desc:'مهمة سريعة - دقيقة واحدة',reward:15,type:'social'},
-  {name:'مشاركة منشور',desc:'شارك واكسب رصيداً فورياً',reward:10,type:'share'},
-  {name:'تثبيت تطبيق وتجربته',desc:'جرب التطبيق 5 دقائق واكسب',reward:50,type:'app'},
-  {name:'ملء استبيان قصير',desc:'5 أسئلة - 3 دقائق فقط',reward:30,type:'survey'},
-  {name:'مشاهدة فيديو',desc:'شاهد وانتظر النهاية',reward:8,type:'video'},
-  {name:'تسجيل في موقع',desc:'تسجيل مجاني سريع',reward:40,type:'reg'},
+// ===== TABS =====
+function sTab(t){
+  ['cpa','social','yt','links'].forEach(function(x){
+    var c=document.getElementById('tc-'+x);if(c)c.style.display='none';
+    var tb=document.getElementById('tab-'+x);if(tb)tb.classList.remove('on');
+  });
+  var c=document.getElementById('tc-'+t);if(c){c.style.display='flex';c.style.flexDirection='column';}
+  var tb=document.getElementById('tab-'+t);if(tb)tb.classList.add('on');
+  if(t!=='cpa')showAdsgramInter();
+  if(t==='yt')initYT();
+}
+
+// ===== SOCIAL TASKS =====
+var SOCIAL=[
+  {id:'ig',ico:'📸',name:'متابعة على منصة التواصل',sub:'اضغط متابع ثم أكد',rwd:50,url:'https://www.instagram.com/zn_dev?igsh=Y2VoMzV4ZW9za25z'},
+  {id:'fb',ico:'👍',name:'متابعة صفحتنا',sub:'اضغط أعجبني ثم أكد',rwd:50,url:'https://www.facebook.com/profile.php?id=61590514149621'},
+  {id:'tt',ico:'🎵',name:'متابعة على منصة الفيديو القصير',sub:'اضغط متابع ثم أكد',rwd:50,url:'https://www.tiktok.com/@story____verse'},
+  {id:'yt',ico:'📺',name:'الاشتراك في القناة',sub:'اشترك وفعّل الجرس ثم أكد',rwd:50,url:'https://youtube.com/@zn_dev'},
 ];
 
-function loadExtraTasks(){
-  var c=document.getElementById('extra-tasks-list');if(!c)return;
-  c.innerHTML=EXTRA_TASKS.map(function(t,i){
-    var ico={'social':'👥','share':'📤','app':'📱','survey':'📝','video':'🎬','reg':'✏️'}[t.type]||'⭐';
-    return '<div class="stask-c" onclick="doExtraTask('+i+')">'+
-      '<div class="stask-ico">'+ico+'</div>'+
-      '<div class="stask-info"><div class="stask-name">'+t.name+'</div><div class="stask-rwd">+'+t.reward+' دج</div></div>'+
-      '<div class="stask-arr">›</div></div>';
+function loadSocial(){
+  var c=document.getElementById('social-list');if(!c)return;
+  var done=JSON.parse(localStorage.getItem('znSD')||'{}');
+  c.innerHTML=SOCIAL.map(function(t){
+    var isDone=done[t.id];
+    return '<div class="stask'+(isDone?' done':'')+'" id="st-'+t.id+'">'+
+      '<div class="sti">'+t.ico+'</div>'+
+      '<div style="flex:1"><div class="stn">'+t.name+'</div><div class="str">+'+(ST.isDZ?t.rwd+' دج':'$'+(t.rwd/EX).toFixed(2))+'</div></div>'+
+      (isDone?'<div style="color:var(--gr);font-size:18px">✅</div>':
+      '<button style="padding:8px 12px;background:linear-gradient(135deg,var(--g),var(--g2));border:none;border-radius:10px;font-family:\'Tajawal\';font-size:11px;font-weight:700;cursor:pointer;color:#000" onclick="doSocial(\''+t.id+'\',\''+t.url+'\','+t.rwd+')">تنفيذ</button>')+
+      '</div>';
   }).join('');
 }
 
-function doExtraTask(i){
-  snd('click');showPop();
-  var t=EXTRA_TASKS[i];
-  // Open SproutGigs jobs page (hidden brand)
-  window.open('https://sproutgigs.com/jobs.php','_blank');
-  toast('🌟 أكمل المهمة وسيُضاف '+t.reward+' دج لرصيدك','info');
+function doSocial(id,url,rwd){
+  snd('click');showAdsgramInter();
+  window.open(url,'_blank');
+  toast('⏳ نفّذ المهمة ثم اضغط تأكيد','info');
+  setTimeout(function(){
+    if(confirm('هل أكملت المهمة؟ سيُضاف '+rwd+' دج لرصيدك')){
+      if(!ST.user)return;
+      ST.bal+=rwd;
+      sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
+      localStorage.setItem('znU',JSON.stringify(ST.user));
+      var done=JSON.parse(localStorage.getItem('znSD')||'{}');
+      done[id]=true;localStorage.setItem('znSD',JSON.stringify(done));
+      snd('coin');coins(6);toast('✅ ربحت '+rwd+' دج!','ok');updateUI();loadSocial();
+    }
+  },3000);
 }
 
-// ===== SHORT LINKS (ShrinkMe - hidden) =====
-var LINKS_DATA=[
-  {name:'رابط ربحي #1',sub:'اضغط وانتظر 5 ثوانٍ لتكسب',reward:5},
-  {name:'رابط ربحي #2',sub:'زيارة مدفوعة - ثوانٍ فقط',reward:3},
-  {name:'رابط ربحي #3',sub:'شاهد واكسب رصيداً فورياً',reward:7},
-  {name:'رابط ربحي #4',sub:'رابط مميز - مكافأة مرتفعة',reward:10},
-  {name:'رابط ربحي #5',sub:'سريع ومربح',reward:4},
-];
+// ===== YOUTUBE =====
+var ytPlayer=null,ytTimer=null,ytSecs=0,ytDuration=0;
+var YT_MIN=120,YT_FULL=0;
 
-var SHRINK_API='529f89cbd6ede84652f4dafdebd97353d10d02ac';
-var LINK_URLS=[
-  'https://zncash.great-site.net',
-  'https://t.me/zn_dev_213',
-  'https://t.me/zn_cash_bot',
-  'https://zncash.great-site.net?ref=bonus',
-  'https://t.me/zn_dev_213'
+function initYT(){
+  if(ytPlayer)return;
+  if(!window.YT){
+    var s=document.createElement('script');
+    s.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+    window.onYouTubeIframeAPIReady=function(){createYTPlayer()};
+  }else{createYTPlayer();}
+}
+
+function createYTPlayer(){
+  document.getElementById('yt-frame').style.display='none';
+  var d=document.createElement('div');d.id='yt-player';
+  document.getElementById('yt-frame').parentNode.insertBefore(d,document.getElementById('yt-frame'));
+  ytPlayer=new YT.Player('yt-player',{
+    height:'200',width:'100%',
+    videoId:'Gamt4gfIFbs',
+    playerVars:{rel:0,modestbranding:1},
+    events:{
+      onReady:function(e){YT_FULL=Math.floor(e.target.getDuration())},
+      onStateChange:function(e){
+        if(e.data===YT.PlayerState.PLAYING){startYTTimer();}
+        else{stopYTTimer();}
+        if(e.data===YT.PlayerState.ENDED){ytSecs=YT_FULL;updateYTUI();}
+      }
+    }
+  });
+  document.getElementById('yt-player').style.cssText='width:100%;border-radius:12px;overflow:hidden;aspect-ratio:16/9;margin-bottom:10px';
+}
+
+function startYTTimer(){
+  stopYTTimer();
+  ytTimer=setInterval(function(){
+    if(document.hidden){stopYTTimer();return;}
+    ytSecs++;updateYTUI();
+  },1000);
+}
+
+function stopYTTimer(){clearInterval(ytTimer);ytTimer=null;}
+
+function updateYTUI(){
+  var m=Math.floor(ytSecs/60),s=ytSecs%60;
+  document.getElementById('yt-timer').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  if(YT_FULL>0){
+    var pct=Math.min(ytSecs/YT_FULL*100,100);
+    document.getElementById('yt-bar').style.width=pct+'%';
+  }
+  var b1=document.getElementById('yt-btn1'),b2=document.getElementById('yt-btn2');
+  if(ytSecs>=YT_MIN&&b1){b1.classList.add('active');b1.disabled=false;}
+  if(YT_FULL>0&&ytSecs>=YT_FULL&&b2){b2.classList.add('active');b2.disabled=false;}
+  var st=document.getElementById('yt-status');
+  if(ytSecs<YT_MIN&&st)st.textContent='شاهد دقيقتين للحصول على 50 دج';
+  else if(YT_FULL>0&&ytSecs<YT_FULL&&st)st.textContent='واصل المشاهدة للحصول على 200 دج!';
+  else if(st)st.textContent='✅ أكملت المشاهدة!';
+}
+
+function claimYT(type){
+  if(!ST.user){snd('err');return toast('❌ سجل دخول أولاً','err')}
+  var today=new Date().toDateString();
+  var claimed=JSON.parse(localStorage.getItem('znYT')||'{}');
+  var key='yt'+(type===1?'min':'full');
+  if(claimed[key]===today){return toast('⏰ حصلت على هذه المكافأة اليوم','err')}
+  var rwd=type===1?50:200;
+  ST.bal+=rwd;
+  sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
+  claimed[key]=today;localStorage.setItem('znYT',JSON.stringify(claimed));
+  localStorage.setItem('znU',JSON.stringify(ST.user));
+  snd('coin');coins(8);toast('🎬 ربحت '+rwd+' دج من المشاهدة!','ok');updateUI();
+  if(type===1)document.getElementById('yt-btn1').disabled=true;
+  else document.getElementById('yt-btn2').disabled=true;
+}
+
+function openYTChannel(){
+  window.open('https://youtube.com/@zn_dev?si=I1dSHfqGpULzXj5w','_blank');
+}
+
+// ===== LINKS (Linkvertise + Adsterra Smart Link) =====
+var LINKS=[
+  {name:'رابط مميز #1',sub:'اضغط وانتظر 5 ثوانٍ',rwd:8,url:'https://linkvertise.com/6954346/link1?o=sharing'},
+  {name:'رابط مميز #2',sub:'زيارة مدفوعة',rwd:6,url:'https://linkvertise.com/6954346/link2?o=sharing'},
+  {name:'رابط مميز #3',sub:'شاهد واكسب',rwd:10,url:'https://www.effectivecpmnetwork.com/ynanq1cd?key=bc862c17eb7a062d07a5c8491e245078'},
+  {name:'رابط مميز #4',sub:'رابط ربحي',rwd:5,url:'https://linkvertise.com/6954346/link3?o=sharing'},
+  {name:'رابط مميز #5',sub:'مكافأة فورية',rwd:7,url:'https://www.effectivecpmnetwork.com/ynanq1cd?key=bc862c17eb7a062d07a5c8491e245078'},
 ];
 
 function loadLinks(){
   var c=document.getElementById('links-list');if(!c)return;
-  c.innerHTML=LINKS_DATA.map(function(l,i){
-    return '<div class="link-c" id="lnk-'+i+'" onclick="openLink('+i+')">'+
-      '<div class="link-info"><div class="ln">'+l.name+'</div><div class="ls">'+l.sub+'</div></div>'+
-      '<div class="link-rwd">+'+l.reward+' دج</div></div>';
+  var done=JSON.parse(localStorage.getItem('znLD')||'{}');
+  var today=new Date().toDateString();
+  c.innerHTML=LINKS.map(function(l,i){
+    var isDone=done['l'+i]===today;
+    var rwd=ST.isDZ?l.rwd+' دج':'$'+(l.rwd/EX).toFixed(2);
+    return '<div class="lnkc'+(isDone?' done':'')+'" id="lnk-'+i+'" onclick="openLink('+i+')">'+
+      '<div><div class="lname">'+l.name+'</div><div class="lsub">'+l.sub+'</div></div>'+
+      '<div class="lrwd">'+(isDone?'✅':'+'+rwd)+'</div></div>';
   }).join('');
 }
 
 function openLink(i){
-  snd('click');showPop();
-  var l=LINKS_DATA[i],el=document.getElementById('lnk-'+i);
-  if(el.dataset.done){return toast('✅ هذا الرابط تم بالفعل اليوم','info')}
-  // Build ShrinkMe URL
-  var targetUrl=LINK_URLS[i]||'https://zncash.great-site.net';
-  var shrinkUrl='https://shrinkme.io/api?api='+SHRINK_API+'&url='+encodeURIComponent(targetUrl);
-  fetch(shrinkUrl).then(function(r){return r.json()}).then(function(data){
-    var finalUrl=(data&&data.shortenedUrl)?data.shortenedUrl:targetUrl;
-    window.open(finalUrl,'_blank');
-  }).catch(function(){window.open(targetUrl,'_blank')});
-  toast('⏳ انتظر 5 ثوانٍ ثم أغلق النافذة لتحصل على مكافأتك','info');
-  el.style.opacity='.5';el.style.pointerEvents='none';
+  snd('click');showAdsgramInter();
+  var l=LINKS[i];
+  window.open(l.url,'_blank');
+  toast('⏳ انتظر 5 ثوانٍ ثم أغلق النافذة','info');
   setTimeout(function(){
     if(!ST.user)return;
-    ST.bal+=l.reward;
-    ST.user.links_clicked=(ST.user.links_clicked||0)+1;
+    ST.bal+=l.rwd;ST.user.links_clicked=(ST.user.links_clicked||0)+1;
     sb('PATCH','users',{balance:ST.bal,links_clicked:ST.user.links_clicked},'id=eq.'+ST.user.id).catch(function(){});
-    localStorage.setItem('znUser',JSON.stringify(ST.user));
-    snd('coin');coins(4);
-    toast('🔗 ربحت '+l.reward+' دج!','ok');updateUI();
-    el.style.opacity='1';el.style.pointerEvents='auto';
-    el.dataset.done='1';
-    el.querySelector('.link-rwd').textContent='✅ تم';
+    localStorage.setItem('znU',JSON.stringify(ST.user));
+    var done=JSON.parse(localStorage.getItem('znLD')||'{}');
+    done['l'+i]=new Date().toDateString();localStorage.setItem('znLD',JSON.stringify(done));
+    snd('coin');coins(4);toast('🔗 ربحت '+l.rwd+' دج!','ok');updateUI();loadLinks();
   },5000);
-}
-
-// ===== TABS =====
-function setTab(t){
-  ['cpa','extra','links'].forEach(function(x){
-    document.getElementById('tab-'+x+'-content').style.display='none';
-    document.getElementById('tab-'+x).classList.remove('on');
-  });
-  document.getElementById('tab-'+t+'-content').style.display='flex';
-  document.getElementById('tab-'+t+'-content').style.flexDirection='column';
-  document.getElementById('tab-'+t).classList.add('on');
-  if(t==='cpa')setTimeout(injectAd,500);
-  if(t==='links')loadLinks();
-  if(t==='extra')loadExtraTasks();
-  showPop();
 }
 
 // ===== WITHDRAW =====
 function setupWD(){
   document.getElementById('wd-dz').style.display=ST.isDZ?'block':'none';
   document.getElementById('wd-intl').style.display=ST.isDZ?'none':'block';
-  var b=ST.bal,c=ST.isDZ?'دج':'$',d=ST.isDZ?Math.floor(b)+' دج':'$'+(b/EX).toFixed(2);
-  document.getElementById('wd-bal-v').textContent=d;
-  document.getElementById('wd-min').textContent=ST.isDZ?'2000 دج':'$10';
+  var b=ST.bal;
+  document.getElementById('wd-bv').textContent=ST.isDZ?Math.floor(b)+' دج':'$'+(b/EX).toFixed(2);
+  document.getElementById('wd-mn').textContent=ST.isDZ?'2000 دج':'$10';
 }
 
-function pickM(m,name,el){
-  snd('click');ST.meth=m;ST.methName=name;
-  document.querySelectorAll('.meth-c').forEach(function(c){c.classList.remove('sel')});
+function pM(m,name,el){
+  snd('click');ST.meth=m;ST.mName=name;
+  document.querySelectorAll('.mc').forEach(function(c){c.classList.remove('sel')});
   el.classList.add('sel');
   var f=document.getElementById('wd-form');f.style.display='block';
-  var lbl=document.getElementById('wd-addr-lbl');
-  lbl.textContent=m==='ccp'?'🏦 رقم CCP (رقم الحساب البريدي)':'📍 عنوان '+name;
+  document.getElementById('wd-al').textContent=m==='ccp'?'🏦 رقم CCP':'📍 عنوان '+name;
   document.getElementById('wd-addr').placeholder=m==='ccp'?'أدخل رقم CCP':'أدخل عنوان '+name;
 }
 
@@ -1244,317 +1087,211 @@ function doWD(){
   var addr=document.getElementById('wd-addr').value.trim();
   var amt=parseFloat(document.getElementById('wd-amt').value);
   var minW=ST.isDZ?2000:10*EX;
-  if(!addr){snd('err');return toast('❌ أدخل عنوان الاستلام','err')}
+  if(!addr){snd('err');return toast('❌ أدخل العنوان','err')}
   if(!ST.meth){snd('err');return toast('❌ اختر طريقة السحب','err')}
   if(!amt||amt<minW){snd('err');return toast('❌ الحد الأدنى '+(ST.isDZ?'2000 دج':'$10'),'err')}
   if(amt>ST.bal){snd('err');return toast('❌ الرصيد غير كافٍ','err')}
-  toast('⏳ جاري إرسال الطلب...','info');
-  sb('POST','withdrawals',{
-    user_id:ST.user.id,username:ST.user.username,email:ST.user.email,
-    amount:amt,method:ST.methName,address:addr,status:'pending',
-    is_algeria:ST.isDZ,created_at:new Date().toISOString()
-  }).then(function(){
+  toast('⏳ جاري الإرسال...','info');
+  sb('POST','withdrawals',{user_id:ST.user.id,username:ST.user.username,email:ST.user.email,amount:amt,method:ST.mName,address:addr,status:'pending',is_algeria:ST.isDZ,created_at:new Date().toISOString()}).then(function(){
     ST.bal-=amt;
     sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
-    localStorage.setItem('znUser',JSON.stringify(ST.user));
-    tgAdmin('💸 <b>طلب سحب جديد!</b>\n👤 '+ST.user.username+'\n💰 '+Math.floor(amt)+(ST.isDZ?' دج':' (دولار مكافئ)')+'\n💳 '+ST.methName+'\n📍 <code>'+addr+'</code>');
-    snd('success');toast('✅ تم إرسال الطلب! سيُراجع خلال 24 ساعة','ok');updateUI();
+    localStorage.setItem('znU',JSON.stringify(ST.user));
+    snd('ok');toast('✅ تم إرسال طلب السحب!','ok');updateUI();
     document.getElementById('wd-form').style.display='none';
     document.getElementById('wd-amt').value='';document.getElementById('wd-addr').value='';
-    document.querySelectorAll('.meth-c').forEach(function(c){c.classList.remove('sel')});
-  }).catch(function(){snd('err');toast('❌ خطأ في الإرسال','err')});
+    document.querySelectorAll('.mc').forEach(function(c){c.classList.remove('sel')});
+  }).catch(function(){snd('err');toast('❌ خطأ','err')});
 }
 
 // ===== REFERRAL =====
 function setupRef(){
   if(!ST.user)return;
-  document.getElementById('ref-link-v').textContent='https://zncash.great-site.net?ref='+ST.user.id;
-  sb('GET','users',null,'referred_by=eq.'+ST.user.id+'&select=username,created_at').then(function(refs){
+  document.getElementById('ref-lnk').textContent=APP_URL+'?ref='+ST.user.id;
+  sb('GET','users',null,'referred_by=eq.'+ST.user.id+'&select=username').then(function(r){
     var c=document.getElementById('refs-list');
-    if(!refs||refs.length===0){c.innerHTML='<div style="color:var(--text2);text-align:center;padding:18px 0">لا توجد إحالات بعد<br><small>شارك رابطك واكسب 10% من أرباح كل مدعو</small></div>';return;}
-    c.innerHTML=refs.map(function(r){return '<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span>👤 '+r.username+'</span><span style="color:var(--green);font-size:12px">✅ نشط</span></div>'}).join('');
+    if(!r||r.length===0){c.innerHTML='<div style="color:var(--t2);text-align:center;padding:14px 0">لا توجد إحالات بعد</div>';return;}
+    c.innerHTML=r.map(function(u){return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span>👤 '+u.username+'</span><span style="color:var(--gr);font-size:11px">✅ نشط</span></div>'}).join('');
   }).catch(function(){});
 }
 
 function copyRef(){
-  snd('click');
-  if(!ST.user)return;
-  var link='https://zncash.great-site.net?ref='+ST.user.id;
-  try{navigator.clipboard.writeText(link).then(function(){snd('success');toast('📋 تم نسخ الرابط!','ok')})}
-  catch(e){var ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 تم النسخ!','ok')}
+  snd('click');if(!ST.user)return;
+  var lnk=APP_URL+'?ref='+ST.user.id;
+  try{navigator.clipboard.writeText(lnk).then(function(){snd('ok');toast('📋 تم النسخ!','ok')})}
+  catch(e){var ta=document.createElement('textarea');ta.value=lnk;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 تم النسخ!','ok')}
 }
 
 function shareRef(){
   if(!ST.user)return;snd('click');
-  var link='https://zncash.great-site.net?ref='+ST.user.id;
-  var text='💰 انضم لـ ZN Cash واكسب المال من هاتفك!\n🎁 احصل على مكافأة ترحيبية عند التسجيل\n👉 '+link;
-  if(navigator.share)navigator.share({title:'ZN Cash',text:text,url:link});
-  else window.open('https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(text));
+  var lnk=APP_URL+'?ref='+ST.user.id;
+  var txt='💰 انضم لـ ZN Cash واكسب المال!\n🎁 مكافأة ترحيبية 50 دج\n👉 '+lnk;
+  if(navigator.share)navigator.share({title:'ZN Cash',text:txt,url:lnk});
+  else window.open('https://t.me/share/url?url='+encodeURIComponent(lnk)+'&text='+encodeURIComponent(txt));
 }
 
 // ===== PROFILE =====
 function setupProf(){
   if(!ST.user)return;
-  document.getElementById('prof-name').textContent=ST.user.username||'مستخدم';
-  document.getElementById('prof-email').textContent=ST.user.email||'';
-  document.getElementById('prof-av').textContent=(ST.user.username||'U')[0].toUpperCase();
+  document.getElementById('p-nm').textContent=ST.user.username||'---';
+  document.getElementById('p-em').textContent=ST.user.email||'---';
+  document.getElementById('p-av').textContent=(ST.user.username||'U')[0].toUpperCase();
 }
-
-function showSocialMsg(){snd('click');toast('📱 مهام التواصل الاجتماعي قريباً!','info')}
 
 // ===== WHEEL =====
 var WP=[
+  {l:'500 دج 🏆',v:9999,c:'#200000',p:.001},
+  {l:'100 دج 👑',v:9999,c:'#1a0010',p:.004},
+  {l:'50 دج ⭐',v:9999,c:'#1a0020',p:.01},
   {l:'2 دج',v:2,c:'#060620',p:.32},
   {l:'5 دج',v:5,c:'#0a1a00',p:.28},
   {l:'10 دج',v:10,c:'#061a00',p:.18},
-  {l:'حاول ثانية',v:0,c:'#111',p:.10},
-  {l:'20 دج',v:20,c:'#1a1000',p:.07},
-  {l:'حاول مجدداً',v:0,c:'#0a0a0a',p:.025},
-  {l:'30 دج',v:30,c:'#0a0020',p:.01},
-  {l:'50 دج 🏆',v:50,c:'#1a0000',p:.003},
-  {l:'100 دج 👑',v:9999,c:'#200000',p:.002}, // impossible - إغراء فقط
+  {l:'حاول ثانية',v:0,c:'#111',p:.12},
+  {l:'20 دج',v:20,c:'#1a1000',p:.085},
 ];
-var MAX_W=50,wAng=0,wSpin=false,wTries=10;
+var MAX_W=50,wA=0,wSpin=false,wTries=10;
 
 function wDay(){
   var today=new Date().toDateString();
-  var sd=localStorage.getItem('znWDay');
-  if(sd!==today){localStorage.setItem('znWDay',today);localStorage.setItem('znWTries','10');localStorage.setItem('znWEarned','0');wTries=10;}
-  else{wTries=parseInt(localStorage.getItem('znWTries')||'10');}
+  if(localStorage.getItem('znWD')!==today){localStorage.setItem('znWD',today);localStorage.setItem('znWT','10');localStorage.setItem('znWE','0');wTries=10;}
+  else{wTries=parseInt(localStorage.getItem('znWT')||'10');}
 }
-function wEarned(){return parseFloat(localStorage.getItem('znWEarned')||'0')}
-function addWEarned(v){localStorage.setItem('znWEarned',String(wEarned()+v))}
+function wE(){return parseFloat(localStorage.getItem('znWE')||'0')}
+function addWE(v){localStorage.setItem('znWE',String(wE()+v))}
 
 function drawW(){
-  var cv=document.getElementById('wCanvas');if(!cv)return;
-  var ctx=cv.getContext('2d'),cx=140,cy=140,r=132,n=WP.length,arc=2*Math.PI/n;
-  ctx.clearRect(0,0,280,280);
-  // outer glow
-  for(var g=3;g>0;g--){ctx.beginPath();ctx.arc(cx,cy,r+g*3,0,2*Math.PI);ctx.strokeStyle='rgba(255,215,0,'+(0.1/g)+')';ctx.lineWidth=g*2;ctx.stroke();}
+  var cv=document.getElementById('wc');if(!cv)return;
+  var ctx=cv.getContext('2d'),cx=130,cy=130,r=124,n=WP.length,arc=2*Math.PI/n;
+  ctx.clearRect(0,0,260,260);
+  // glow
+  ctx.beginPath();ctx.arc(cx,cy,r+4,0,2*Math.PI);
+  ctx.strokeStyle='rgba(255,215,0,.35)';ctx.lineWidth=5;ctx.stroke();
   WP.forEach(function(p,i){
-    var s=i*arc+wAng,e=s+arc;
+    var s=i*arc+wA,e=s+arc;
     ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
     ctx.fillStyle=p.c;ctx.fill();
-    ctx.strokeStyle='rgba(255,215,0,.2)';ctx.lineWidth=1.5;ctx.stroke();
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);
-    ctx.textAlign='right';
-    var isSpecial=p.v===9999||p.v===50;
-    ctx.fillStyle=isSpecial?'#FFD700':'#fff';
-    ctx.font=(isSpecial?'bold 11':'bold 12')+'px Tajawal,Arial';
-    if(isSpecial){ctx.shadowColor='#FFD700';ctx.shadowBlur=12;}
-    ctx.fillText(p.l,r-12,5);ctx.shadowBlur=0;ctx.restore();
+    ctx.strokeStyle='rgba(255,215,0,.2)';ctx.lineWidth=1;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';
+    var big=p.v===9999;
+    ctx.fillStyle=big?'#FFD700':'#fff';
+    ctx.font=(big?'bold 10':'bold 11')+'px Tajawal,Arial';
+    if(big){ctx.shadowColor='#FFD700';ctx.shadowBlur=10;}
+    ctx.fillText(p.l,r-10,4);ctx.shadowBlur=0;ctx.restore();
   });
-  // center
-  var cg=ctx.createRadialGradient(cx,cy,0,cx,cy,24);
+  var cg=ctx.createRadialGradient(cx,cy,0,cx,cy,22);
   cg.addColorStop(0,'#FFD700');cg.addColorStop(1,'#FF8C00');
-  ctx.beginPath();ctx.arc(cx,cy,22,0,2*Math.PI);ctx.fillStyle=cg;ctx.fill();
-  ctx.fillStyle='#000';ctx.font='bold 11px Orbitron,sans-serif';ctx.textAlign='center';ctx.fillText('ZN',cx,cy+4);
+  ctx.beginPath();ctx.arc(cx,cy,20,0,2*Math.PI);ctx.fillStyle=cg;ctx.fill();
+  ctx.fillStyle='#000';ctx.font='bold 10px Orbitron,sans-serif';ctx.textAlign='center';ctx.fillText('ZN',cx,cy+3);
 }
 
-function renderWheelTries(){
-  ['wt-home','wt-modal'].forEach(function(id){
-    var el=document.getElementById(id);if(!el)return;
-    el.innerHTML='';
-    for(var i=0;i<10;i++){
-      var d=document.createElement('div');
-      d.className='wt-d '+(i<wTries?'wt-on':'wt-off');
-      el.appendChild(d);
-    }
+function renderWT(){
+  ['wt-h','wt-m'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;el.innerHTML='';
+    for(var i=0;i<10;i++){var d=document.createElement('div');d.className='wtd '+(i<wTries?'wton':'wtoff');el.appendChild(d);}
   });
-  var tl=document.getElementById('wt-left-txt');
-  if(tl)tl.textContent=wTries+' محاولة متبقية اليوم';
-  var we=document.getElementById('w-daily-info');
-  if(we)we.textContent='مكسوب اليوم: '+wEarned()+' دج / '+MAX_W+' دج';
+  var t=document.getElementById('wt-txt');if(t)t.textContent=wTries+' محاولة متبقية';
+  var i=document.getElementById('w-info');if(i)i.textContent='مكسوب اليوم: '+wE()+' دج / '+MAX_W+' دج';
 }
 
 function openWheel(){
   snd('click');wDay();
-  document.getElementById('wheel-modal').classList.add('on');
-  drawW();renderWheelTries();
-  document.getElementById('w-result').textContent='';
+  document.getElementById('wm').classList.add('on');
+  drawW();renderWT();document.getElementById('w-res').textContent='';
 }
 
-function closeWheel(){snd('click');document.getElementById('wheel-modal').classList.remove('on')}
+function closeWheel(){snd('click');document.getElementById('wm').classList.remove('on')}
 
 function doSpin(){
   if(wSpin||wTries===0)return;
-  showPop();snd('wheel');
-  wSpin=true;document.getElementById('spin-btn').disabled=true;
-  document.getElementById('w-result').textContent='';
-  var earned=wEarned(),rem=MAX_W-earned;
-  // pick prize
+  showAdsgramInter();snd('wheel');
+  wSpin=true;document.getElementById('sbtn').disabled=true;
+  document.getElementById('w-res').textContent='';
+  var earned=wE(),rem=MAX_W-earned;
   var rand=Math.random(),cum=0,pi=0;
   for(var i=0;i<WP.length;i++){cum+=WP[i].p;if(rand<=cum){pi=i;break;}}
-  // impossible prizes
-  if(WP[pi].v===9999)pi=4; // redirect to 20 دج
-  if(WP[pi].v>rem&&rem>0){
-    // give max possible
-    for(var j=WP.length-1;j>=0;j--){if(WP[j].v>0&&WP[j].v<=rem){pi=j;break;}if(j===0)pi=3;}
+  // impossible prizes → redirect
+  if(WP[pi].v===9999){
+    // مغرٍ لكن مستحيل - نعيد توجيهه لجائزة صغيرة
+    var sm=[3,4,5,6];pi=sm[Math.floor(Math.random()*sm.length)];
   }
-  if(rem<=0)pi=3; // حاول ثانية
+  if(rem<=0)pi=6;
+  else if(WP[pi].v>rem){for(var j=WP.length-1;j>=0;j--){if(WP[j].v>0&&WP[j].v<=rem){pi=j;break;}if(j===0)pi=6;}}
   var target=(2*Math.PI/WP.length)*(WP.length-pi);
-  var spinAmt=8*2*Math.PI+target,sA=wAng,dur=3500,t0=performance.now();
+  var sAmt=8*2*Math.PI+target,sA2=wA,dur=3500,t0=performance.now();
   function anim(now){
     var pr=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-pr,4);
-    wAng=sA+spinAmt*ease;drawW();
+    wA=sA2+sAmt*ease;drawW();
     if(pr<1){requestAnimationFrame(anim);return;}
-    wSpin=false;wTries--;
-    localStorage.setItem('znWTries',String(wTries));
+    wSpin=false;wTries--;localStorage.setItem('znWT',String(wTries));
     var prize=WP[pi];
     if(prize.v>0){
-      var actual=Math.min(prize.v,MAX_W-wEarned());
+      var actual=Math.min(prize.v,MAX_W-wE());
       if(actual>0){
-        addWEarned(actual);
-        if(ST.user){ST.bal+=actual;sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});localStorage.setItem('znUser',JSON.stringify(ST.user));}
-        snd('coin');coins(8);updateUI();
-        document.getElementById('w-result').textContent='🎉 ربحت '+actual+' دج!';
+        addWE(actual);
+        if(ST.user){ST.bal+=actual;sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});localStorage.setItem('znU',JSON.stringify(ST.user));}
+        snd('coin');coins(7);updateUI();
+        document.getElementById('w-res').textContent='🎉 ربحت '+actual+' دج!';
         toast('🎰 ربحت '+actual+' دج!','ok');
-        if(wEarned()>=MAX_W)setTimeout(function(){toast('⚠️ وصلت للحد اليومي 50 دج - تعال غداً!','info')},2000);
-      }else{snd('err');document.getElementById('w-result').textContent='⚠️ وصلت للحد اليومي!'}
-    }else{snd('err');document.getElementById('w-result').textContent='😅 حاول مجدداً!'}
-    renderWheelTries();
-    if(wTries>0)setTimeout(function(){var b=document.getElementById('spin-btn');if(b)b.disabled=false},1800);
+      }else{snd('err');document.getElementById('w-res').textContent='⚠️ وصلت للحد اليومي!';}
+    }else{snd('err');document.getElementById('w-res').textContent='😅 حاول مجدداً!'}
+    renderWT();
+    if(wTries>0)setTimeout(function(){var b=document.getElementById('sbtn');if(b)b.disabled=false},1800);
   }
   requestAnimationFrame(anim);
 }
 
-// ===== ADMIN =====
-var ADM_PASS='Zabzabikk@29';
-var admTapCount=0;
-function adminTrigger(){
-  admTapCount++;
-  if(admTapCount===5){admTapCount=0;document.getElementById('adm-modal').classList.add('on');}
-}
-
-function closeAdmModal(){document.getElementById('adm-modal').classList.remove('on')}
-
-function doAdmLogin(){
-  var p=document.getElementById('adm-pass').value;
-  if(p!==ADM_PASS){snd('err');return toast('❌ كلمة مرور خاطئة','err')}
-  closeAdmModal();snd('success');go('pg-admin');
-}
-
-function loadAdmin(){
-  sb('GET','users',null,'select=id,balance,created_at').then(function(users){
-    if(!users)return;
-    var today=new Date().toDateString();
-    document.getElementById('a-users').textContent=users.length;
-    document.getElementById('a-today').textContent=users.filter(function(u){return u.created_at&&new Date(u.created_at).toDateString()===today}).length;
-  }).catch(function(){});
-  sb('GET','withdrawals',null,'select=*&order=created_at.desc').then(function(wrs){
-    if(!wrs)return;
-    var pending=wrs.filter(function(w){return w.status==='pending'});
-    var paid=wrs.filter(function(w){return w.status==='paid'});
-    document.getElementById('a-pend').textContent=pending.length;
-    document.getElementById('a-paid').textContent=Math.floor(paid.reduce(function(s,w){return s+(w.amount||0)},0))+' دج';
-    var list=document.getElementById('adm-list');
-    if(pending.length===0){list.innerHTML='<div style="text-align:center;color:var(--green);padding:40px 14px">✅ لا توجد طلبات معلقة</div>';return;}
-    list.innerHTML=pending.map(function(w){
-      var dz=w.is_algeria!==false;
-      var amt=dz?Math.floor(w.amount)+' دج':'$'+(w.amount/EX).toFixed(2);
-      return '<div class="wr-c" id="wr-'+w.id+'">'+
-        '<div class="wr-top"><div class="wr-u">👤 '+w.username+'</div><div class="wr-a">'+amt+'</div></div>'+
-        '<div class="wr-det">📧 '+w.email+'<br>💳 '+w.method+'<br>📍 <span style="font-family:monospace;user-select:all;font-size:10px;word-break:break-all">'+w.address+'</span><br>📅 '+(w.created_at||'').slice(0,16).replace('T',' ')+'</div>'+
-        '<div class="wr-acts">'+
-        '<button class="wpaid" onclick="admPay(\''+w.id+'\',\''+w.user_id+'\',\''+w.username+'\')">✅ تم الدفع</button>'+
-        '<button class="wreject" onclick="admReject(\''+w.id+'\',\''+w.user_id+'\','+w.amount+')">❌ رفض</button>'+
-        '</div></div>';
-    }).join('');
-  }).catch(function(){});
-}
-
-function admPay(wid,uid,uname){
-  snd('click');
-  sb('PATCH','withdrawals',{status:'paid',paid_at:new Date().toISOString()},'id=eq.'+wid).then(function(){
-    sb('GET','users',null,'id=eq.'+uid+'&select=telegram_id').then(function(us){
-      if(us&&us[0]&&us[0].telegram_id)tgUser(us[0].telegram_id,'✅ <b>تم صرف طلب سحبك بنجاح!</b>\n\nشكراً لثقتك في ZN Cash 🎉\nاستمر في إنجاز المهام لتزيد أرباحك 💰');
-    });
-    snd('success');toast('✅ تم تأكيد دفع '+uname,'ok');
-    var el=document.getElementById('wr-'+wid);if(el)el.style.opacity='.3';
-    setTimeout(function(){loadAdmin()},1000);
-  }).catch(function(){toast('❌ خطأ','err')});
-}
-
-function admReject(wid,uid,amt){
-  snd('click');
-  sb('PATCH','withdrawals',{status:'rejected'},'id=eq.'+wid).then(function(){
-    sb('GET','users',null,'id=eq.'+uid+'&select=balance,telegram_id').then(function(us){
-      if(us&&us[0]){
-        sb('PATCH','users',{balance:(us[0].balance||0)+amt},'id=eq.'+uid).catch(function(){});
-        if(us[0].telegram_id)tgUser(us[0].telegram_id,'❌ <b>تم رفض طلب سحبك</b>\n\nتم إعادة الرصيد لحسابك تلقائياً.\nللاستفسار: @zn_cash_bot');
-      }
-    });
-    snd('err');toast('❌ تم رفض الطلب وإعادة الرصيد','info');
-    setTimeout(function(){loadAdmin()},1000);
-  }).catch(function(){});
-}
-
-function sendBcast(){
-  var msg=document.getElementById('bcast-msg').value.trim();
-  if(!msg)return toast('❌ اكتب الرسالة أولاً','err');
-  toast('📢 جاري الإرسال...','info');
-  sb('GET','users',null,'telegram_id=not.is.null&select=telegram_id').then(function(users){
-    (users||[]).forEach(function(u,i){
-      setTimeout(function(){tgUser(u.telegram_id,'📢 <b>ZN Cash:</b>\n\n'+msg)},i*120);
-    });
-    setTimeout(function(){toast('✅ تم الإرسال لـ '+(users||[]).length+' مستخدم','ok')},((users||[]).length*120)+500);
-    document.getElementById('bcast-msg').value='';
-  });
-}
-
-function createCode(){
-  var code=document.getElementById('code-inp').value.trim().toUpperCase();
-  var rwd=parseFloat(document.getElementById('code-rwd').value);
-  if(!code||!rwd){return toast('❌ أدخل الكود والمكافأة','err')}
-  sb('POST','daily_codes',{code:code,reward:rwd,expires_at:new Date().toDateString(),created_at:new Date().toISOString()}).then(function(){
-    snd('success');toast('✅ تم إنشاء الكود: '+code+' ('+rwd+' دج)','ok');
-    // Post to channel
-    tgAdmin('🎁 <b>كود يومي جديد!</b>\n\nاستخدم الكود في البوت:\n<code>/code '+code+'</code>\n\n💰 المكافأة: <b>'+rwd+' دج</b>');
-    document.getElementById('code-inp').value='';document.getElementById('code-rwd').value='';
-  }).catch(function(){toast('❌ خطأ في الإنشاء','err')});
-}
-
 // ===== INIT =====
 function init(){
-  // Check params
   var params=new URLSearchParams(window.location.search);
   var ref=params.get('ref');
-  if(ref){localStorage.setItem('znRef',ref);document.getElementById('ref-notice').style.display='flex'}
-  var savedUser=localStorage.getItem('znUser');
-  var savedLang=localStorage.getItem('znLang');
-  var savedCountry=localStorage.getItem('znCountry');
-  if(savedCountry)ST.isDZ=savedCountry==='dz';
-  if(savedLang)ST.lang=savedLang;
+  if(ref){localStorage.setItem('znRef',ref);document.getElementById('ref-notice').style.display='flex';}
+  var sU=localStorage.getItem('znU');
+  var sL2=localStorage.getItem('znL');
+  var sC2=localStorage.getItem('znC');
+  if(sC2)ST.isDZ=sC2==='dz';
   setTimeout(function(){
-    var loader=document.getElementById('pg-load');
-    loader.style.transition='opacity .6s';loader.style.opacity='0';
+    var ld=document.getElementById('ld');
+    ld.style.transition='opacity .5s';ld.style.opacity='0';
     setTimeout(function(){
-      loader.style.display='none';
-      if(savedUser){
-        var usr=JSON.parse(savedUser);
-        ST.user=usr;ST.bal=usr.balance||0;ST.isDZ=usr.is_algeria!==false;
-        // Refresh from DB
-        sb('GET','users',null,'id=eq.'+usr.id+'&select=*').then(function(res){
-          if(res&&res[0]){ST.user=res[0];ST.bal=res[0].balance||0;localStorage.setItem('znUser',JSON.stringify(res[0]));}
+      ld.style.display='none';
+      if(sU){
+        var u=JSON.parse(sU);ST.user=u;ST.bal=u.balance||0;ST.isDZ=u.is_algeria!==false;
+        sb('GET','users',null,'id=eq.'+u.id+'&select=*').then(function(r){
+          if(r&&r[0]){ST.user=r[0];ST.bal=r[0].balance||0;localStorage.setItem('znU',JSON.stringify(r[0]));}
           showApp();
-        }).catch(function(){showApp()});
-      } else if(savedLang){
-        var T=TX[savedLang];
-        document.documentElement.lang=savedLang;document.documentElement.dir=T.dir;
-        document.getElementById('t-splash-sub').textContent=T.ss;
+        }).catch(function(){showApp();});
+      }else if(sL2){
+        var T=TX[sL2];document.documentElement.lang=sL2;document.documentElement.dir=T.dir;
+        ST.lang=sL2;
+        document.getElementById('t-ss').textContent=T.ss;
         document.getElementById('t-cq').textContent=T.cq;
         document.getElementById('t-cs').textContent=T.cs;
         document.getElementById('t-dz').textContent=T.dz;
         document.getElementById('t-intl').textContent=T.intl;
         go('pg-country');
-      } else {
-        go('pg-lang');
-      }
-    },600);
+      }else{go('pg-lang');}
+    },500);
   },2800);
 }
 
+// Document visibility - stop YT timer when hidden
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden)stopYTTimer();
+  else if(ytPlayer&&ytPlayer.getPlayerState&&ytPlayer.getPlayerState()===1)startYTTimer();
+});
+
 window.addEventListener('load',init);
+</script>
+
+<!-- Linkvertise -->
+<script>
+(function(){
+  var s=document.createElement('script');
+  s.src='https://publisher.linkvertise.com/cdn/linkvertise.js';
+  s.onload=function(){
+    try{linkvertise(6954346,{whitelist:[],blacklist:[""]})}catch(e){}
+  };
+  document.head.appendChild(s);
+})();
 </script>
 </body>
 </html>
