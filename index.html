@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ZN Cash</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src='//libtl.com/sdk.js' data-zone='11220973' data-sdk='show_11220973'></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{--g:#FFD700;--g2:#FFA500;--gr:#39FF14;--gr2:#00C851;--d:#04040a;--c:#0e0e1e;--c2:#131326;--t:#eeeeff;--t2:#8888aa;--r:#FF3B3B;--p:#9B59F5}
@@ -553,7 +554,6 @@ pb{padding-bottom:90px;display:block}
     <div class="ww"><div class="wptr">👆</div><canvas id="wc" width="260" height="260"></canvas></div>
     <div style="display:flex;gap:5px;justify-content:center;margin:10px 0" id="wt-m"></div>
     <div id="w-res" style="font-size:17px;font-weight:700;color:var(--gr);min-height:26px;margin-bottom:12px"></div>
-    <div id="w-info" style="font-size:11px;color:var(--g);margin-bottom:10px"></div>
     <button class="sbtn" id="sbtn" onclick="doSpin()">🎯 لف العجلة</button>
     <div style="font-size:10px;color:var(--t2);margin-top:8px" id="wt-txt"></div>
   </div>
@@ -742,7 +742,7 @@ function doReg(){
   var ref=localStorage.getItem('znRef');
   sb('GET','users',null,'email=eq.'+encodeURIComponent(e)+'&select=id').then(function(ex){
     if(ex&&ex.length>0){snd('err');return toast('❌ البريد مستخدم','err')}
-    return sb('POST','users',{username:u,email:e,password:btoa(p),balance:ref?50:0,is_algeria:ST.isDZ,referred_by:ref||null,tasks_completed:0,referrals_count:0,links_clicked:0,last_daily:null,yt_claimed:null,created_at:new Date().toISOString()});
+    return sb('POST','users',{username:u,email:e,password:btoa(p),balance:ref?50:0,is_algeria:ST.isDZ,referred_by:ref||null,tasks_completed:0,referrals_count:0,links_clicked:0,last_daily:null,created_at:new Date().toISOString()});
   }).then(function(r){
     if(!r||!r[0])return;
     ST.user=r[0];ST.bal=r[0].balance||0;
@@ -805,8 +805,10 @@ function initAds(){
     s.src='https://pl30103097.effectivecpmnetwork.com/b7/99/dd/b799ddfda1321ebefb91c674a2e841fe.js';
     document.head.appendChild(s);
   }
-  // Adsgram (Telegram only) or Adsterra (browser/APK)
-  if(isTG){initAdsgram();}
+  if(isTG){
+    initMonetagReward();
+    initMonetagInApp();
+  }
   else{initAdsterra();}
 }
 
@@ -821,7 +823,7 @@ function initAdsterra(){
 }
 
 function showPop(){
-  if(isTG)return;// No popunder in Telegram
+  if(isTG)return;
   try{
     var s=document.createElement('script');
     s.src='https://pl30103096.effectivecpmnetwork.com/89/6f/7c/896f7c4736bcb3869bca3cfb4c0c9b3e.js';
@@ -830,46 +832,44 @@ function showPop(){
   }catch(e){}
 }
 
-// ===== ADSGRAM =====
-var AdsgramLoaded=false;
-function initAdsgram(){
-  if(AdsgramLoaded)return;
-  AdsgramLoaded=true;
-  var s=document.createElement('script');
-  s.src='https://sad.adsgram.ai/js/sad.min.js';
-  s.onload=function(){showAdsgramReward()};
-  document.head.appendChild(s);
+// ===== MONETAG (Telegram Mini App) =====
+function initMonetagReward(){
+  var container=document.getElementById('adsgram-container');
+  if(container&&!container.dataset.l){
+    container.dataset.l='1';
+    var btn=document.createElement('button');
+    btn.className='btn btn-g';btn.style.margin='10px 12px 0';
+    btn.textContent='🎁 شاهد إعلاناً واكسب رصيداً';
+    btn.onclick=function(){
+      if(typeof show_11220973!=='function')return toast('⏳ جاري التحميل...','info');
+      show_11220973().then(function(){
+        var rwd=ST.isDZ?20:20/EX;
+        if(!ST.user)return;
+        ST.bal+=rwd;
+        sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
+        localStorage.setItem('znU',JSON.stringify(ST.user));
+        snd('coin');coins(5);toast('🎉 ربحت 20 دج من الإعلان!','ok');updateUI();
+      }).catch(function(){});
+    };
+    container.appendChild(btn);
+  }
 }
 
-function showAdsgramReward(){
+function initMonetagInApp(){
   try{
-    var controller=window.Adsgram.init({blockId:'36492',debug:false});
-    var container=document.getElementById('adsgram-container');
-    if(container){
-      var btn=document.createElement('button');
-      btn.className='btn btn-g';btn.style.margin='0 12px';btn.style.marginTop='10px';
-      btn.textContent='🎁 شاهد إعلاناً واكسب رصيداً';
-      btn.onclick=function(){
-        controller.show().then(function(r){
-          if(r.done){
-            var rwd=ST.isDZ?20:20/EX;
-            ST.bal+=rwd;
-            sb('PATCH','users',{balance:ST.bal},'id=eq.'+ST.user.id).catch(function(){});
-            localStorage.setItem('znU',JSON.stringify(ST.user));
-            snd('coin');coins(5);toast('🎉 ربحت 20 دج من الإعلان!','ok');updateUI();
-          }
-        }).catch(function(){});
-      };
-      container.appendChild(btn);
+    if(typeof show_11220973==='function'){
+      show_11220973({type:'inApp',inAppSettings:{frequency:2,capping:0.1,interval:30,timeout:5,everyPage:false}});
     }
   }catch(e){}
 }
 
-function showAdsgramInter(){
+function showInterstitial(){
   if(!isTG)return showPop();
   try{
-    window.Adsgram.init({blockId:'int-36493',debug:false}).show().catch(function(){});
-  }catch(e){showPop();}
+    if(typeof show_11220973==='function'){
+      show_11220973('pop').catch(function(){});
+    }
+  }catch(e){}
 }
 
 // ===== DAILY =====
@@ -889,7 +889,7 @@ function claimDaily(){
 
 // ===== CPA =====
 function openCPA(){
-  snd('click');showAdsgramInter();
+  snd('click');showInterstitial();
   if(!ST.user)return toast('❌ سجل دخول أولاً','err');
   window.open('https://quartzfiles.com/wall/?user_id='+ST.user.id+'&id=1901881','_blank');
   toast('📋 أكمل المهمة وسيُضاف رصيدك تلقائياً!','info');
@@ -903,7 +903,7 @@ function sTab(t){
   });
   var c=document.getElementById('tc-'+t);if(c){c.style.display='flex';c.style.flexDirection='column';}
   var tb=document.getElementById('tab-'+t);if(tb)tb.classList.add('on');
-  if(t!=='cpa')showAdsgramInter();
+  if(t!=='cpa')showInterstitial();
   if(t==='yt')initYT();
 }
 
@@ -930,7 +930,7 @@ function loadSocial(){
 }
 
 function doSocial(id,url,rwd){
-  snd('click');showAdsgramInter();
+  snd('click');showInterstitial();
   window.open(url,'_blank');
   toast('⏳ نفّذ المهمة ثم اضغط تأكيد','info');
   setTimeout(function(){
@@ -1049,7 +1049,7 @@ function loadLinks(){
 }
 
 function openLink(i){
-  snd('click');showAdsgramInter();
+  snd('click');showInterstitial();
   var l=LINKS[i];
   window.open(l.url,'_blank');
   toast('⏳ انتظر 5 ثوانٍ ثم أغلق النافذة','info');
@@ -1189,7 +1189,6 @@ function renderWT(){
     for(var i=0;i<10;i++){var d=document.createElement('div');d.className='wtd '+(i<wTries?'wton':'wtoff');el.appendChild(d);}
   });
   var t=document.getElementById('wt-txt');if(t)t.textContent=wTries+' محاولة متبقية';
-  var i=document.getElementById('w-info');if(i)i.textContent='مكسوب اليوم: '+wE()+' دج / '+MAX_W+' دج';
 }
 
 function openWheel(){
@@ -1202,7 +1201,7 @@ function closeWheel(){snd('click');document.getElementById('wm').classList.remov
 
 function doSpin(){
   if(wSpin||wTries===0)return;
-  showAdsgramInter();snd('wheel');
+  showInterstitial();snd('wheel');
   wSpin=true;document.getElementById('sbtn').disabled=true;
   document.getElementById('w-res').textContent='';
   var earned=wE(),rem=MAX_W-earned;
