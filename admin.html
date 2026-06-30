@@ -121,10 +121,20 @@ textarea.fi2{width:100%;resize:none;min-height:80px;padding:12px}
   <!-- TABS -->
   <div class="tabs">
     <button class="tab on" onclick="showTab('withdrawals',this)">💸 السحوبات</button>
+    <button class="tab" onclick="showTab('social',this)">📱 مهام اجتماعية</button>
     <button class="tab" onclick="showTab('publish',this)">📢 نشر مهام</button>
     <button class="tab" onclick="showTab('users',this)">👥 المستخدمون</button>
     <button class="tab" onclick="showTab('balance',this)">💰 إضافة رصيد</button>
     <button class="tab" onclick="showTab('broadcast',this)">📣 إشعار جماعي</button>
+  </div>
+
+  <!-- SOCIAL SUBMISSIONS -->
+  <div id="tab-social" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 14px 10px">
+      <div class="sec-title" style="padding:0"><span class="dot"></span> طلبات المهام الاجتماعية</div>
+      <button class="refresh-btn" onclick="loadSocialSubs()">🔄 تحديث</button>
+    </div>
+    <div id="social-subs-list"></div>
   </div>
 
   <!-- WITHDRAWALS -->
@@ -250,7 +260,7 @@ document.addEventListener('keydown',function(e){
 });
 
 function showTab(id,el){
-  ['withdrawals','publish','users','balance','broadcast'].forEach(function(t){
+  ['withdrawals','social','publish','users','balance','broadcast'].forEach(function(t){
     var el2=document.getElementById('tab-'+t);if(el2)el2.style.display='none';
   });
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
@@ -258,6 +268,55 @@ function showTab(id,el){
   if(el)el.classList.add('on');
   if(id==='users')loadUsers();
   if(id==='publish')loadTasks();
+  if(id==='social')loadSocialSubs();
+}
+
+function loadSocialSubs(){
+  sb('GET','social_submissions',null,'status=eq.pending&select=*&order=created_at.asc').then(function(subs){
+    var list=document.getElementById('social-subs-list');
+    if(!subs||subs.length===0){list.innerHTML='<div class="empty">✅ لا توجد طلبات معلقة</div>';return;}
+    list.innerHTML=subs.map(function(s){
+      var dz=s.is_algeria!==false;
+      var rwd=dz?Math.floor(s.reward)+' دج':'$'+(s.reward/EX).toFixed(2);
+      var date=(s.created_at||'').slice(0,16).replace('T',' ');
+      return '<div class="wr" id="ss-'+s.id+'">'+
+        '<div class="wr-top"><div class="wr-u">👤 '+s.username+'</div><div class="wr-a">'+rwd+'</div></div>'+
+        '<div class="wr-d">'+
+          '📋 المهمة: '+s.task_name+'<br>'+
+          '🔖 اسم المستخدم المُرسل: <span class="wr-addr" onclick="copyText(\''+s.social_username+'\')">'+s.social_username+'</span>'+
+          '📅 '+date+
+        '</div>'+
+        '<div class="wr-btns">'+
+          '<button class="btn-pay" onclick="approveSocial(\''+s.id+'\',\''+s.user_id+'\','+s.reward+',\''+dz+'\',\''+s.username+'\')">✅ تأكيد</button>'+
+          '<button class="btn-rej" onclick="rejectSocial(\''+s.id+'\',\''+s.username+'\')">❌ رفض</button>'+
+        '</div></div>';
+    }).join('');
+  }).catch(function(){
+    document.getElementById('social-subs-list').innerHTML='<div class="empty">أضف جدول social_submissions في Supabase أولاً</div>';
+  });
+}
+
+function approveSocial(sid,uid,reward,isDz,uname){
+  if(!confirm('تأكيد ودفع '+reward+' لـ '+uname+'؟'))return;
+  var dz=isDz==='true';
+  sb('GET','users',null,'id=eq.'+uid+'&select=balance').then(function(us){
+    if(!us||us.length===0)return;
+    var newBal=(us[0].balance||0)+reward;
+    return sb('PATCH','users',{balance:newBal},'id=eq.'+uid).then(function(){
+      return sb('PATCH','social_submissions',{status:'approved',reviewed_at:new Date().toISOString()},'id=eq.'+sid);
+    });
+  }).then(function(){
+    toast('✅ تم التأكيد وإضافة الرصيد لـ '+uname,'ok');
+    var el=document.getElementById('ss-'+sid);if(el)el.remove();
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function rejectSocial(sid,uname){
+  if(!confirm('رفض طلب '+uname+'؟'))return;
+  sb('PATCH','social_submissions',{status:'rejected',reviewed_at:new Date().toISOString()},'id=eq.'+sid).then(function(){
+    toast('❌ تم رفض الطلب','info');
+    var el=document.getElementById('ss-'+sid);if(el)el.remove();
+  }).catch(function(){toast('❌ خطأ','err')});
 }
 
 function loadData(){
