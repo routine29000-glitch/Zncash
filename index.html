@@ -29,11 +29,20 @@ body{font-family:'Tajawal',sans-serif;background:var(--void);color:var(--ink);mi
 .pg.on{display:flex}
 .center{align-items:center;justify-content:center;text-align:center;padding:24px 20px}
 #ld{position:fixed;inset:0;background:var(--void);z-index:9999;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-.splash-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:splashZoom 2.5s ease-out forwards}
+.splash-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:splashZoom 2.6s ease-out forwards}
 @keyframes splashZoom{from{transform:scale(1.06);opacity:0}to{transform:scale(1);opacity:1}}
-.splash-overlay{position:relative;z-index:1;padding-bottom:14%;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
-.ld-bar-bg{width:55%;max-width:220px;height:3px;background:rgba(255,255,255,.12);overflow:hidden;border-radius:3px;box-shadow:0 0 10px rgba(0,0,0,.5)}
-.ld-bar{height:100%;background:linear-gradient(90deg,var(--pulse),var(--gold),var(--gold-bright));animation:ldfill 1.6s cubic-bezier(.4,0,.2,1) forwards}
+.splash-vignette{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 45% at 50% 100%,rgba(10,5,5,0) 0%,rgba(10,5,5,.5) 60%,rgba(10,5,5,.94) 100%)}
+.splash-overlay{position:relative;z-index:1;padding-bottom:calc(13% + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;
+  opacity:0;transform:translateY(10px);animation:splashOverlayIn .6s .25s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes splashOverlayIn{to{opacity:1;transform:translateY(0)}}
+.ld-bar-bg{position:relative;width:55%;max-width:220px;height:3px;background:rgba(255,255,255,.12);overflow:hidden;border-radius:3px;box-shadow:0 0 10px rgba(0,0,0,.5)}
+.ld-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pulse),var(--gold),var(--gold-bright));box-shadow:0 0 8px rgba(240,180,41,.6);transition:width .25s ease-out}
+.ld-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);width:40%;animation:ldSheen 1.1s linear infinite}
+@keyframes ldSheen{from{transform:translateX(-120%)}to{transform:translateX(340%)}}
+.splash-meta{display:flex;align-items:center;justify-content:space-between;width:55%;max-width:220px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.5px}
+.splash-pct{color:var(--gold-bright);font-weight:700;min-width:32px;text-align:left}
+.splash-status{color:var(--ghost);text-transform:uppercase}
 @keyframes ldfill{from{width:0}to{width:100%}}
 .brandmark{position:relative;width:84px;height:84px;border-radius:20px;object-fit:cover}
 .brandmark-glow{filter:drop-shadow(0 0 30px rgba(240,180,41,.35)) drop-shadow(0 0 60px rgba(240,180,41,.15))}
@@ -254,8 +263,13 @@ pb{padding-bottom:145px;display:block}
 
 <div id="ld">
   <img src="splash.png" class="splash-bg" onerror="this.style.display='none'">
+  <div class="splash-vignette"></div>
   <div class="splash-overlay">
-    <div class="ld-bar-bg"><div class="ld-bar"></div></div>
+    <div class="ld-bar-bg"><div class="ld-bar" id="ld-bar"></div></div>
+    <div class="splash-meta">
+      <span class="splash-pct" id="ld-pct">0%</span>
+      <span class="splash-status" id="ld-status">جاري التحميل</span>
+    </div>
   </div>
 </div>
 
@@ -1653,6 +1667,30 @@ function executeSpin(){
 }
 
 // ===== INIT =====
+// ===== SPLASH PROGRESS (شريط تقدم حقيقي مرتبط فعلياً بحالة التحميل، وليس مجرد حركة CSS ثابتة) =====
+var splashDone=false;
+function splashSetProgress(pct){
+  var bar=document.getElementById('ld-bar'),pctEl=document.getElementById('ld-pct');
+  if(bar)bar.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=Math.round(pct)+'%';
+}
+(function driveSplashProgress(){
+  var t0=performance.now(),dur=1500;
+  function step(now){
+    var p=Math.min((now-t0)/dur,1);
+    var eased=1-Math.pow(1-p,3); // تباطؤ طبيعي قرب النهاية
+    splashSetProgress(eased*92); // لا نصل 100% إلا عند اكتمال التحميل الفعلي
+    if(p<1&&!splashDone)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+(function splashStatusLang(){
+  var s=document.getElementById('ld-status');if(!s)return;
+  var sv=localStorage.getItem('znL');
+  var map={ar:'جاري التحميل',fr:'Chargement en cours',en:'Loading'};
+  s.textContent=map[sv]||map.ar;
+})();
+
 function init(){
   var params=new URLSearchParams(window.location.search);
   var ref=params.get('ref');
@@ -1670,10 +1708,13 @@ function init(){
   setTimeout(function(){initAds()},600);
 
   function finishLoading(){
+    splashDone=true;splashSetProgress(100);
     var ld=document.getElementById('ld');
-    ld.style.transition='opacity .4s';ld.style.opacity='0';
+    ld.style.transition='opacity .4s';
+    setTimeout(function(){ld.style.opacity='0';},150);
     setTimeout(function(){
       ld.style.display='none';
+      splashSetProgress(0);
       if(sU){
         var u=JSON.parse(sU);ST.user=u;ST.bal=u.balance||0;ST.isDZ=u.is_algeria!==false;
         sb('GET','users',null,'id=eq.'+u.id+'&select=*').then(function(r){
@@ -1691,7 +1732,7 @@ function init(){
         document.getElementById('t-intl').textContent=T.intl;
         go('pg-country');
       }else{go('pg-lang');}
-    },400);
+    },560);
   }
 
   // انتظار تحميل الخطوط الفعلي (أو حد أقصى 1.4 ثانية) بدل تأخير ثابت طويل
@@ -1710,8 +1751,32 @@ document.addEventListener('visibilitychange',function(){
   if(document.hidden)stopYTTimer();
   else if(ytPlayer&&ytPlayer.getPlayerState&&ytPlayer.getPlayerState()===1)startYTTimer();
 });
-window.addEventListener('load',init);
+// التطبيق كان يعلّق أحياناً على شاشة التحميل بلا نهاية لأن التشغيل كان مربوطاً بحدث
+// window 'load'، وهذا الحدث ينتظر اكتمال كل الموارد بما فيها سكريبت شبكة الإعلانات
+// في آخر الصفحة (كان محمّلاً بشكل يوقف تحليل الصفحة). لو حُظر ذلك النطاق أو تأخر
+// (وهو أمر شائع داخل متصفح تيليجرام المدمج)، فإن init() لم يكن يُستدعى أبداً.
+// الحل: تشغيل التطبيق فور اكتمال بناء الصفحة (DOMContentLoaded) + شبكة أمان زمنية،
+// وتحميل سكريبت الإعلانات بشكل غير معيق تماماً بعد ذلك بشكل منفصل.
+var appBooted=false;
+function bootOnce(){if(appBooted)return;appBooted=true;init();}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',bootOnce);
+}else{
+  bootOnce();
+}
+setTimeout(bootOnce,6000); // شبكة أمان: تشغيل قسري إن لم يبدأ التطبيق لأي سبب
+
+(function loadAdsterraSDK(){
+  try{
+    var s=document.createElement('script');
+    s.src='https://libtl.com/sdk.js';
+    s.async=true;
+    s.setAttribute('data-zone','11220973');
+    s.setAttribute('data-sdk','show_11220973');
+    s.onerror=function(){};
+    document.body.appendChild(s);
+  }catch(e){}
+})();
 </script>
-<script src='//libtl.com/sdk.js' data-zone='11220973' data-sdk='show_11220973'></script>
 </body>
 </html>
