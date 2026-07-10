@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ZN Cash Admin</title>
+<link rel="icon" type="image/webp" href="data:image/webp;base64,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">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--g:#FFD700;--g2:#FFA500;--gr:#39FF14;--d:#04040a;--c:#0e0e1e;--c2:#131326;--t:#eeeeff;--t2:#8888aa;--r:#FF3B3B}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Tajawal',sans-serif;background:var(--d);color:var(--t);min-height:100vh}
+#login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--d);z-index:9999;padding:20px}
+.login-box{background:var(--c);border:1px solid rgba(255,59,59,.3);border-radius:22px;padding:32px 24px;width:100%;max-width:340px;text-align:center}
+.login-logo{font-size:60px;margin-bottom:14px;animation:lp 1.5s ease-in-out infinite}
+@keyframes lp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.login-title{font-family:'Orbitron';font-size:18px;color:var(--r);margin-bottom:6px}
+.login-sub{font-size:12px;color:var(--t2);margin-bottom:24px}
+.fi{width:100%;padding:14px 14px 14px 40px;background:var(--d);border:1.5px solid rgba(255,255,255,.08);border-radius:13px;color:var(--t);font-family:'Tajawal';font-size:15px;outline:none;transition:all .25s;margin-bottom:12px}
+.fi:focus{border-color:var(--r);box-shadow:0 0 0 2px rgba(255,59,59,.1)}
+.fi::placeholder{color:rgba(255,255,255,.2)}
+.btn-r{width:100%;padding:15px;background:linear-gradient(135deg,#ff3b3b,#cc0000);border:none;border-radius:13px;color:#fff;font-family:'Tajawal';font-size:15px;font-weight:800;cursor:pointer;transition:all .25s}
+.btn-r:active{transform:scale(.97)}
+#app{display:none}
+.topbar{background:rgba(4,4,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,59,59,.15);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.brand{font-family:'Orbitron';font-size:15px;font-weight:900;color:var(--r)}
+.logout-btn{padding:7px 14px;background:rgba(255,59,59,.15);border:1px solid rgba(255,59,59,.3);border-radius:10px;color:var(--r);font-family:'Tajawal';font-size:12px;cursor:pointer}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px}
+.stat{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:16px;text-align:center}
+.stat-v{font-family:'Orbitron';font-size:22px;font-weight:700;color:var(--g)}
+.stat-l{font-size:11px;color:var(--t2);margin-top:4px}
+.sec-title{font-size:14px;font-weight:700;padding:0 14px 10px;display:flex;align-items:center;gap:7px}
+.dot{width:6px;height:6px;background:var(--r);border-radius:50%;box-shadow:0 0 8px var(--r)}
+/* WITHDRAWAL ITEM */
+.wr{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:14px;margin:0 14px 10px}
+.wr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.wr-u{font-weight:700;font-size:14px}
+.wr-a{font-family:'Orbitron';font-size:13px;color:var(--g)}
+.wr-d{font-size:11px;color:var(--t2);line-height:1.9;margin-bottom:10px}
+.wr-addr{font-family:monospace;font-size:10px;word-break:break-all;background:rgba(255,255,255,.04);padding:6px 8px;border-radius:8px;margin:5px 0;display:block;user-select:all;cursor:copy}
+.wr-btns{display:flex;gap:8px}
+.btn-pay{flex:1;padding:10px;background:linear-gradient(135deg,#00C851,#39FF14);border:none;border-radius:10px;color:#000;font-family:'Tajawal';font-size:13px;font-weight:700;cursor:pointer;transition:all .22s}
+.btn-pay:active{transform:scale(.96)}
+.btn-rej{padding:10px 14px;background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.25);border-radius:10px;color:var(--r);font-family:'Tajawal';font-size:13px;cursor:pointer;transition:all .22s}
+.btn-rej:active{transform:scale(.96)}
+/* PUBLISH TASK */
+.pub-box{background:var(--c);border:1px solid rgba(255,215,0,.12);border-radius:16px;padding:16px;margin:0 14px 10px}
+.pub-title{font-size:13px;font-weight:700;color:var(--g);margin-bottom:12px}
+.frow{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.fi2{flex:1;min-width:120px;padding:12px;background:var(--d);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;color:var(--t);font-family:'Tajawal';font-size:13px;outline:none}
+.fi2:focus{border-color:var(--g)}
+.fi2::placeholder{color:rgba(255,255,255,.2)}
+select.fi2{appearance:none;-webkit-appearance:none}
+.btn-pub{width:100%;padding:13px;background:linear-gradient(135deg,var(--g),var(--g2));border:none;border-radius:11px;color:#000;font-family:'Tajawal';font-size:14px;font-weight:800;cursor:pointer}
+.btn-pub:active{transform:scale(.97)}
+/* PUBLISHED TASKS LIST */
+.ptask{background:var(--c2);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;margin:0 14px 8px;display:flex;align-items:center;gap:10px}
+.ptask-ico{font-size:24px}
+.ptask-info{flex:1}
+.ptask-name{font-size:13px;font-weight:700}
+.ptask-rwd{font-size:11px;color:var(--gr);margin-top:2px}
+.ptask-del{padding:7px 12px;background:rgba(255,59,59,.12);border:1px solid rgba(255,59,59,.2);border-radius:9px;color:var(--r);font-size:12px;cursor:pointer}
+/* BROADCAST */
+.bcast-box{background:var(--c);border:1px solid rgba(255,215,0,.1);border-radius:16px;padding:16px;margin:0 14px 10px}
+textarea.fi2{width:100%;resize:none;min-height:80px;padding:12px}
+/* USERS */
+.user-item{background:var(--c);border:1px solid rgba(255,255,255,.05);border-radius:13px;padding:13px;margin:0 14px 8px;display:flex;align-items:center;gap:12px}
+.user-av{width:42px;height:42px;background:linear-gradient(135deg,var(--g),var(--gr));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#000;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:13px;font-weight:700}
+.user-bal{font-family:'Orbitron';font-size:12px;color:var(--g);margin-top:2px}
+.user-sub{font-size:10px;color:var(--t2);margin-top:1px}
+.badge-dz{background:rgba(255,215,0,.15);color:var(--g);font-size:9px;padding:2px 7px;border-radius:99px;font-weight:700}
+.badge-intl{background:rgba(57,255,20,.12);color:var(--gr);font-size:9px;padding:2px 7px;border-radius:99px;font-weight:700}
+/* ADD BALANCE */
+.add-bal-box{background:var(--c);border:1px solid rgba(57,255,20,.1);border-radius:16px;padding:16px;margin:0 14px 10px}
+/* TABS */
+.tabs{display:flex;gap:7px;padding:12px 14px 6px;overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 15px;border-radius:99px;border:1.5px solid rgba(255,255,255,.08);background:var(--c);color:var(--t2);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Tajawal';transition:all .22s}
+.tab.on{background:var(--r);color:#fff;border-color:var(--r)}
+/* TOAST */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--c2);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:11px 20px;font-size:13px;font-weight:600;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:rgba(57,255,20,.35)}
+.toast.err{border-color:rgba(255,59,59,.35)}
+.toast.info{border-color:rgba(255,215,0,.35)}
+.empty{text-align:center;color:var(--t2);padding:30px 14px;font-size:13px}
+.refresh-btn{padding:8px 16px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.2);border-radius:10px;color:var(--g);font-family:'Tajawal';font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">ZN CASH ADMIN</div>
+    <div class="login-sub">لوحة تحكم المشرف</div>
+    <input type="password" class="fi" id="adm-pass" placeholder="كلمة المرور" style="text-align:center">
+    <button class="btn-r" onclick="doLogin()">دخول</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="brand">⚡ ADMIN PANEL</div>
+    <button class="logout-btn" onclick="doLogout()">خروج 🚪</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-v" id="a-users">-</div><div class="stat-l">المستخدمون</div></div>
+    <div class="stat"><div class="stat-v" id="a-pend">-</div><div class="stat-l">سحوبات معلقة</div></div>
+    <div class="stat"><div class="stat-v" id="a-paid">-</div><div class="stat-l">إجمالي المدفوع</div></div>
+    <div class="stat"><div class="stat-v" id="a-today">-</div><div class="stat-l">مستخدمو اليوم</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('withdrawals',this)">💸 السحوبات</button>
+    <button class="tab" onclick="showTab('social',this)">📱 مهام اجتماعية</button>
+    <button class="tab" onclick="showTab('publish',this)">📢 نشر مهام</button>
+    <button class="tab" onclick="showTab('users',this)">👥 المستخدمون</button>
+    <button class="tab" onclick="showTab('balance',this)">💰 إضافة رصيد</button>
+    <button class="tab" onclick="showTab('broadcast',this)">📣 إشعار جماعي</button>
+  </div>
+
+  <!-- SOCIAL SUBMISSIONS -->
+  <div id="tab-social" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 14px 10px">
+      <div class="sec-title" style="padding:0"><span class="dot"></span> طلبات المهام الاجتماعية</div>
+      <button class="refresh-btn" onclick="loadSocialSubs()">🔄 تحديث</button>
+    </div>
+    <div id="social-subs-list"></div>
+  </div>
+
+  <!-- WITHDRAWALS -->
+  <div id="tab-withdrawals">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 14px 10px">
+      <div class="sec-title" style="padding:0"><span class="dot"></span> طلبات السحب المعلقة</div>
+      <button class="refresh-btn" onclick="loadData()">🔄 تحديث</button>
+    </div>
+    <div id="wr-list"></div>
+  </div>
+
+  <!-- PUBLISH TASKS -->
+  <div id="tab-publish" style="display:none">
+    <div class="sec-title"><span class="dot"></span> نشر مهمة جديدة</div>
+    <div class="pub-box">
+      <div class="pub-title">➕ إضافة مهمة اجتماعية</div>
+      <div class="frow">
+        <select class="fi2" id="p-ico">
+          <option value="📸">📸 Instagram</option>
+          <option value="👍">👍 Facebook</option>
+          <option value="🎵">🎵 TikTok</option>
+          <option value="📺">📺 YouTube</option>
+          <option value="💬">💬 WhatsApp</option>
+          <option value="✈️">✈️ Telegram</option>
+          <option value="🐦">🐦 Twitter/X</option>
+          <option value="🎬">🎬 فيديو</option>
+          <option value="📝">📝 استبيان</option>
+          <option value="⭐">⭐ أخرى</option>
+        </select>
+        <input type="number" class="fi2" id="p-rwd" placeholder="المكافأة (دج)" min="1">
+      </div>
+      <input type="text" class="fi2" id="p-name" placeholder="اسم المهمة" style="width:100%;margin-bottom:10px">
+      <input type="url" class="fi2" id="p-url" placeholder="الرابط (https://...)" style="width:100%;margin-bottom:10px">
+      <button class="btn-pub" onclick="publishTask()">📢 نشر المهمة</button>
+    </div>
+    <div class="sec-title"><span class="dot"></span> المهام المنشورة</div>
+    <div id="tasks-list"></div>
+  </div>
+
+  <!-- USERS -->
+  <div id="tab-users" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 14px 10px">
+      <div class="sec-title" style="padding:0"><span class="dot"></span> قائمة المستخدمين</div>
+      <button class="refresh-btn" onclick="loadUsers()">🔄</button>
+    </div>
+    <div id="users-list"></div>
+  </div>
+
+  <!-- ADD BALANCE -->
+  <div id="tab-balance" style="display:none">
+    <div class="sec-title"><span class="dot"></span> إضافة رصيد لمستخدم</div>
+    <div class="add-bal-box">
+      <input type="email" class="fi2" id="bal-email" placeholder="البريد الإلكتروني للمستخدم" style="width:100%;margin-bottom:10px">
+      <div class="frow">
+        <input type="number" class="fi2" id="bal-amt" placeholder="المبلغ (دج)" min="1">
+        <button class="btn-pub" style="flex:1" onclick="addBalance()">➕ إضافة</button>
+      </div>
+    </div>
+    <div class="sec-title"><span class="dot"></span> خصم رصيد من مستخدم</div>
+    <div class="add-bal-box" style="border-color:rgba(255,59,59,.2)">
+      <input type="email" class="fi2" id="sub-email" placeholder="البريد الإلكتروني" style="width:100%;margin-bottom:10px">
+      <div class="frow">
+        <input type="number" class="fi2" id="sub-amt" placeholder="المبلغ (دج)" min="1">
+        <button class="btn-pub" style="flex:1;background:linear-gradient(135deg,var(--r),#cc0000);color:#fff" onclick="subBalance()">➖ خصم</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROADCAST -->
+  <div id="tab-broadcast" style="display:none">
+    <div class="sec-title"><span class="dot"></span> إرسال إشعار جماعي</div>
+    <div class="bcast-box">
+      <textarea class="fi2" id="bcast-msg" placeholder="اكتب رسالتك هنا..."></textarea>
+      <button class="btn-pub" style="margin-top:10px" onclick="sendBcast()">📣 إرسال للجميع</button>
+    </div>
+    <div class="sec-title"><span class="dot"></span> إنشاء كود يومي</div>
+    <div class="bcast-box">
+      <div class="frow">
+        <input type="text" class="fi2" id="code-val" placeholder="الكود (مثل ZNCASH50)" style="text-transform:uppercase">
+        <input type="number" class="fi2" id="code-rwd" placeholder="المكافأة (دج)">
+      </div>
+      <button class="btn-pub" onclick="createCode()">🎁 إنشاء الكود</button>
+      <div style="font-size:11px;color:var(--t2);margin-top:8px;text-align:center">سيُنشر الكود تلقائياً في البوت والقناة</div>
+    </div>
+  </div>
+
+  <div style="height:40px"></div>
+</div>
+
+<script>
+// ⚠️ لا يوجد هنا أي مفتاح Supabase ولا كلمة سر — كلها على السيرفر فقط (config.php)
+var API_BASE='https://zncash.great-site.net'; // ✅ مضبوط على نطاقك الحقيقي
+var EX=200;
+
+function getAdmTok(){return localStorage.getItem('znAdmTok')}
+function setAdmTok(t){t?localStorage.setItem('znAdmTok',t):localStorage.removeItem('znAdmTok')}
+
+function adminApi(action,payload){
+  payload=payload||{};payload.action=action;
+  return fetch(API_BASE+'/admin_api.php',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+(getAdmTok()||'')},
+    body:JSON.stringify(payload)
+  }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})});
+}
+
+function toast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type||'ok')+' on';
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3000);
+}
+
+function doLogin(){
+  var p=document.getElementById('adm-pass').value;
+  toast('جاري التحقق...','info');
+  adminApi('login',{password:p}).then(function(res){
+    if(!res.data.success){return toast('❌ كلمة مرور خاطئة','err')}
+    setAdmTok(res.data.token);
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('adm-pass').value='';
+    loadData();loadTasks();
+  }).catch(function(){toast('❌ خطأ في الاتصال','err')});
+}
+
+function doLogout(){
+  setAdmTok(null);
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none')doLogin();
+});
+
+function showTab(id,el){
+  ['withdrawals','social','publish','users','balance','broadcast'].forEach(function(t){
+    var el2=document.getElementById('tab-'+t);if(el2)el2.style.display='none';
+  });
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+  var show=document.getElementById('tab-'+id);if(show)show.style.display='block';
+  if(el)el.classList.add('on');
+  if(id==='users')loadUsers();
+  if(id==='publish')loadTasks();
+  if(id==='social')loadSocialSubs();
+}
+
+function loadSocialSubs(){
+  adminApi('list_social').then(function(res){
+    var subs=res.data.submissions||[];
+    var list=document.getElementById('social-subs-list');
+    if(!subs||subs.length===0){list.innerHTML='<div class="empty">✅ لا توجد طلبات معلقة</div>';return;}
+    list.innerHTML=subs.map(function(s){
+      var dz=s.is_algeria!==false;
+      var rwd=dz?Math.floor(s.reward)+' دج':'$'+(s.reward/EX).toFixed(2);
+      var date=(s.created_at||'').slice(0,16).replace('T',' ');
+      return '<div class="wr" id="ss-'+s.id+'">'+
+        '<div class="wr-top"><div class="wr-u">👤 '+s.username+'</div><div class="wr-a">'+rwd+'</div></div>'+
+        '<div class="wr-d">'+
+          '📋 المهمة: '+s.task_name+'<br>'+
+          '🔖 اسم المستخدم المُرسل: <span class="wr-addr" onclick="copyText(\''+s.social_username+'\')">'+s.social_username+'</span>'+
+          '📅 '+date+
+        '</div>'+
+        '<div class="wr-btns">'+
+          '<button class="btn-pay" onclick="approveSocial(\''+s.id+'\',\''+s.user_id+'\','+s.reward+',\''+s.username+'\')">✅ تأكيد</button>'+
+          '<button class="btn-rej" onclick="rejectSocial(\''+s.id+'\',\''+s.username+'\')">❌ رفض</button>'+
+        '</div></div>';
+    }).join('');
+  }).catch(function(){
+    document.getElementById('social-subs-list').innerHTML='<div class="empty">خطأ في التحميل</div>';
+  });
+}
+
+function approveSocial(sid,uid,reward,uname){
+  if(!confirm('تأكيد ودفع '+reward+' لـ '+uname+'؟'))return;
+  adminApi('approve_social',{id:sid,user_id:uid,reward:reward}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم التأكيد وإضافة الرصيد لـ '+uname,'ok');
+    var el=document.getElementById('ss-'+sid);if(el)el.remove();
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function rejectSocial(sid,uname){
+  if(!confirm('رفض طلب '+uname+'؟'))return;
+  adminApi('reject_social',{id:sid}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('❌ تم رفض الطلب','info');
+    var el=document.getElementById('ss-'+sid);if(el)el.remove();
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function loadData(){
+  adminApi('dashboard').then(function(res){
+    var d=res.data;if(!d||!d.success)return;
+    document.getElementById('a-users').textContent=d.total_users;
+    document.getElementById('a-today').textContent=d.today_users;
+    document.getElementById('a-pend').textContent=d.pending_count;
+    document.getElementById('a-paid').textContent=Math.floor(d.total_paid)+' دج';
+    var list=document.getElementById('wr-list');
+    var pending=d.pending_withdrawals||[];
+    if(pending.length===0){list.innerHTML='<div class="empty">✅ لا توجد طلبات معلقة</div>';return;}
+    list.innerHTML=pending.map(function(w){
+      var dz=w.is_algeria!==false;
+      var amt=dz?Math.floor(w.amount)+' دج':'$'+(w.amount/EX).toFixed(2);
+      var date=(w.created_at||'').slice(0,16).replace('T',' ');
+      return '<div class="wr" id="wr-'+w.id+'">'+
+        '<div class="wr-top"><div class="wr-u">👤 '+w.username+'</div><div class="wr-a">'+amt+'</div></div>'+
+        '<div class="wr-d">'+
+          '📧 '+w.email+'<br>'+
+          '💳 '+w.method+'<br>'+
+          '<span class="wr-addr" onclick="copyText(\''+w.address+'\')">📍 '+w.address+' (اضغط للنسخ)</span>'+
+          '📅 '+date+
+          (dz?'':' 🌍')+
+        '</div>'+
+        '<div class="wr-btns">'+
+          '<button class="btn-pay" onclick="markPaid(\''+w.id+'\',\''+w.user_id+'\',\''+w.username+'\')">✅ تم الدفع</button>'+
+          '<button class="btn-rej" onclick="markReject(\''+w.id+'\',\''+w.user_id+'\','+w.amount+')">❌ رفض</button>'+
+        '</div></div>';
+    }).join('');
+  });
+}
+
+function copyText(txt){
+  try{navigator.clipboard.writeText(txt).then(function(){toast('📋 تم نسخ العنوان!','ok')})}
+  catch(e){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 تم النسخ!','ok')}
+}
+
+function markPaid(wid,uid,uname){
+  if(!confirm('تأكيد دفع '+uname+'؟'))return;
+  adminApi('mark_paid',{id:wid}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم تأكيد دفع '+uname,'ok');
+    var el=document.getElementById('wr-'+wid);
+    if(el){el.style.opacity='.3';el.style.pointerEvents='none';}
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function markReject(wid,uid,amt){
+  if(!confirm('رفض الطلب وإعادة '+Math.floor(amt)+' دج؟'))return;
+  adminApi('reject_withdrawal',{id:wid,user_id:uid,amount:amt}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('❌ تم الرفض وإعادة الرصيد','info');
+    var el=document.getElementById('wr-'+wid);if(el)el.remove();
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+// ===== PUBLISH TASKS =====
+function publishTask(){
+  var ico=document.getElementById('p-ico').value;
+  var name=document.getElementById('p-name').value.trim();
+  var url=document.getElementById('p-url').value.trim();
+  var rwd=parseFloat(document.getElementById('p-rwd').value);
+  if(!name||!url||!rwd){return toast('❌ أكمل جميع الحقول','err')}
+  adminApi('publish_task',{icon:ico,name:name,url:url,reward:rwd}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم نشر المهمة!','ok');
+    document.getElementById('p-name').value='';
+    document.getElementById('p-url').value='';
+    document.getElementById('p-rwd').value='';
+    loadTasks();
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function loadTasks(){
+  adminApi('list_tasks').then(function(res){
+    var tasks=res.data.tasks||[];
+    var list=document.getElementById('tasks-list');
+    if(!tasks||tasks.length===0){list.innerHTML='<div class="empty">لا توجد مهام منشورة</div>';return;}
+    list.innerHTML=tasks.map(function(t){
+      return '<div class="ptask">'+
+        '<div class="ptask-ico">'+t.icon+'</div>'+
+        '<div class="ptask-info"><div class="ptask-name">'+t.name+'</div><div class="ptask-rwd">+'+t.reward+' دج</div></div>'+
+        '<button class="ptask-del" onclick="deleteTask(\''+t.id+'\')">حذف</button>'+
+        '</div>';
+    }).join('');
+  }).catch(function(){
+    document.getElementById('tasks-list').innerHTML='<div class="empty">خطأ في التحميل</div>';
+  });
+}
+
+function deleteTask(id){
+  if(!confirm('حذف المهمة؟'))return;
+  adminApi('delete_task',{id:id}).then(function(){
+    toast('✅ تم حذف المهمة','ok');loadTasks();
+  });
+}
+
+// ===== USERS =====
+function loadUsers(){
+  adminApi('list_users').then(function(res){
+    var users=res.data.users||[];
+    var list=document.getElementById('users-list');
+    if(!users||users.length===0){list.innerHTML='<div class="empty">لا يوجد مستخدمون</div>';return;}
+    list.innerHTML=users.map(function(u){
+      var dz=u.is_algeria!==false;
+      var bal=dz?Math.floor(u.balance||0)+' دج':'$'+((u.balance||0)/EX).toFixed(2);
+      var date=(u.created_at||'').slice(0,10);
+      return '<div class="user-item">'+
+        '<div class="user-av">'+((u.username||'U')[0].toUpperCase())+'</div>'+
+        '<div class="user-info">'+
+          '<div class="user-name">'+u.username+' <span class="'+(dz?'badge-dz':'badge-intl')+'">'+(dz?'🇩🇿 دز':'🌍 دولي')+'</span></div>'+
+          '<div class="user-bal">'+bal+'</div>'+
+          '<div class="user-sub">'+u.email+' • '+date+'</div>'+
+        '</div>'+
+        '</div>';
+    }).join('');
+  });
+}
+
+// ===== BALANCE =====
+function addBalance(){
+  var email=document.getElementById('bal-email').value.trim();
+  var amt=parseFloat(document.getElementById('bal-amt').value);
+  if(!email||!amt){return toast('❌ أدخل البريد والمبلغ','err')}
+  adminApi('add_balance',{email:email,amount:amt}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تمت إضافة '+Math.floor(amt)+' دج لـ '+res.data.username,'ok');
+    document.getElementById('bal-email').value='';document.getElementById('bal-amt').value='';
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+function subBalance(){
+  var email=document.getElementById('sub-email').value.trim();
+  var amt=parseFloat(document.getElementById('sub-amt').value);
+  if(!email||!amt){return toast('❌ أدخل البريد والمبلغ','err')}
+  adminApi('sub_balance',{email:email,amount:amt}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم خصم '+Math.floor(amt)+' دج من '+res.data.username,'ok');
+    document.getElementById('sub-email').value='';document.getElementById('sub-amt').value='';
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+// ===== BROADCAST =====
+function sendBcast(){
+  var msg=document.getElementById('bcast-msg').value.trim();
+  if(!msg){return toast('❌ اكتب الرسالة','err')}
+  toast('⏳ جاري الإرسال...','info');
+  adminApi('broadcast',{message:msg}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم نشر الإشعار للمستخدمين','ok');
+    document.getElementById('bcast-msg').value='';
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+// ===== DAILY CODE =====
+function createCode(){
+  var code=document.getElementById('code-val').value.trim().toUpperCase();
+  var rwd=parseFloat(document.getElementById('code-rwd').value);
+  if(!code||!rwd){return toast('❌ أدخل الكود والمكافأة','err')}
+  adminApi('create_code',{code:code,reward:rwd}).then(function(res){
+    if(!res.data.success)return toast('❌ '+(res.data.error||'خطأ'),'err');
+    toast('✅ تم إنشاء الكود: /code '+code+' ('+rwd+' دج)','ok');
+    document.getElementById('code-val').value='';document.getElementById('code-rwd').value='';
+  }).catch(function(){toast('❌ خطأ','err')});
+}
+
+// Auto-refresh every 60 seconds
+setInterval(function(){
+  if(document.getElementById('app').style.display!=='none')loadData();
+},60000);
+</script>
+</body>
+</html>
