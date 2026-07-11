@@ -234,10 +234,10 @@ function getAdmTok(){return localStorage.getItem('znAdmTok')}
 function setAdmTok(t){t?localStorage.setItem('znAdmTok',t):localStorage.removeItem('znAdmTok')}
 
 function adminApi(action,payload){
-  payload=payload||{};payload.action=action;
+  payload=payload||{};payload.action=action;payload.token=getAdmTok()||'';
   return fetch(API_BASE+'/admin_api.php',{
     method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+(getAdmTok()||'')},
+    headers:{'Content-Type':'text/plain'}, // نتجنب preflight (OPTIONS) عمداً — بعض الاستضافات المجانية تحظره
     body:JSON.stringify(payload)
   }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})});
 }
