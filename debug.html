@@ -16,13 +16,15 @@
 </style>
 </head>
 <body>
-<h2>🔍 تشخيص الاتصال بالسيرفر</h2>
+<h2>🔍 تشخيص الاتصال بالسيرفر (v3)</h2>
+<div class="box" style="background:#F0B429;color:#000">
+  <b>إذا شفت هذا الرقم (v3) فأنت على النسخة الصحيحة. إذا ما شفته، الصفحة قديمة/محفوظة.</b>
+</div>
 <div class="box">
   <div class="lbl">عنوان API المستهدف:</div>
   <pre id="target"></pre>
 </div>
-<button onclick="runTest()">▶ ابدأ الفحص</button>
-<div id="result"></div>
+<div id="result"><div class="box">⏳ جاري الفحص تلقائياً... انتظر ثانيتين ثم انزل لتحت (Scroll Down)</div></div>
 
 <script>
 var API_BASE='https://zncash.great-site.net'; // تأكد أنه نفس العنوان المستخدم في index.html
@@ -35,9 +37,22 @@ function box(title,status,content){
   document.getElementById('result').appendChild(d);
 }
 
+window.onload=function(){ setTimeout(runTest, 300); };
+
 function runTest(){
-  document.getElementById('result').innerHTML='<div class="box">⏳ جاري الفحص...</div>';
-  setTimeout(function(){document.getElementById('result').innerHTML=''},50);
+  document.getElementById('result').innerHTML='';
+
+  // اختبار 1: ملف ثابت (README.md) بدون PHP ولا أي بيانات مرسلة — GET بسيط جداً
+  fetch(API_BASE+'/README.md',{method:'GET'}).then(function(r){
+    box('اختبار 1: جلب ملف ثابت (README.md) عبر GET بسيط', true, 'Status: '+r.status+' — نجح الوصول للسيرفر عبر نطاق مختلف لملف ثابت.');
+  }).catch(function(err){
+    box('اختبار 1: جلب ملف ثابت (README.md) عبر GET بسيط', false, 'فشل حتى مع ملف ثابت بسيط بدون PHP!\n'+err.message+'\n\nهذا يعني أن الاستضافة نفسها تحظر أي طلب عبر نطاق مختلف (Cross-Origin) بشكل عام، بغض النظر عن الكود — مشكلة على مستوى الاستضافة (InfinityFree)، مو في ملفات PHP.');
+  }).finally(function(){
+    runAuthTest();
+  });
+}
+
+function runAuthTest(){
 
   fetch(API_BASE+'/auth_api.php',{
     method:'POST',
