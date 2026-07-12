@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تشخيص الاتصال - ZN Cash</title>
+<style>
+  body{background:#0A0505;color:#fff;font-family:-apple-system,Arial,sans-serif;padding:16px;margin:0;line-height:1.6}
+  h2{color:#F0B429;font-size:18px}
+  .box{background:#1A0E0E;border:1px solid #333;border-radius:12px;padding:14px;margin-bottom:14px}
+  .ok{color:#4ade80;font-weight:bold}
+  .err{color:#f87171;font-weight:bold}
+  .lbl{color:#999;font-size:12px;margin-bottom:4px}
+  pre{white-space:pre-wrap;word-break:break-word;background:#000;padding:10px;border-radius:8px;font-size:12px;color:#0f0;direction:ltr;text-align:left}
+  button{background:#F0B429;color:#000;border:none;padding:12px 20px;border-radius:10px;font-weight:bold;font-size:15px;width:100%;margin-top:8px}
+</style>
+</head>
+<body>
+<h2>🔍 تشخيص الاتصال بالسيرفر (v5 — Supabase Edge Functions)</h2>
+<div class="box" style="background:#F0B429;color:#000">
+  <b>إذا شفت هذا الرقم (v5 — Supabase Edge Functions) فأنت على النسخة الصحيحة. إذا ما شفته، الصفحة قديمة/محفوظة.</b>
+</div>
+<div class="box">
+  <div class="lbl">عنوان API المستهدف:</div>
+  <pre id="target"></pre>
+</div>
+<div id="result"><div class="box">⏳ جاري الفحص تلقائياً... انتظر ثانيتين ثم انزل لتحت (Scroll Down)</div></div>
+
+<script>
+var API_BASE='https://qnzujfhizbhselihvwtu.supabase.co/functions/v1';
+var SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFuenVqZmhpemJoc2VsaWh2d3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjE2OTEsImV4cCI6MjA5NzYzNzY5MX0.7spQ-SEXopj8jy2Czq8JeD8zJBi0eFdb12u0rYoc8xk';
+document.getElementById('target').textContent=API_BASE+'/auth-api';
+
+function box(title,status,content){
+  var d=document.createElement('div');
+  d.className='box';
+  d.innerHTML='<div class="lbl">'+title+'</div><div class="'+(status?'ok':'err')+'">'+(status?'✅ نجح':'❌ فشل')+'</div><pre>'+content+'</pre>';
+  document.getElementById('result').appendChild(d);
+}
+
+window.onload=function(){ setTimeout(runTest, 300); };
+
+function runTest(){
+  document.getElementById('result').innerHTML='';
+
+  // اختبار: نداء OPTIONS بسيط لدالة auth-api على Supabase Edge Functions
+  fetch(API_BASE+'/auth-api',{method:'OPTIONS'}).then(function(r){
+    box('اختبار 1: الوصول لدالة auth-api (OPTIONS)', true, 'Status: '+r.status+' — الدالة منشورة ويمكن الوصول لها عبر نطاق مختلف.');
+  }).catch(function(err){
+    box('اختبار 1: الوصول لدالة auth-api (OPTIONS)', false, 'فشل! '+err.message+'\n\nتأكد أن دالة auth-api منشورة فعلاً في Supabase Dashboard → Edge Functions.');
+  }).finally(function(){
+    runFullAuthTest();
+  });
+}
+
+function runFullAuthTest(){
+  fetch(API_BASE+'/auth-api',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON},
+    body:JSON.stringify({action:'login',email:'test_diagnostic@example.com',password:'test123456',token:''})
+  }).then(function(r){
+    return r.text().then(function(txt){
+      box('اختبار 2: تسجيل دخول تجريبي (Status: '+r.status+')', r.status>0, txt||'(رد فارغ)');
+      try{
+        var j=JSON.parse(txt);
+        if(j.error && j.error.indexOf('غير موجود')>-1){
+          box('النتيجة النهائية', true, '🎉 كل شيء يعمل بشكل صحيح! Edge Function وقاعدة البيانات وCORS كلها سليمة.\nيمكنك تسجيل حساب حقيقي الآن من التطبيق مباشرة.');
+        }
+      }catch(e){
+        box('تحليل الرد كـ JSON', false, 'الرد ليس JSON صالح — قد يكون هناك خطأ برمجي داخل الدالة.\nالرد الخام:\n'+txt.slice(0,500));
+      }
+    });
+  }).catch(function(err){
+    box('اختبار 2: تسجيل دخول تجريبي', false,
+      'فشل الاتصال تماماً!\n\nرسالة الخطأ: '+err.message+
+      '\n\nتحقق من:\n1) أن دالة auth-api منشورة في Supabase Dashboard\n2) أن Secret باسم ZN_TOKEN_SECRET مضاف في Edge Functions Secrets\n3) أن رابط هذه الصفحة الحالي مطابق لما وضعته في ALLOWED_ORIGINS داخل الكود'
+    );
+    box('رابط هذه الصفحة الحالي (Origin)', true, window.location.origin);
+  });
+}
+</script>
+</body>
+</html>
