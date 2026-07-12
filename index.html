@@ -764,8 +764,9 @@ document.addEventListener('click',function(e){
   setTimeout(function(){rip.remove()},520);
 });
 
-// ===== SECURE API LAYER (لا اتصال مباشر بـ Supabase من المتصفح أبداً) =====
-var API_BASE='https://zncash.great-site.net'; // ✅ مضبوط على نطاقك الحقيقي
+// ===== SECURE API LAYER (Supabase Edge Functions — لا اتصال مباشر بجداول Supabase من المتصفح أبداً) =====
+var API_BASE='https://qnzujfhizbhselihvwtu.supabase.co/functions/v1';
+var SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFuenVqZmhpemJoc2VsaWh2d3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjE2OTEsImV4cCI6MjA5NzYzNzY5MX0.7spQ-SEXopj8jy2Czq8JeD8zJBi0eFdb12u0rYoc8xk';
 function getToken(){return localStorage.getItem('znTok')}
 function setToken(t){t?localStorage.setItem('znTok',t):localStorage.removeItem('znTok')}
 
@@ -773,12 +774,12 @@ function apiCall(endpoint,action,payload){
   payload=payload||{};payload.action=action;payload.token=getToken()||'';
   return fetch(API_BASE+'/'+endpoint,{
     method:'POST',
-    headers:{'Content-Type':'text/plain'}, // نتجنب preflight (OPTIONS) عمداً — بعض الاستضافات المجانية تحظره
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_ANON}, // مفتاح anon مطلوب من منصة Supabase نفسها لأي Edge Function؛ توكن المستخدم الحقيقي داخل payload.token
     body:JSON.stringify(payload)
   }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})});
 }
-function auth(action,payload){return apiCall('auth_api.php',action,payload)}
-function api(action,payload){return apiCall('api.php',action,payload)}
+function auth(action,payload){return apiCall('auth-api',action,payload)}
+function api(action,payload){return apiCall('api',action,payload)}
 
 // ===== الصور المدمجة (base64) — لا حاجة لأي ملف صورة منفصل =====
 var IMG={
