@@ -16,9 +16,9 @@
 </style>
 </head>
 <body>
-<h2>🔍 تشخيص الاتصال بالسيرفر (v3)</h2>
+<h2>🔍 تشخيص الاتصال بالسيرفر (v4)</h2>
 <div class="box" style="background:#F0B429;color:#000">
-  <b>إذا شفت هذا الرقم (v3) فأنت على النسخة الصحيحة. إذا ما شفته، الصفحة قديمة/محفوظة.</b>
+  <b>إذا شفت هذا الرقم (v4) فأنت على النسخة الصحيحة. إذا ما شفته، الصفحة قديمة/محفوظة.</b>
 </div>
 <div class="box">
   <div class="lbl">عنوان API المستهدف:</div>
@@ -53,6 +53,20 @@ function runTest(){
 }
 
 function runAuthTest(){
+  // اختبار 2: نفس النمط القديم اللي كان يشتغل (fetch مباشر لـ Supabase من نفس الصفحة)
+  fetch('https://qnzujfhizbhselihvwtu.supabase.co/rest/v1/',{
+    method:'GET',
+    headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFuenVqZmhpemJoc2VsaWh2d3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNjE2OTEsImV4cCI6MjA5NzYzNzY5MX0.7spQ-SEXopj8jy2Czq8JeD8zJBi0eFdb12u0rYoc8xk'}
+  }).then(function(r){
+    box('اختبار 2: fetch مباشر لـ Supabase (نفس نمط التطبيق القديم)', true, 'Status: '+r.status+' — نجح! يعني مشكلتك محصورة في InfinityFree تحديداً، مو في جهازك/شبكتك عموماً. الانتقال لـ Supabase Edge Functions مضمون يحل المشكلة.');
+  }).catch(function(err){
+    box('اختبار 2: fetch مباشر لـ Supabase (نفس نمط التطبيق القديم)', false, 'فشل حتى مع Supabase!\n'+err.message+'\n\nهذا يغيّر التشخيص كلياً — المشكلة ممكن تكون في جهازك أو شبكتك، مو في InfinityFree تحديداً.');
+  }).finally(function(){
+    runAuthTest2();
+  });
+}
+
+function runAuthTest2(){
 
   fetch(API_BASE+'/auth_api.php',{
     method:'POST',
